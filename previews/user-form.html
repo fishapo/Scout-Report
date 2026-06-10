@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scout Report Form - User Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .add-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-btn:hover {
+            background-color: #45a049;
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .required::after {
+            content: " *";
+            color: #f44336;
+        }
+
+        select, input[type="text"], input[type="number"], input[type="date"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background-color: #fafafa;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .switch-group {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .switch-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .switch-btn.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .location-box {
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .location-text {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .update-location-btn {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .update-location-btn:hover {
+            background-color: #45a049;
+        }
+
+        .observation-card {
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .observation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .observation-index {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #f44336;
+            cursor: pointer;
+            padding: 0 5px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .delete-btn:hover {
+            color: #d32f2f;
+        }
+
+        .footer {
+            padding: 0 20px 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Scout Report</h1>
+            <p id="report-date">Date: </p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <div class="section-title">Farm Information</div>
+                
+                <label class="label required">Farm</label>
+                <select>
+                    <option>Select Farm...</option>
+                    <option>Green Valley Farm</option>
+                    <option>Sunset Ridge Farm</option>
+                    <option>Highland Plains Farm</option>
+                </select>
+
+                <label class="label">Greenhouse</label>
+                <div class="switch-group">
+                    <button class="switch-btn active" onclick="toggleSwitch(this, 'field')">Field</button>
+                    <button class="switch-btn" onclick="toggleSwitch(this, 'greenhouse')">Greenhouse</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Crop Information</div>
+                
+                <label class="label required">Crop Type</label>
+                <select onchange="updateVarieties(this)">
+                    <option>Select Crop...</option>
+                    <option>Tomato</option>
+                    <option>Pepper</option>
+                    <option>Cucumber</option>
+                    <option>Lettuce</option>
+                </select>
+
+                <label class="label required">Variety</label>
+                <select id="variety-select">
+                    <option>Select Variety...</option>
+                </select>
+
+                <label class="label">Implementation Week</label>
+                <input type="number" min="1" max="53" value="1" placeholder="Week number (1-53)">
+
+                <label class="label">Implementation Year</label>
+                <input type="number" value="2026" placeholder="Year">
+            </div>
+
+            <div class="section">
+                <div class="section-title">Environmental Conditions</div>
+                
+                <label class="label">Weather</label>
+                <select>
+                    <option>Sunny</option>
+                    <option>Cloudy</option>
+                    <option>Rainy</option>
+                    <option>Foggy</option>
+                </select>
+
+                <label class="label">Temperature (°C)</label>
+                <input type="number" step="0.1" placeholder="e.g., 25.5">
+
+                <label class="label">Humidity (%)</label>
+                <input type="number" min="0" max="100" placeholder="e.g., 65">
+
+                <label class="label">Location</label>
+                <div class="location-box">
+                    <div class="location-text">Lat: 40.7128</div>
+                    <div class="location-text">Long: -74.0060</div>
+                    <button class="update-location-btn" onclick="updateLocation()">📍 Update Location</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Pest Observations</div>
+                    <button class="add-btn" onclick="addPestObservation()">+ Add</button>
+                </div>
+
+                <div id="pest-observations">
+                    <div class="observation-card">
+                        <div class="observation-header">
+                            <div class="observation-index">Pest #1</div>
+                            <button class="delete-btn" onclick="removeObservation(this)">✕</button>
+                        </div>
+
+                        <label class="label">Pest Type</label>
+                        <select>
+                            <option>Select Pest...</option>
+                            <option>Whitefly</option>
+                            <option>Aphid</option>
+                            <option>Spider Mite</option>
+                            <option>Thrips</option>
+                        </select>
+
+                        <label class="label">Count</label>
+                        <input type="number" min="0" placeholder="Number observed">
+
+                        <label class="label">Severity</label>
+                        <select>
+                            <option>Low</option>
+                            <option>Medium</option>
+                            <option>High</option>
+                            <option>Critical</option>
+                        </select>
+
+                        <label class="label">Affected Plants (%)</label>
+                        <input type="number" min="0" max="100" placeholder="0-100">
+
+                        <label class="label">Location on Plant</label>
+                        <input type="text" placeholder="e.g., leaf, stem, root">
+
+                        <label class="label">Notes</label>
+                        <textarea placeholder="Additional observations..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Disease Observations</div>
+                    <button class="add-btn" onclick="addDiseaseObservation()">+ Add</button>
+                </div>
+
+                <div id="disease-observations">
+                    <div class="observation-card">
+                        <div class="observation-header">
+                            <div class="observation-index">Disease #1</div>
+                            <button class="delete-btn" onclick="removeObservation(this)">✕</button>
+                        </div>
+
+                        <label class="label">Disease Type</label>
+                        <select>
+                            <option>Select Disease...</option>
+                            <option>Early Blight</option>
+                            <option>Late Blight</option>
+                            <option>Powdery Mildew</option>
+                            <option>Fusarium Wilt</option>
+                        </select>
+
+                        <label class="label">Severity</label>
+                        <select>
+                            <option>Low</option>
+                            <option>Medium</option>
+                            <option>High</option>
+                            <option>Critical</option>
+                        </select>
+
+                        <label class="label">Affected Plants (%)</label>
+                        <input type="number" min="0" max="100" placeholder="0-100">
+
+                        <label class="label">Visible Spots Count</label>
+                        <input type="number" min="0" placeholder="Number of spots">
+
+                        <label class="label">Spot Color</label>
+                        <input type="text" placeholder="e.g., black, brown, yellow">
+
+                        <label class="label">Notes</label>
+                        <textarea placeholder="Additional observations..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <label class="label">General Notes</label>
+                <textarea placeholder="Any additional observations or notes..."></textarea>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button class="submit-btn" onclick="submitReport()">✓ Submit Report</button>
+        </div>
+    </div>
+
+    <script>
+        let pestCount = 1;
+        let diseaseCount = 1;
+
+        const varieties = {
+            'Tomato': ['Cherry Tomato', 'Beefsteak Tomato', 'Roma Tomato'],
+            'Pepper': ['Bell Pepper', 'Chili Pepper', 'Ghost Pepper'],
+            'Cucumber': ['English Cucumber', 'Pickling Cucumber'],
+            'Lettuce': ['Romaine', 'Iceberg', 'Buttercrunch']
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            document.getElementById('report-date').textContent = `Date: ${today.toLocaleDateString()}`;
+        });
+
+        function toggleSwitch(button, type) {
+            const parent = button.parentElement;
+            parent.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        function updateVarieties(select) {
+            const varietySelect = document.getElementById('variety-select');
+            const selectedCrop = select.value;
+            
+            varietySelect.innerHTML = '<option>Select Variety...</option>';
+            
+            if (varieties[selectedCrop]) {
+                varieties[selectedCrop].forEach(variety => {
+                    const option = document.createElement('option');
+                    option.value = variety;
+                    option.textContent = variety;
+                    varietySelect.appendChild(option);
+                });
+            }
+        }
+
+        function updateLocation() {
+            alert('📍 Location updated! (Demo: In production, this will use GPS coordinates)');
+        }
+
+        function addPestObservation() {
+            pestCount++;
+            const container = document.getElementById('pest-observations');
+            const newCard = container.querySelector('.observation-card').cloneNode(true);
+            newCard.querySelector('.observation-index').textContent = `Pest #${pestCount}`;
+            newCard.querySelectorAll('input, textarea').forEach(field => field.value = '');
+            container.appendChild(newCard);
+        }
+
+        function addDiseaseObservation() {
+            diseaseCount++;
+            const container = document.getElementById('disease-observations');
+            const newCard = container.querySelector('.observation-card').cloneNode(true);
+            newCard.querySelector('.observation-index').textContent = `Disease #${diseaseCount}`;
+            newCard.querySelectorAll('input, textarea').forEach(field => field.value = '');
+            container.appendChild(newCard);
+        }
+
+        function removeObservation(button) {
+            const card = button.closest('.observation-card');
+            const container = card.parentElement;
+            if (container.querySelectorAll('.observation-card').length > 1) {
+                card.remove();
+            } else {
+                alert('You must keep at least one observation!');
+            }
+        }
+
+        function submitReport() {
+            alert('✅ Scout report submitted successfully!\n\n(This is a demo. In production, data would be sent to the backend API)');
+        }
+    </script>
+</body>
+</html>
