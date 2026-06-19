@@ -439,22 +439,22 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-label">Total Reports</div>
-                    <div class="stat-value">1,247</div>
-                    <div class="stat-detail">↑ 23 this month</div>
+                    <div class="stat-value" id="stat-total">—</div>
+                    <div class="stat-detail">All submitted reports</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Critical Issues</div>
-                    <div class="stat-value" style="color: #f44336;">45</div>
+                    <div class="stat-value" id="stat-critical" style="color: #f44336;">—</div>
                     <div class="stat-detail">Requiring immediate action</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Active Farms</div>
-                    <div class="stat-value">28</div>
-                    <div class="stat-detail">Across 5 regions</div>
+                    <div class="stat-value" id="stat-farms">—</div>
+                    <div class="stat-detail">With recent reports</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Response Rate</div>
-                    <div class="stat-value" style="color: #4caf50;">94%</div>
+                    <div class="stat-value" id="stat-response" style="color: #4caf50;">—</div>
                     <div class="stat-detail">Reports acted upon</div>
                 </div>
             </div>
@@ -462,29 +462,26 @@
             <div class="filters">
                 <div class="filter-group">
                     <label>Farm:</label>
-                    <select>
-                        <option>All Farms</option>
-                        <option>Green Valley Farm</option>
-                        <option>Sunset Ridge Farm</option>
-                        <option>Highland Plains Farm</option>
+                    <select id="filter-farm" onchange="loadReports()">
+                        <option value="all">All Farms</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <label>Status:</label>
-                    <select>
-                        <option>All Status</option>
-                        <option>Completed</option>
-                        <option>Pending</option>
-                        <option>Critical</option>
+                    <select id="filter-status" onchange="loadReports()">
+                        <option value="all">All Status</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Critical">Critical</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <label>Date From:</label>
-                    <input type="date">
+                    <input type="date" id="filter-date-from" onchange="loadReports()">
                 </div>
                 <div class="filter-group">
                     <label>Date To:</label>
-                    <input type="date">
+                    <input type="date" id="filter-date-to" onchange="loadReports()">
                 </div>
             </div>
 
@@ -502,67 +499,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>#SR-001247</td>
-                            <td>Green Valley Farm</td>
-                            <td>Tomato</td>
-                            <td>2026-06-09</td>
-                            <td>Whitefly (12), Aphid (8)</td>
-                            <td class="severity-high">High</td>
-                            <td><span class="status-badge status-critical">Critical</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn" onclick="openViewModal()">View</button>
-                                    <button class="action-btn delete">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#SR-001246</td>
-                            <td>Sunset Ridge Farm</td>
-                            <td>Pepper</td>
-                            <td>2026-06-08</td>
-                            <td>Spider Mite (5)</td>
-                            <td class="severity-medium">Medium</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn" onclick="openViewModal()">View</button>
-                                    <button class="action-btn delete">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#SR-001245</td>
-                            <td>Highland Plains Farm</td>
-                            <td>Cucumber</td>
-                            <td>2026-06-07</td>
-                            <td>None detected</td>
-                            <td class="severity-low">Low</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn" onclick="openViewModal()">View</button>
-                                    <button class="action-btn delete">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#SR-001244</td>
-                            <td>Green Valley Farm</td>
-                            <td>Lettuce</td>
-                            <td>2026-06-06</td>
-                            <td>Thrips (15)</td>
-                            <td class="severity-high">High</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn" onclick="openViewModal()">View</button>
-                                    <button class="action-btn delete">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody id="reports-body">
                     </tbody>
                 </table>
                 <div class="pagination">
@@ -579,44 +516,10 @@
     <div class="modal" id="viewModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeViewModal()">✕</button>
-            <div class="modal-header">Report Details - #SR-001247</div>
-            <div class="modal-body">
-                <div class="modal-field">
-                    <label>Farm</label>
-                    <p>Green Valley Farm</p>
-                </div>
-                <div class="modal-field">
-                    <label>Crop Type</label>
-                    <p>Tomato (Cherry Tomato variety)</p>
-                </div>
-                <div class="modal-field">
-                    <label>Report Date</label>
-                    <p>2026-06-09</p>
-                </div>
-                <div class="modal-field">
-                    <label>Location</label>
-                    <p>Latitude: 40.7128, Longitude: -74.0060</p>
-                </div>
-                <div class="modal-field">
-                    <label>Weather Conditions</label>
-                    <p>Sunny, Temperature: 28.5°C, Humidity: 65%</p>
-                </div>
-                <div class="modal-field">
-                    <label>Pest Observations</label>
-                    <p>• Whitefly: 12 count, High severity, 35% affected plants<br>• Aphid: 8 count, Medium severity, 20% affected plants</p>
-                </div>
-                <div class="modal-field">
-                    <label>Disease Observations</label>
-                    <p>None detected</p>
-                </div>
-                <div class="modal-field">
-                    <label>Notes</label>
-                    <p>Significant pest pressure on lower leaf surfaces. Recommend immediate intervention.</p>
-                </div>
-            </div>
+            <div class="modal-header" id="modal-title">Report Details</div>
+            <div class="modal-body" id="modal-body"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeViewModal()">Close</button>
-                <button class="btn btn-primary">Edit</button>
             </div>
         </div>
     </div>
@@ -658,9 +561,153 @@
     </div>
 
     <script>
-        function openViewModal() { document.getElementById('viewModal').classList.add('active'); }
+        const API = '';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await loadFarms();
+                await loadStats();
+                await loadReports();
+            } catch (err) {
+                console.error(err);
+                alert('Could not connect to the API. Start the server with: npm start');
+            }
+        });
+
+        async function loadFarms() {
+            const res = await fetch(`${API}/farms`);
+            const farms = await res.json();
+            const select = document.getElementById('filter-farm');
+            farms.forEach(farm => {
+                const option = document.createElement('option');
+                option.value = farm.id;
+                option.textContent = farm.name;
+                select.appendChild(option);
+            });
+        }
+
+        async function loadStats() {
+            const res = await fetch(`${API}/scout-reports/stats`);
+            const stats = await res.json();
+            document.getElementById('stat-total').textContent = stats.totalReports;
+            document.getElementById('stat-critical').textContent = stats.criticalIssues;
+            document.getElementById('stat-farms').textContent = stats.activeFarms;
+            document.getElementById('stat-response').textContent = `${stats.responseRate}%`;
+        }
+
+        async function loadReports() {
+            const params = new URLSearchParams();
+            const farm = document.getElementById('filter-farm').value;
+            const status = document.getElementById('filter-status').value;
+            const dateFrom = document.getElementById('filter-date-from').value;
+            const dateTo = document.getElementById('filter-date-to').value;
+
+            if (farm !== 'all') params.set('farm', farm);
+            if (status !== 'all') params.set('status', status);
+            if (dateFrom) params.set('dateFrom', dateFrom);
+            if (dateTo) params.set('dateTo', dateTo);
+
+            const res = await fetch(`${API}/scout-reports?${params}`);
+            const reports = await res.json();
+            renderReports(reports);
+        }
+
+        function renderReports(reports) {
+            const tbody = document.getElementById('reports-body');
+            tbody.innerHTML = '';
+
+            if (reports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;">No reports found</td></tr>';
+                return;
+            }
+
+            reports.forEach(report => {
+                const pests = report.pestObservations.length
+                    ? report.pestObservations.map(p => `${p.pestType} (${p.count})`).join(', ')
+                    : 'None detected';
+                const maxSeverity = getMaxSeverity(report);
+                const statusClass = `status-${report.status.toLowerCase()}`;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${report.id}</td>
+                    <td>${report.farmName}</td>
+                    <td>${report.cropType}</td>
+                    <td>${report.reportDate}</td>
+                    <td>${pests}</td>
+                    <td class="severity-${maxSeverity.toLowerCase()}">${maxSeverity}</td>
+                    <td><span class="status-badge ${statusClass}">${report.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="openViewModal('${report.id}')">View</button>
+                            <button class="action-btn delete" onclick="deleteReport('${report.id}')">Delete</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function getMaxSeverity(report) {
+            const order = ['Low', 'Medium', 'High', 'Critical'];
+            const severities = [
+                ...report.pestObservations.map(o => o.severity),
+                ...report.diseaseObservations.map(o => o.severity),
+            ];
+            if (severities.length === 0) return 'Low';
+            return severities.reduce((max, s) => order.indexOf(s) > order.indexOf(max) ? s : max, 'Low');
+        }
+
+        async function openViewModal(id) {
+            const res = await fetch(`${API}/scout-reports/${id}`);
+            const report = await res.json();
+
+            document.getElementById('modal-title').textContent = `Report Details - #${report.id}`;
+
+            const pests = report.pestObservations.length
+                ? report.pestObservations.map(p =>
+                    `• ${p.pestType}: ${p.count} count, ${p.severity} severity, ${p.affectedPercent}% affected`
+                  ).join('<br>')
+                : 'None detected';
+
+            const diseases = report.diseaseObservations.length
+                ? report.diseaseObservations.map(d =>
+                    `• ${d.diseaseType}: ${d.severity} severity, ${d.affectedPercent}% affected`
+                  ).join('<br>')
+                : 'None detected';
+
+            const location = report.location
+                ? `Latitude: ${report.location.latitude}, Longitude: ${report.location.longitude}`
+                : 'Not recorded';
+
+            document.getElementById('modal-body').innerHTML = `
+                <div class="modal-field"><label>Farm</label><p>${report.farmName}</p></div>
+                <div class="modal-field"><label>Crop Type</label><p>${report.cropType} (${report.variety || 'N/A'} variety)</p></div>
+                <div class="modal-field"><label>Report Date</label><p>${report.reportDate}</p></div>
+                <div class="modal-field"><label>Location</label><p>${location}</p></div>
+                <div class="modal-field"><label>Weather Conditions</label><p>${report.weather}, Temperature: ${report.temperature ?? 'N/A'}°C, Humidity: ${report.humidity ?? 'N/A'}%</p></div>
+                <div class="modal-field"><label>Pest Observations</label><p>${pests}</p></div>
+                <div class="modal-field"><label>Disease Observations</label><p>${diseases}</p></div>
+                <div class="modal-field"><label>Notes</label><p>${report.notes || 'None'}</p></div>
+            `;
+
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        async function deleteReport(id) {
+            if (!confirm(`Delete report #${id}?`)) return;
+
+            const res = await fetch(`${API}/scout-reports/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadStats();
+                await loadReports();
+            } else {
+                alert('Failed to delete report');
+            }
+        }
+
         function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
-        function openAddModal() { document.getElementById('addModal').classList.add('active'); }
+        function openAddModal() { window.location.href = 'user-form.html'; }
         function closeAddModal() { document.getElementById('addModal').classList.remove('active'); }
     </script>
 </body>

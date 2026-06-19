@@ -258,17 +258,14 @@
                 <div class="section-title">Farm Information</div>
                 
                 <label class="label required">Farm</label>
-                <select>
-                    <option>Select Farm...</option>
-                    <option>Green Valley Farm</option>
-                    <option>Sunset Ridge Farm</option>
-                    <option>Highland Plains Farm</option>
+                <select id="farm-select">
+                    <option value="">Select Farm...</option>
                 </select>
 
                 <label class="label">Greenhouse</label>
-                <div class="switch-group">
-                    <button class="switch-btn active" onclick="toggleSwitch(this, 'field')">Field</button>
-                    <button class="switch-btn" onclick="toggleSwitch(this, 'greenhouse')">Greenhouse</button>
+                <div class="switch-group" id="location-type">
+                    <button type="button" class="switch-btn active" data-greenhouse="false" onclick="toggleSwitch(this)">Field</button>
+                    <button type="button" class="switch-btn" data-greenhouse="true" onclick="toggleSwitch(this)">Greenhouse</button>
                 </div>
             </div>
 
@@ -276,12 +273,8 @@
                 <div class="section-title">Crop Information</div>
                 
                 <label class="label required">Crop Type</label>
-                <select onchange="updateVarieties(this)">
-                    <option>Select Crop...</option>
-                    <option>Tomato</option>
-                    <option>Pepper</option>
-                    <option>Cucumber</option>
-                    <option>Lettuce</option>
+                <select id="crop-select" onchange="updateVarieties(this)">
+                    <option value="">Select Crop...</option>
                 </select>
 
                 <label class="label required">Variety</label>
@@ -290,17 +283,17 @@
                 </select>
 
                 <label class="label">Implementation Week</label>
-                <input type="number" min="1" max="53" value="1" placeholder="Week number (1-53)">
+                <input type="number" id="impl-week" min="1" max="53" value="1" placeholder="Week number (1-53)">
 
                 <label class="label">Implementation Year</label>
-                <input type="number" value="2026" placeholder="Year">
+                <input type="number" id="impl-year" value="2026" placeholder="Year">
             </div>
 
             <div class="section">
                 <div class="section-title">Environmental Conditions</div>
                 
                 <label class="label">Weather</label>
-                <select>
+                <select id="weather-select">
                     <option>Sunny</option>
                     <option>Cloudy</option>
                     <option>Rainy</option>
@@ -308,16 +301,16 @@
                 </select>
 
                 <label class="label">Temperature (°C)</label>
-                <input type="number" step="0.1" placeholder="e.g., 25.5">
+                <input type="number" id="temperature" step="0.1" placeholder="e.g., 25.5">
 
                 <label class="label">Humidity (%)</label>
-                <input type="number" min="0" max="100" placeholder="e.g., 65">
+                <input type="number" id="humidity" min="0" max="100" placeholder="e.g., 65">
 
                 <label class="label">Location</label>
                 <div class="location-box">
-                    <div class="location-text">Lat: 40.7128</div>
-                    <div class="location-text">Long: -74.0060</div>
-                    <button class="update-location-btn" onclick="updateLocation()">📍 Update Location</button>
+                    <div class="location-text" id="lat-display">Lat: —</div>
+                    <div class="location-text" id="long-display">Long: —</div>
+                    <button type="button" class="update-location-btn" onclick="updateLocation()">📍 Update Location</button>
                 </div>
             </div>
 
@@ -335,12 +328,8 @@
                         </div>
 
                         <label class="label">Pest Type</label>
-                        <select>
-                            <option>Select Pest...</option>
-                            <option>Whitefly</option>
-                            <option>Aphid</option>
-                            <option>Spider Mite</option>
-                            <option>Thrips</option>
+                        <select class="pest-type-select">
+                            <option value="">Select Pest...</option>
                         </select>
 
                         <label class="label">Count</label>
@@ -380,12 +369,8 @@
                         </div>
 
                         <label class="label">Disease Type</label>
-                        <select>
-                            <option>Select Disease...</option>
-                            <option>Early Blight</option>
-                            <option>Late Blight</option>
-                            <option>Powdery Mildew</option>
-                            <option>Fusarium Wilt</option>
+                        <select class="disease-type-select">
+                            <option value="">Select Disease...</option>
                         </select>
 
                         <label class="label">Severity</label>
@@ -413,56 +398,122 @@
 
             <div class="section">
                 <label class="label">General Notes</label>
-                <textarea placeholder="Any additional observations or notes..."></textarea>
+                <textarea id="general-notes" placeholder="Any additional observations or notes..."></textarea>
             </div>
         </div>
 
         <div class="footer">
-            <button class="submit-btn" onclick="submitReport()">✓ Submit Report</button>
+            <button type="button" class="submit-btn" id="submit-btn" onclick="submitReport()">✓ Submit Report</button>
         </div>
     </div>
 
     <script>
+        const API = '';
         let pestCount = 1;
         let diseaseCount = 1;
+        let cropTypes = [];
+        let pests = [];
+        let diseases = [];
+        let currentLocation = null;
 
-        const varieties = {
-            'Tomato': ['Cherry Tomato', 'Beefsteak Tomato', 'Roma Tomato'],
-            'Pepper': ['Bell Pepper', 'Chili Pepper', 'Ghost Pepper'],
-            'Cucumber': ['English Cucumber', 'Pickling Cucumber'],
-            'Lettuce': ['Romaine', 'Iceberg', 'Buttercrunch']
-        };
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const today = new Date();
             document.getElementById('report-date').textContent = `Date: ${today.toLocaleDateString()}`;
+
+            try {
+                const [farmsRes, cropsRes, pestsRes, diseasesRes] = await Promise.all([
+                    fetch(`${API}/farms`),
+                    fetch(`${API}/crop-types`),
+                    fetch(`${API}/pests`),
+                    fetch(`${API}/diseases`),
+                ]);
+
+                const farms = await farmsRes.json();
+                cropTypes = await cropsRes.json();
+                pests = await pestsRes.json();
+                diseases = await diseasesRes.json();
+
+                populateSelect(document.getElementById('farm-select'), farms, 'name', 'id');
+                populateSelect(document.getElementById('crop-select'), cropTypes, 'name', 'id');
+                populatePestDiseaseSelects();
+            } catch (err) {
+                console.error('Failed to load reference data:', err);
+                alert('Could not connect to the API. Start the server with: npm start');
+            }
         });
 
-        function toggleSwitch(button, type) {
+        function populateSelect(select, items, labelKey, valueKey) {
+            items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item[valueKey];
+                option.textContent = item[labelKey];
+                select.appendChild(option);
+            });
+        }
+
+        function populatePestDiseaseSelects() {
+            document.querySelectorAll('.pest-type-select').forEach(select => {
+                pests.forEach(pest => {
+                    const option = document.createElement('option');
+                    option.value = pest.name;
+                    option.textContent = pest.name;
+                    select.appendChild(option);
+                });
+            });
+
+            document.querySelectorAll('.disease-type-select').forEach(select => {
+                diseases.forEach(disease => {
+                    const option = document.createElement('option');
+                    option.value = disease.name;
+                    option.textContent = disease.name;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function toggleSwitch(button) {
             const parent = button.parentElement;
             parent.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
         }
 
-        function updateVarieties(select) {
+        async function updateVarieties(select) {
             const varietySelect = document.getElementById('variety-select');
-            const selectedCrop = select.value;
-            
-            varietySelect.innerHTML = '<option>Select Variety...</option>';
-            
-            if (varieties[selectedCrop]) {
-                varieties[selectedCrop].forEach(variety => {
+            varietySelect.innerHTML = '<option value="">Select Variety...</option>';
+
+            if (!select.value) return;
+
+            try {
+                const res = await fetch(`${API}/crop-types/${select.value}/varieties`);
+                const data = await res.json();
+                data.varieties.forEach(variety => {
                     const option = document.createElement('option');
                     option.value = variety;
                     option.textContent = variety;
                     varietySelect.appendChild(option);
                 });
+            } catch (err) {
+                console.error('Failed to load varieties:', err);
             }
         }
 
         function updateLocation() {
-            alert('📍 Location updated! (Demo: In production, this will use GPS coordinates)');
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    currentLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    };
+                    document.getElementById('lat-display').textContent = `Lat: ${currentLocation.latitude.toFixed(4)}`;
+                    document.getElementById('long-display').textContent = `Long: ${currentLocation.longitude.toFixed(4)}`;
+                },
+                () => alert('Unable to retrieve location. Please check permissions.')
+            );
         }
 
         function addPestObservation() {
@@ -471,6 +522,7 @@
             const newCard = container.querySelector('.observation-card').cloneNode(true);
             newCard.querySelector('.observation-index').textContent = `Pest #${pestCount}`;
             newCard.querySelectorAll('input, textarea').forEach(field => field.value = '');
+            newCard.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
             container.appendChild(newCard);
         }
 
@@ -480,6 +532,7 @@
             const newCard = container.querySelector('.observation-card').cloneNode(true);
             newCard.querySelector('.observation-index').textContent = `Disease #${diseaseCount}`;
             newCard.querySelectorAll('input, textarea').forEach(field => field.value = '');
+            newCard.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
             container.appendChild(newCard);
         }
 
@@ -493,8 +546,106 @@
             }
         }
 
-        function submitReport() {
-            alert('✅ Scout report submitted successfully!\n\n(This is a demo. In production, data would be sent to the backend API)');
+        function collectPestObservations() {
+            return Array.from(document.querySelectorAll('#pest-observations .observation-card'))
+                .map(card => {
+                    const selects = card.querySelectorAll('select');
+                    const inputs = card.querySelectorAll('input');
+                    const pestType = selects[0].value;
+                    if (!pestType) return null;
+                    return {
+                        pestType,
+                        count: parseInt(inputs[0].value, 10) || 0,
+                        severity: selects[1].value,
+                        affectedPercent: parseInt(inputs[1].value, 10) || 0,
+                        locationOnPlant: inputs[2].value,
+                        notes: card.querySelector('textarea').value,
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        function collectDiseaseObservations() {
+            return Array.from(document.querySelectorAll('#disease-observations .observation-card'))
+                .map(card => {
+                    const selects = card.querySelectorAll('select');
+                    const inputs = card.querySelectorAll('input');
+                    const diseaseType = selects[0].value;
+                    if (!diseaseType) return null;
+                    return {
+                        diseaseType,
+                        severity: selects[1].value,
+                        affectedPercent: parseInt(inputs[0].value, 10) || 0,
+                        spotCount: parseInt(inputs[1].value, 10) || 0,
+                        spotColor: inputs[2].value,
+                        notes: card.querySelector('textarea').value,
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        async function submitReport() {
+            const farmId = document.getElementById('farm-select').value;
+            const cropId = document.getElementById('crop-select').value;
+            const variety = document.getElementById('variety-select').value;
+            const crop = cropTypes.find(c => c.id === cropId);
+
+            if (!farmId) {
+                alert('Please select a farm.');
+                return;
+            }
+            if (!crop) {
+                alert('Please select a crop type.');
+                return;
+            }
+            if (!variety) {
+                alert('Please select a variety.');
+                return;
+            }
+
+            const activeLocationBtn = document.querySelector('#location-type .switch-btn.active');
+            const payload = {
+                farmId,
+                cropType: crop.name,
+                variety,
+                isGreenhouse: activeLocationBtn?.dataset.greenhouse === 'true',
+                reportDate: new Date().toISOString().slice(0, 10),
+                implementationWeek: parseInt(document.getElementById('impl-week').value, 10) || 1,
+                implementationYear: parseInt(document.getElementById('impl-year').value, 10) || new Date().getFullYear(),
+                weather: document.getElementById('weather-select').value,
+                temperature: parseFloat(document.getElementById('temperature').value) || null,
+                humidity: parseInt(document.getElementById('humidity').value, 10) || null,
+                location: currentLocation,
+                pestObservations: collectPestObservations(),
+                diseaseObservations: collectDiseaseObservations(),
+                notes: document.getElementById('general-notes').value,
+            };
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const res = await fetch(`${API}/scout-reports`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error || 'Submission failed');
+                }
+
+                const report = await res.json();
+                alert(`Scout report ${report.id} submitted successfully!`);
+                location.reload();
+            } catch (err) {
+                alert(`Error: ${err.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✓ Submit Report';
+            }
         }
     </script>
 </body>

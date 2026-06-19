@@ -1,0 +1,41 @@
+{
+  "farms": [
+    { "id": "farm-1", "name": "Green Valley Farm", "region": "North" },
+    { "id": "farm-2", "name": "Sunset Ridge Farm", "region": "West" },
+    { "id": "farm-3", "name": "Highland Plains Farm", "region": "Central" }
+  ],
+  "cropTypes": [
+    {
+      "id": "tomato",
+      "name": "Tomato",
+      "varieties": ["Cherry Tomato", "Beefsteak Tomato", "Roma Tomato"]
+    },
+    {
+      "id": "pepper",
+      "name": "Pepper",
+      "varieties": ["Bell Pepper", "Chili Pepper", "Ghost Pepper"]
+    },
+    {
+      "id": "cucumber",
+      "name": "Cucumber",
+      "varieties": ["English Cucumber", "Pickling Cucumber"]
+    },
+    {
+      "id": "lettuce",
+      "name": "Lettuce",
+      "varieties": ["Romaine", "Iceberg", "Buttercrunch"]
+    }
+  ],
+  "pests": [
+    { "id": "whitefly", "name": "Whitefly" },
+    { "id": "aphid", "name": "Aphid" },
+    { "id": "spider-mite", "name": "Spider Mite" },
+    { "id": "thrips", "name": "Thrips" }
+  ],
+  "diseases": [
+    { "id": "early-blight", "name": "Early Blight" },
+    { "id": "late-blight", "name": "Late Blight" },
+    { "id": "powdery-mildew", "name": "Powdery Mildew" },
+    { "id": "fusarium-wilt", "name": "Fusarium Wilt" }
+  ]
+}

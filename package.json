@@ -1,0 +1,19 @@
+{
+  "name": "scout-report",
+  "version": "1.1.0",
+  "description": "Pest and disease scout reporting for agricultural farms",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test server/**/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["agriculture", "scouting", "pest-management"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

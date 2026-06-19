@@ -282,6 +282,7 @@
             </div>
 
             <h2 style="color: #4CAF50; margin: 30px 0 20px 0; border-top: 2px solid #eee; padding-top: 30px;">API Endpoints</h2>
+            <p style="margin-bottom: 15px; font-size: 14px; color: #666;">Run <code>npm start</code> to start the API server on port 3000.</p>
             
             <div style="background: #f5f5f5; padding: 20px; border-radius: 6px; font-family: monospace; font-size: 13px; line-height: 1.8;">
                 <div><strong>GET /farms</strong> - Retrieve available farms</div>
@@ -289,9 +290,13 @@
                 <div><strong>GET /crop-types/:id/varieties</strong> - Get varieties for a crop type</div>
                 <div><strong>GET /pests</strong> - List common pests</div>
                 <div><strong>GET /diseases</strong> - List common diseases</div>
+                <div><strong>GET /scout-reports</strong> - List scout reports (with filters)</div>
+                <div><strong>GET /scout-reports/stats</strong> - Dashboard statistics</div>
+                <div><strong>GET /scout-reports/:id</strong> - Get a single report</div>
                 <div><strong>POST /scout-reports</strong> - Create new scout report</div>
                 <div><strong>POST /scout-reports/:id/pest-observations</strong> - Add pest observation</div>
                 <div><strong>POST /scout-reports/:id/disease-observations</strong> - Add disease observation</div>
+                <div><strong>DELETE /scout-reports/:id</strong> - Delete a report</div>
             </div>
 
             <h2 style="color: #4CAF50; margin: 30px 0 20px 0; border-top: 2px solid #eee; padding-top: 30px;">Browser Support</h2>
