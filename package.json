@@ -1,7 +1,7 @@
 {
   "name": "scout-report",
-  "version": "1.1.0",
-  "description": "Pest and disease scout reporting for agricultural farms",
+  "version": "2.0.0",
+  "description": "Pest and disease scout reporting for agricultural farms with PostgreSQL backend",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
@@ -11,9 +11,11 @@
   "engines": {
     "node": ">=18"
   },
-  "keywords": ["agriculture", "scouting", "pest-management"],
+  "keywords": ["agriculture", "scouting", "pest-management", "postgresql"],
   "license": "MIT",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "pg": "^8.11.3",
+    "cors": "^2.8.5"
   }
 }
