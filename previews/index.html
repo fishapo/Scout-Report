@@ -91,6 +91,23 @@
             display: block;
         }
 
+        .preview-container {
+            display: none;
+            width: 100%;
+        }
+
+        .preview-container.active {
+            display: block;
+        }
+
+        .preview-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow-y: auto;
+            height: 800px;
+        }
+
         .info-box {
             background: #e3f2fd;
             border-left: 4px solid #2196F3;
@@ -176,9 +193,9 @@
         </div>
 
         <div class="tabs-container">
-            <button class="tab-button active" onclick="showPreview('user-form')">📱 User Form</button>
-            <button class="tab-button" onclick="showPreview('admin-dashboard')">📊 Admin Dashboard</button>
-            <button class="tab-button" onclick="showPreview('documentation')">📖 Documentation</button>
+            <button class="tab-button active" onclick="showPreview('user-form', this)">📱 User Form</button>
+            <button class="tab-button" onclick="showPreview('admin-dashboard', this)">📊 Admin Dashboard</button>
+            <button class="tab-button" onclick="showPreview('documentation', this)">📖 Documentation</button>
         </div>
 
         <div class="responsive-notice">
@@ -186,13 +203,17 @@
         </div>
 
         <!-- User Form Preview -->
-        <iframe id="user-form" class="preview-frame active" src="user-form.html"></iframe>
+        <div id="user-form" class="preview-container active">
+            <div class="preview-content" id="user-form-content"></div>
+        </div>
         
         <!-- Admin Dashboard Preview -->
-        <iframe id="admin-dashboard" class="preview-frame" src="admin-dashboard.html"></iframe>
+        <div id="admin-dashboard" class="preview-container">
+            <div class="preview-content" id="admin-dashboard-content"></div>
+        </div>
         
         <!-- Documentation -->
-        <div id="documentation" class="preview-frame" style="display: none; background: white; border-radius: 8px; padding: 30px; overflow-y: auto;">
+        <div id="documentation" class="preview-container" style="display: none; background: white; border-radius: 8px; padding: 30px; overflow-y: auto;">
             <h2 style="color: #4CAF50; margin-bottom: 20px;">Scout Report Components Documentation</h2>
             
             <div class="features-grid">
@@ -317,22 +338,41 @@
     </div>
 
     <script>
-        function showPreview(previewId) {
-            // Hide all previews and buttons
-            const previews = document.querySelectorAll('.preview-frame');
+        function showPreview(previewId, buttonElement) {
+            // Hide all preview containers and buttons
+            const containers = document.querySelectorAll('.preview-container');
             const buttons = document.querySelectorAll('.tab-button');
             
-            previews.forEach(p => p.classList.remove('active'));
+            containers.forEach(c => c.classList.remove('active'));
             buttons.forEach(b => b.classList.remove('active'));
             
-            // Show selected preview and button
-            const selectedPreview = document.getElementById(previewId);
-            if (selectedPreview) {
-                selectedPreview.classList.add('active');
+            // Show selected preview container and button
+            const selectedContainer = document.getElementById(previewId);
+            if (selectedContainer) {
+                selectedContainer.classList.add('active');
             }
             
-            event.target.classList.add('active');
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+            }
         }
+
+        // Load preview content on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const userFormContent = await fetch('http://localhost:3000/user-form.html').then(r => r.text());
+                document.getElementById('user-form-content').innerHTML = userFormContent;
+            } catch (e) {
+                document.getElementById('user-form-content').innerHTML = `<div style="padding: 20px; color: red;">Failed to load User Form: ${e.message}</div>`;
+            }
+
+            try {
+                const dashboardContent = await fetch('http://localhost:3000/admin-dashboard.html').then(r => r.text());
+                document.getElementById('admin-dashboard-content').innerHTML = dashboardContent;
+            } catch (e) {
+                document.getElementById('admin-dashboard-content').innerHTML = `<div style="padding: 20px; color: red;">Failed to load Admin Dashboard: ${e.message}</div>`;
+            }
+        });
     </script>
 </body>
 </html>

@@ -42,17 +42,28 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
 
-    - name: npm install, build, and test
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run regression verification
       run: |
-        npm install
         npm run build --if-present
-        npm run test --if-present
+        npm run verify
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
       with:
         name: node-app
-        path: .
+        path: |
+          package.json
+          package-lock.json
+          server
+          previews
+          README.md
+          docker-compose.yml
+          !server/**/*.test.js
+          !server/data/reports.json
+          !node_modules
 
   deploy:
     permissions:
@@ -76,3 +87,7 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Verify deployed health endpoint
+      run: |
+        node -e "const url='${{ steps.deploy-to-webapp.outputs.webapp-url }}/api/health'; fetch(url).then(async r => { const body = await r.text(); if (!r.ok) { console.error(body); process.exit(1); } console.log(body); }).catch(err => { console.error(err); process.exit(1); })"

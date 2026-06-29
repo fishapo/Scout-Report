@@ -1,7 +1,7 @@
 -- Farms table
 CREATE TABLE farms (
   id VARCHAR(50) PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL UNIQUE,
   location VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -9,7 +9,7 @@ CREATE TABLE farms (
 -- Crop types table
 CREATE TABLE crop_types (
   id VARCHAR(50) PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL UNIQUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -18,13 +18,14 @@ CREATE TABLE crop_varieties (
   id SERIAL PRIMARY KEY,
   crop_type_id VARCHAR(50) NOT NULL REFERENCES crop_types(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (crop_type_id, name)
 );
 
 -- Pests table
 CREATE TABLE pests (
   id VARCHAR(50) PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -32,9 +33,32 @@ CREATE TABLE pests (
 -- Diseases table
 CREATE TABLE diseases (
   id VARCHAR(50) PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Users table
+CREATE TABLE users (
+  id VARCHAR(50) PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  password_hash TEXT NOT NULL,
+  role VARCHAR(50) NOT NULL DEFAULT 'scout',
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chk_users_role CHECK (role IN ('admin', 'scout'))
+);
+
+-- Sessions table for revocable JWT-backed login sessions
+CREATE TABLE user_sessions (
+  id VARCHAR(50) PRIMARY KEY,
+  user_id VARCHAR(50) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at TIMESTAMP NOT NULL,
+  revoked_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Scout reports table
@@ -55,7 +79,12 @@ CREATE TABLE scout_reports (
   notes TEXT,
   status VARCHAR(50) DEFAULT 'Pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chk_scout_reports_status CHECK (status IN ('Pending', 'Completed', 'Critical')),
+  CONSTRAINT chk_scout_reports_week CHECK (implementation_week IS NULL OR implementation_week BETWEEN 1 AND 53),
+  CONSTRAINT chk_scout_reports_year CHECK (implementation_year IS NULL OR implementation_year BETWEEN 2000 AND 2100),
+  CONSTRAINT chk_scout_reports_temperature CHECK (temperature IS NULL OR temperature BETWEEN -50 AND 70),
+  CONSTRAINT chk_scout_reports_humidity CHECK (humidity IS NULL OR humidity BETWEEN 0 AND 100)
 );
 
 -- Pest observations table
@@ -68,7 +97,10 @@ CREATE TABLE pest_observations (
   affected_percent DECIMAL(5, 2) DEFAULT 0,
   location_on_plant VARCHAR(255),
   notes TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chk_pest_observations_count CHECK (count >= 0),
+  CONSTRAINT chk_pest_observations_severity CHECK (severity IN ('Low', 'Medium', 'High', 'Critical')),
+  CONSTRAINT chk_pest_observations_affected CHECK (affected_percent BETWEEN 0 AND 100)
 );
 
 -- Disease observations table
@@ -81,15 +113,23 @@ CREATE TABLE disease_observations (
   spot_count INTEGER DEFAULT 0,
   spot_color VARCHAR(100),
   notes TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chk_disease_observations_severity CHECK (severity IN ('Low', 'Medium', 'High', 'Critical')),
+  CONSTRAINT chk_disease_observations_affected CHECK (affected_percent BETWEEN 0 AND 100),
+  CONSTRAINT chk_disease_observations_spot_count CHECK (spot_count >= 0)
 );
 
 -- Indexes for performance
 CREATE INDEX idx_scout_reports_farm_id ON scout_reports(farm_id);
 CREATE INDEX idx_scout_reports_status ON scout_reports(status);
 CREATE INDEX idx_scout_reports_report_date ON scout_reports(report_date);
+CREATE INDEX idx_scout_reports_created_at_id ON scout_reports(created_at DESC, id DESC);
+CREATE INDEX idx_scout_reports_farm_status_date ON scout_reports(farm_id, status, report_date DESC);
 CREATE INDEX idx_pest_observations_report_id ON pest_observations(report_id);
 CREATE INDEX idx_disease_observations_report_id ON disease_observations(report_id);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_user_sessions_user_id ON user_sessions(user_id);
+CREATE INDEX idx_user_sessions_active ON user_sessions(id, user_id, expires_at) WHERE revoked_at IS NULL;
 
 -- Seed reference data
 INSERT INTO farms (id, name, location) VALUES
