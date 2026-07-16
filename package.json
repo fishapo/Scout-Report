@@ -6,17 +6,24 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "test": "node --test server/**/*.test.js",
-    "verify": "node server/scripts/verify.js"
+    "test": "node --test",
+    "verify": "node server/scripts/verify.js",
+    "migrate": "node server/scripts/migrate.js"
   },
   "engines": {
     "node": ">=18"
   },
-  "keywords": ["agriculture", "scouting", "pest-management", "postgresql"],
+  "keywords": [
+    "agriculture",
+    "scouting",
+    "pest-management",
+    "postgresql"
+  ],
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
     "express": "^4.21.2",
-    "pg": "^8.11.3",
-    "cors": "^2.8.5"
+    "pg": "^8.11.3"
   }
 }

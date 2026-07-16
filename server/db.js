@@ -1,12 +1,21 @@
-const pg = require('pg');
+require('dotenv').config();
 
-const pool = new pg.Pool({
-  user: process.env.DB_USER || 'scout_user',
-  password: process.env.DB_PASSWORD || 'scout_password',
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'scout_report',
-});
+const { Pool } = require('pg');
+
+const pool = process.env.DATABASE_URL
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    })
+  : new Pool({
+      user: process.env.DB_USER || 'scout_user',
+      password: process.env.DB_PASSWORD || 'scout_password',
+      host: process.env.DB_HOST || 'localhost',
+      port: process.env.DB_PORT || 5432,
+      database: process.env.DB_NAME || 'scout_report',
+    });
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
@@ -14,17 +23,7 @@ pool.on('error', (err) => {
 });
 
 async function query(text, params) {
-  const start = Date.now();
-  try {
-    const res = await pool.query(text, params);
-    const duration = Date.now() - start;
-    // Uncomment for query logging in development:
-    // console.log('Executed query', { text, duration, rows: res.rowCount });
-    return res;
-  } catch (err) {
-    console.error('Database query error:', err, { text, params });
-    throw err;
-  }
+  return pool.query(text, params);
 }
 
 async function transaction(callback) {
@@ -45,10 +44,10 @@ async function transaction(callback) {
 async function getHealth() {
   try {
     await query('SELECT NOW()');
-    return { status: 'healthy', database: 'connected' };
+    return { status: 'healthy' };
   } catch (err) {
-    return { status: 'unhealthy', database: 'disconnected', error: err.message };
+    return { status: 'unhealthy', error: err.message };
   }
 }
 
-module.exports = { query, transaction, getHealth, pool };
+module.exports = { pool, query, transaction, getHealth };

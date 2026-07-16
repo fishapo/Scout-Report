@@ -1,5 +1,5 @@
 -- Farms table
-CREATE TABLE farms (
+CREATE TABLE IF NOT EXISTS farms (
   id VARCHAR(50) PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE,
   location VARCHAR(255),
@@ -7,14 +7,14 @@ CREATE TABLE farms (
 );
 
 -- Crop types table
-CREATE TABLE crop_types (
+CREATE TABLE IF NOT EXISTS crop_types (
   id VARCHAR(50) PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Crop varieties table
-CREATE TABLE crop_varieties (
+CREATE TABLE IF NOT EXISTS crop_varieties (
   id SERIAL PRIMARY KEY,
   crop_type_id VARCHAR(50) NOT NULL REFERENCES crop_types(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE crop_varieties (
 );
 
 -- Pests table
-CREATE TABLE pests (
+CREATE TABLE IF NOT EXISTS pests (
   id VARCHAR(50) PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
@@ -31,7 +31,7 @@ CREATE TABLE pests (
 );
 
 -- Diseases table
-CREATE TABLE diseases (
+CREATE TABLE IF NOT EXISTS diseases (
   id VARCHAR(50) PRIMARY KEY,
   name VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
@@ -39,7 +39,7 @@ CREATE TABLE diseases (
 );
 
 -- Users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id VARCHAR(50) PRIMARY KEY,
   email VARCHAR(255) NOT NULL UNIQUE,
   name VARCHAR(255) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE users (
 );
 
 -- Sessions table for revocable JWT-backed login sessions
-CREATE TABLE user_sessions (
+CREATE TABLE IF NOT EXISTS user_sessions (
   id VARCHAR(50) PRIMARY KEY,
   user_id VARCHAR(50) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   expires_at TIMESTAMP NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE user_sessions (
 );
 
 -- Scout reports table
-CREATE TABLE scout_reports (
+CREATE TABLE IF NOT EXISTS scout_reports (
   id VARCHAR(50) PRIMARY KEY,
   farm_id VARCHAR(50) NOT NULL REFERENCES farms(id) ON DELETE CASCADE,
   farm_name VARCHAR(255) NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE scout_reports (
 );
 
 -- Pest observations table
-CREATE TABLE pest_observations (
+CREATE TABLE IF NOT EXISTS pest_observations (
   id VARCHAR(50) PRIMARY KEY,
   report_id VARCHAR(50) NOT NULL REFERENCES scout_reports(id) ON DELETE CASCADE,
   pest_type VARCHAR(255) NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE pest_observations (
 );
 
 -- Disease observations table
-CREATE TABLE disease_observations (
+CREATE TABLE IF NOT EXISTS disease_observations (
   id VARCHAR(50) PRIMARY KEY,
   report_id VARCHAR(50) NOT NULL REFERENCES scout_reports(id) ON DELETE CASCADE,
   disease_type VARCHAR(255) NOT NULL,
@@ -120,16 +120,16 @@ CREATE TABLE disease_observations (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_scout_reports_farm_id ON scout_reports(farm_id);
-CREATE INDEX idx_scout_reports_status ON scout_reports(status);
-CREATE INDEX idx_scout_reports_report_date ON scout_reports(report_date);
-CREATE INDEX idx_scout_reports_created_at_id ON scout_reports(created_at DESC, id DESC);
-CREATE INDEX idx_scout_reports_farm_status_date ON scout_reports(farm_id, status, report_date DESC);
-CREATE INDEX idx_pest_observations_report_id ON pest_observations(report_id);
-CREATE INDEX idx_disease_observations_report_id ON disease_observations(report_id);
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_user_sessions_user_id ON user_sessions(user_id);
-CREATE INDEX idx_user_sessions_active ON user_sessions(id, user_id, expires_at) WHERE revoked_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_scout_reports_farm_id ON scout_reports(farm_id);
+CREATE INDEX IF NOT EXISTS idx_scout_reports_status ON scout_reports(status);
+CREATE INDEX IF NOT EXISTS idx_scout_reports_report_date ON scout_reports(report_date);
+CREATE INDEX IF NOT EXISTS idx_scout_reports_created_at_id ON scout_reports(created_at DESC, id DESC);
+CREATE INDEX IF NOT EXISTS idx_scout_reports_farm_status_date ON scout_reports(farm_id, status, report_date DESC);
+CREATE INDEX IF NOT EXISTS idx_pest_observations_report_id ON pest_observations(report_id);
+CREATE INDEX IF NOT EXISTS idx_disease_observations_report_id ON disease_observations(report_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_sessions_active ON user_sessions(id, user_id, expires_at) WHERE revoked_at IS NULL;
 
 -- Seed reference data
 INSERT INTO farms (id, name, location) VALUES
