@@ -1,8 +1,12 @@
-const { createApp } = require('./app');
+const { createApp } = require("./app");
 
-const PORT = process.env.PORT || 3000;
 const app = createApp();
+const port = Number(process.env.PORT || 8080);
+const host = process.env.HOST || "127.0.0.1";
 
-app.listen(PORT, () => {
-  console.log(`Scout Report server running at http://localhost:${PORT}`);
+process.on("uncaughtException", (err) => console.error("uncaughtException", err));
+process.on("unhandledRejection", (err) => console.error("unhandledRejection", err));
+
+app.listen(port, host, () => {
+  console.log(`Scout Report server running on http://${host}:${port}`);
 });

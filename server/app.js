@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const store = require('./store');
 const auth = require('./auth');
@@ -8,12 +9,154 @@ const { logError, requestLogger } = require('./logger');
 function createApp() {
   const app = express();
 
-  app.set('trust proxy', 1);
+  function readCookie(req, name) {
+    const header = req.headers.cookie || "";
+    for (const entry of header.split(";")) {
+      const [key, ...values] = entry.trim().split("=");
+      if (key === name) {
+        return decodeURIComponent(values.join("="));
+      }
+    }
+    return null;
+  }
+
+  function requireSiteAuth(req, res, next) {
+    const publicPaths = ["/login", "/auth/login", "/auth/register", "/api/health", "/favicon.ico"];
+
+    if (publicPaths.includes(req.path) || req.path.startsWith("/previews")) {
+      return next();
+    }
+
+    if (readCookie(req, "scout_auth") === "1") {
+      return next();
+    }
+
+    return res.redirect("/login");
+  }
+
+  app.set("trust proxy", 1);
+
+  app.use(cors({
+    origin: ["http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:8080"],
+    credentials: true
+  }));
+
   app.use(requestLogger);
   app.use(securityHeaders);
   app.use(enforceHttps);
   app.use(express.json());
-  app.use(express.static(path.join(__dirname, '..', 'previews')));
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.static(path.join(__dirname, "..", "previews")));
+  app.use(requireSiteAuth);
+
+  app.get("/login", (_req, res) => {
+    res.type("html").send(`
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Scout Report Login</title>
+        <style>
+          :root { color-scheme: light dark; font-family: Arial, sans-serif; }
+          body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            color: #f8fafc;
+          }
+          .card {
+            width: min(92vw, 420px);
+            padding: 24px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+            backdrop-filter: blur(10px);
+          }
+          h1 { margin-top: 0; font-size: 1.6rem; }
+          form { display: flex; flex-direction: column; gap: 12px; }
+          input, button {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+          }
+          button {
+            cursor: pointer;
+            background: #f59e0b;
+            color: #111827;
+            border: none;
+            font-weight: 700;
+          }
+          .hint { margin-top: 10px; font-size: 0.9rem; color: #e2e8f0; }
+        </style>
+      </head>
+      <body>
+        <main class="card">
+          <h1>Scout Report Portal</h1>
+          <p>Authenticate to continue.</p>
+          <form id="loginForm">
+            <input name="email" id="email" type="email" placeholder="Email" required />
+            <input name="password" id="password" type="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+          </form>
+          <p class="hint">Use the existing auth endpoint if you already have an account.</p>
+        </main>
+        <script>
+          document.getElementById("loginForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const body = new URLSearchParams(new FormData(form)).toString();
+
+            const response = await fetch("/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body
+            });
+
+            if (response.ok) {
+              window.location.href = "/";
+            } else {
+              alert("Login failed.");
+            }
+          });
+        </script>
+      </body>
+      </html>
+    `);
+  });
+
+  app.post(
+    "/auth/register",
+    asyncHandler(async (req, res) => {
+      const result = await auth.registerUser(req.body);
+      res.status(201).json(result);
+    })
+  );
+
+  app.post(
+    "/auth/login",
+    asyncHandler(async (req, res) => {
+      const result = await auth.loginUser(req.body);
+      res.cookie("scout_auth", "1", {
+        httpOnly: false,
+        sameSite: "lax",
+        maxAge: 60 * 60 * 1000
+      });
+      res.status(200).json(result);
+    })
+  );
+
+  app.post(
+    "/auth/logout",
+    auth.authenticate,
+    asyncHandler(async (req, res) => {
+      res.clearCookie("scout_auth");
+      res.status(200).json({ ok: true });
+    })
+  );
 
   app.get(
     '/api/health',
@@ -24,39 +167,6 @@ function createApp() {
         service: 'scout-report-api',
         database,
       });
-    })
-  );
-
-  app.post(
-    '/auth/register',
-    asyncHandler(async (req, res) => {
-      const result = await auth.registerUser(req.body);
-      res.status(201).json(result);
-    })
-  );
-
-  app.post(
-    '/auth/login',
-    asyncHandler(async (req, res) => {
-      const result = await auth.loginUser(req.body);
-      res.json(result);
-    })
-  );
-
-  app.post(
-    '/auth/logout',
-    auth.authenticate,
-    asyncHandler(async (req, res) => {
-      await auth.logoutSession(req.session.id);
-      res.status(204).send();
-    })
-  );
-
-  app.get(
-    '/auth/me',
-    auth.authenticate,
-    asyncHandler(async (req, res) => {
-      res.json({ user: req.user, session: req.session });
     })
   );
 
@@ -197,8 +307,29 @@ function createApp() {
     })
   );
 
-  app.get('/', (_req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'previews', 'index.html'));
+  app.get("/", (_req, res) => {
+    res.type("html").send(`
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <title>Scout Report</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 2rem; }
+          .wrap { max-width: 720px; margin: 0 auto; }
+        </style>
+      </head>
+      <body>
+        <div class="wrap">
+          <h1>Scout Report Dashboard</h1>
+          <p>Welcome. Authentication is complete.</p>
+          <form action="/auth/logout" method="post">
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </body>
+      </html>
+    `);
   });
 
   app.use((err, req, res, _next) => {
@@ -214,7 +345,6 @@ function createApp() {
       error: statusCode >= 500 ? 'Internal server error' : err.message,
     });
   });
-
   return app;
 }
 
