@@ -9,10 +9,10 @@ npm install
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) for the preview hub, or go directly to:
+Open [./previews/](./previews/) for the preview hub, or go directly to:
 
-- [http://localhost:3000/user-form.html](http://localhost:3000/user-form.html) — Scout report submission form
-- [http://localhost:3000/admin-dashboard.html](http://localhost:3000/admin-dashboard.html) — Admin dashboard
+- [./previews/user-form.html](./previews/user-form.html) — Scout report submission form
+- [./previews/admin-dashboard.html](./previews/admin-dashboard.html) — Admin dashboard
 
 ## API Endpoints
 

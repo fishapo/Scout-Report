@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Scout Report Dashboard - Admin Interface</title>
     <style>
         * {
@@ -400,13 +401,252 @@
             color: #333;
         }
 
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+            }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
-                width: 200px;
+                width: 250px;
+                position: fixed;
+                z-index: 999;
+                height: 100vh;
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                transition: margin-left 0.3s ease;
+            }
+
+            .main-content.sidebar-open {
+                margin-left: 250px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: auto;
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+
+            .sidebar.hidden {
+                transform: translateX(0);
+                display: none;
+            }
+
+            .sidebar.hidden + .main-content {
+                margin-left: 0;
+            }
+
+            .logo {
+                display: none;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                padding: 10px;
+            }
+
+            .nav-menu a {
+                flex: 1;
+                min-width: 70px;
+                padding: 10px 8px;
+                font-size: 12px;
+                text-align: center;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 12px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .stat-detail {
+                font-size: 11px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                margin-bottom: 15px;
+            }
+
+            table {
+                font-size: 11px;
+                width: 100%;
+            }
+
+            th {
+                padding: 10px 8px;
+            }
+
+            td {
+                padding: 10px 8px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .action-btn {
+                width: 100%;
+                padding: 5px 8px;
+                font-size: 11px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .modal-header {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .modal-field {
+                margin-bottom: 12px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer button {
+                width: 100%;
+            }
+        }
+
+        @media (max-height: 600px) and (orientation: landscape) {
+            .sidebar {
+                height: 100vh;
+                overflow-y: auto;
             }
 
             .main-content {
                 margin-left: 200px;
+            }
+
+            .header {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .header h1 {
+                font-size: 16px;
+            }
+
+            .stats-grid {
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .stat-card {
+                padding: 10px;
+            }
+
+            .stat-value {
+                font-size: 18px;
             }
         }
     </style>

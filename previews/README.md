@@ -161,7 +161,7 @@ python -m http.server 8000
 # Using Node.js
 npx http-server
 
-# Then visit: http://localhost:8000/previews/
+# Then visit the preview hub from the served root, for example /previews/
 ```
 
 ### Deploy to GitHub Pages

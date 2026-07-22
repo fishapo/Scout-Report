@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Scout Report Form - User Interface</title>
     <style>
         * {
@@ -22,6 +24,8 @@
             margin: 0 auto;
             background-color: #f5f5f5;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -44,6 +48,62 @@
 
         .content {
             padding: 20px;
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 0;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                margin-bottom: 5px;
+            }
+
+            .header p {
+                font-size: 13px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+
+            button {
+                padding: 14px 16px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-height: 600px) and (orientation: landscape) {
+            .container {
+                min-height: auto;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+                margin-bottom: 3px;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .content {
+                padding: 15px 20px;
+            }
         }
 
         .section {
