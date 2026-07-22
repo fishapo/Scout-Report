@@ -324,15 +324,13 @@
         .pagination {
             display: flex;
             justify-content: center;
-                gap: 3px;
-                padding: 4px;
-                flex-shrink: 0;
-            }
+            gap: 8px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
 
             .pagination button {
-                padding: 4px 6px;
-                font-size: 11px;
-            padding: 8px 12px;
+                padding: 8px 12px;
             border: 1px solid #ddd;
             background: white;
             border-radius: 4px;
@@ -698,7 +696,13 @@
         }
 
         @media (max-width: 375px) {
+            .sidebar {
+                display: none !important;
+            }
+
             .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
                 padding: 4px;
             }
 
