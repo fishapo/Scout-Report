@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
+    "dev:clean": "node scripts/kill-port.js && node --watch server/index.js",
     "test": "node --test",
     "verify": "node server/scripts/verify.js",
     "migrate": "node server/scripts/migrate.js"
