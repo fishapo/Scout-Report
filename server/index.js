@@ -23,10 +23,3 @@ async function start() {
 }
 
 start().catch(console.error);
-router.get("/", (req, res) => {
-    res.json({
-        application: "Scout Report API",
-        version: "2.0.0",
-        status: "running"
-    });
-});

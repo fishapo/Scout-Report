@@ -23,7 +23,6 @@ async function registerUser(input, options = {}) {
     const passwordHash = await hashPassword(payload.password);
     const now = new Date();
     const id = crypto.randomUUID();
-
     const result = await query(
       `
         INSERT INTO users (id, email, name, password_hash, role, is_active, created_at, updated_at)

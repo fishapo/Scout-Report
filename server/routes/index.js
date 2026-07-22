@@ -7,6 +7,14 @@ const healthRoutes = require("./health.routes");
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+    res.json({
+        application: "Scout Report API",
+        version: "2.0.0",
+        status: "running"
+    });
+});
+
 router.use("/auth", authRoutes);
 router.use("/api/health", healthRoutes);
 router.use("/api", referenceRoutes);
