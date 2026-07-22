@@ -1,12 +1,32 @@
 const { createApp } = require("./app");
+const getPort = require("get-port").default;
 
-const app = createApp();
-const port = Number(process.env.PORT || 8080);
-const host = process.env.HOST || "127.0.0.1";
+async function start() {
+    const app = createApp();
 
-process.on("uncaughtException", (err) => console.error("uncaughtException", err));
-process.on("unhandledRejection", (err) => console.error("unhandledRejection", err));
+    const preferredPort = Number(process.env.PORT || 8080);
 
-app.listen(port, host, () => {
-  console.log(`Scout Report server running on http://${host}:${port}`);
+    const port = await getPort({
+        port: Array.from({ length: 100 }, (_, i) => preferredPort + i)
+    });
+
+    const server = app.listen(port, () => {
+        console.log(`🚀 Scout Report API running on http://localhost:${port}`);
+
+        if (port !== preferredPort) {
+            console.log(`⚠️ Port ${preferredPort} was busy. Using ${port}.`);
+        }
+    });
+
+    process.on("SIGINT", () => server.close(() => process.exit(0)));
+    process.on("SIGTERM", () => server.close(() => process.exit(0)));
+}
+
+start().catch(console.error);
+router.get("/", (req, res) => {
+    res.json({
+        application: "Scout Report API",
+        version: "2.0.0",
+        status: "running"
+    });
 });
