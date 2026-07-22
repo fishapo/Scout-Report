@@ -324,12 +324,14 @@
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 5px;
-            padding: 10px;
-            flex-shrink: 0;
-        }
+                gap: 3px;
+                padding: 4px;
+                flex-shrink: 0;
+            }
 
-        .pagination button {
+            .pagination button {
+                padding: 4px 6px;
+                font-size: 11px;
             padding: 8px 12px;
             border: 1px solid #ddd;
             background: white;
@@ -540,69 +542,92 @@
 
             .main-content {
                 margin-left: 0;
-                padding: 12px;
+                padding: 6px;
                 width: 100%;
             }
 
             .header {
-                flex-direction: column;
-                gap: 12px;
-                align-items: stretch;
+                flex-direction: row;
+                gap: 6px;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .header {
+                padding: 8px;
+                margin-bottom: 6px;
+                gap: 6px;
             }
 
             .header h1 {
-                font-size: 18px;
+                font-size: 16px;
             }
 
             .header-actions {
-                flex-direction: column;
+                flex-direction: row;
                 width: 100%;
-                gap: 8px;
+                gap: 4px;
             }
 
             .btn {
-                width: 100%;
-                padding: 12px 10px;
-                font-size: 13px;
+                flex: 1;
+                padding: 6px 8px;
+                font-size: 11px;
             }
 
             .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                margin-bottom: 6px;
             }
 
             .stat-card {
-                padding: 12px;
+                padding: 8px;
             }
 
             .stat-label {
-                font-size: 10px;
+                font-size: 9px;
+                margin-bottom: 4px;
             }
 
             .stat-value {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .stat-detail {
-                font-size: 11px;
+                font-size: 10px;
+                margin-top: 4px;
+            }
+
+            .filters {
+                padding: 6px;
+                margin-bottom: 6px;
+                gap: 4px;
+            }
+
+            .filter-group select, .filter-group input {
+                padding: 4px 8px;
+                font-size: 12px;
             }
 
             .table-container {
                 overflow-x: auto;
-                margin-bottom: 15px;
+                margin-bottom: 6px;
+                flex: 0 0 auto;
+                max-height: 40vh;
             }
 
             table {
-                font-size: 11px;
+                font-size: 10px;
                 width: 100%;
             }
 
             th {
-                padding: 10px 8px;
+                padding: 6px 4px;
             }
 
             td {
-                padding: 10px 8px;
+                padding: 6px 4px;
             }
 
             .action-buttons {
@@ -669,6 +694,89 @@
 
             .stat-value {
                 font-size: 18px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .main-content {
+                padding: 4px;
+            }
+
+            .header {
+                padding: 6px;
+                margin-bottom: 4px;
+            }
+
+            .header h1 {
+                font-size: 14px;
+                margin: 0;
+            }
+
+            .header-actions {
+                gap: 3px;
+                flex: 1;
+            }
+
+            .btn {
+                padding: 5px 6px;
+                font-size: 10px;
+            }
+
+            .stats-grid {
+                gap: 4px;
+                margin-bottom: 4px;
+            }
+
+            .stat-card {
+                padding: 6px;
+            }
+
+            .stat-label {
+                font-size: 8px;
+                margin-bottom: 2px;
+            }
+
+            .stat-value {
+                font-size: 16px;
+            }
+
+            .stat-detail {
+                font-size: 9px;
+                margin-top: 2px;
+            }
+
+            .filters {
+                padding: 4px;
+                margin-bottom: 4px;
+                gap: 3px;
+                font-size: 10px;
+            }
+
+            .table-container {
+                margin-bottom: 4px;
+                max-height: 35vh;
+            }
+
+            table {
+                font-size: 9px;
+            }
+
+            th {
+                padding: 4px 3px;
+            }
+
+            td {
+                padding: 4px 3px;
+            }
+
+            .pagination {
+                gap: 2px;
+                padding: 3px;
+            }
+
+            .pagination button {
+                padding: 3px 5px;
+                font-size: 10px;
             }
         }
     </style>
