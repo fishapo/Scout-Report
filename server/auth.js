@@ -7,7 +7,7 @@ const HASH_KEY_LENGTH = 32;
 const ACCESS_TOKEN_TTL_SECONDS = Number(process.env.JWT_TTL_SECONDS || 60 * 60 * 8);
 const VALID_ROLES = new Set(['admin', 'scout']);
 
-class AuthError extends Error {
+class AuthError extends require("./auth/authError") {
   constructor(message, statusCode = 400) {
     super(message);
     this.name = 'AuthError';
