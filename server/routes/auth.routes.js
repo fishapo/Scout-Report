@@ -5,20 +5,13 @@ const auth = require("../auth");
 
 const router = express.Router();
 
+// Public routes
+router.post("/register", controller.register);
 router.post("/login", controller.login);
 
-router.post("/register", controller.register);
+// Protected routes
+router.get("/me", auth.authenticate, controller.me);
 
-router.post(
-    "/logout",
-    auth.authenticate,
-    controller.logout
-);
-
-router.get(
-    "/me",
-    auth.authenticate,
-    controller.me
-);
+router.post("/logout", auth.authenticate, controller.logout);
 
 module.exports = router;

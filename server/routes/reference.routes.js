@@ -1,12 +1,8 @@
 const express = require("express");
+const controller = require("../controllers/reference.controller");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.json({
-        module: "reference",
-        status: "ready"
-    });
-});
+router.get("/reference", controller.list);
 
 module.exports = router;
