@@ -1,9 +1,8 @@
+const reportService = require("../services/report.service");
+
 async function list(req, res, next) {
     try {
-        res.json({
-            message: "List reports",
-            data: []
-        });
+        res.json(await reportService.getReports());
     } catch (err) {
         next(err);
     }
@@ -11,9 +10,8 @@ async function list(req, res, next) {
 
 async function create(req, res, next) {
     try {
-        res.status(201).json({
-            message: "Create report"
-        });
+        const report = await reportService.createReport(req.body);
+        res.status(201).json(report);
     } catch (err) {
         next(err);
     }
