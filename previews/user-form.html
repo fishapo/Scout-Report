@@ -468,30 +468,91 @@
     </div>
 
     <script>
-        const API = '';
+        const API = "http://localhost:3000/api";
         let pestCount = 1;
         let diseaseCount = 1;
         let cropTypes = [];
         let pests = [];
         let diseases = [];
         let currentLocation = null;
+        let farms = [];
+
+        let cropTypes = [];
+
+        let pests = [];
+
+        let diseases = [];
+
 
         document.addEventListener('DOMContentLoaded', async function() {
+            farms = data.farms
+            cropTypes = data.cropTypes;
             const today = new Date();
             document.getElementById('report-date').textContent = `Date: ${today.toLocaleDateString()}`;
 
             try {
-                const [farmsRes, cropsRes, pestsRes, diseasesRes] = await Promise.all([
-                    fetch(`${API}/farms`),
-                    fetch(`${API}/crop-types`),
-                    fetch(`${API}/pests`),
-                    fetch(`${API}/diseases`),
-                ]);
+                const response = await fetch(`${API}/reference`);
 
-                const farms = await farmsRes.json();
-                cropTypes = await cropsRes.json();
-                pests = await pestsRes.json();
-                diseases = await diseasesRes.json();
+                const response1 = async (fetch('${API}/reports'))
+                 => {
+                    
+                }
+const data = await response.json();
+
+const farms = data.farms;
+
+cropTypes = data.cropTypes;
+
+pests = data.pests.map(name => ({ name }));
+
+diseases = data.diseases.map(name => ({ name }));
+
+window.varieties = data.varieties;
+
+populateSelect(
+    document.getElementById("farm-select"),
+    farms,
+    "name",
+    "id"
+);
+
+populateSelect(
+    document.getElementById("crop-select"),
+    cropTypes,
+    "name",
+    "id"
+);
+const farm =
+    farms.find(f => f.id === farmId);
+
+const payload = {
+
+    farm_id: farm.id,
+
+    farm_name: farm.name,
+
+    crop_type: crop.name,
+
+    variety: variety,
+
+    report_date:
+        new Date().toISOString().substring(0,10),
+
+    weather:
+        document.getElementById("weather-select").value,
+
+    temperature:
+        Number(document.getElementById("temperature").value),
+
+    humidity:
+        Number(document.getElementById("humidity").value),
+
+    notes:
+        document.getElementById("general-notes").value
+
+};
+
+populatePestDiseaseSelects();
 
                 populateSelect(document.getElementById('farm-select'), farms, 'name', 'id');
                 populateSelect(document.getElementById('crop-select'), cropTypes, 'name', 'id');
@@ -510,6 +571,31 @@
                 select.appendChild(option);
             });
         }
+function updateVarieties(select) {
+
+    const varietySelect =
+        document.getElementById("variety-select");
+
+    varietySelect.innerHTML =
+        '<option value="">Select Variety...</option>';
+
+    const varieties =
+        window.varieties?.[select.value] || [];
+
+    varieties.forEach(v => {
+
+        const option = document.createElement("option");
+
+        option.value = v;
+
+        option.textContent = v;
+
+        varietySelect.appendChild(option);
+
+    });
+
+}
+
 
         function populatePestDiseaseSelects() {
             document.querySelectorAll('.pest-type-select').forEach(select => {
