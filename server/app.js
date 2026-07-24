@@ -1,6 +1,7 @@
 const express = require("express");
 
 const routes = require("./routes");
+const path = require("path");
 
 const { requestLogger } = require("./middleware/logger");
 const securityHeaders = require("./middleware/securityHeaders");
@@ -14,6 +15,7 @@ function createApp() {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "../previews")));
 
 app.use(requestLogger);
 

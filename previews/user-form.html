@@ -1,593 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Scout Report Form - User Interface</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Scout Report</title>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #f5f5f5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+body{
+    background:#f5f5f5;
+}
 
-        .header {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            color: white;
-            padding: 30px 20px;
-            text-align: left;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+.container{
+    width:100%;
+    max-width:700px;
+    margin:auto;
+    background:white;
+    min-height:100vh;
+}
 
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
+.header{
+    background:#2e7d32;
+    color:white;
+    padding:25px;
+}
 
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
+.header h1{
+    font-size:30px;
+}
 
-        .content {
-            padding: 20px;
-            flex: 1;
-        }
+.content{
+    padding:20px;
+}
 
-        @media (max-width: 480px) {
-            .container {
-                margin: 0;
-            }
+.section{
+    background:#fafafa;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:8px;
+    border:1px solid #ddd;
+}
 
-            .header {
-                padding: 20px 15px;
-            }
+.section h2{
+    margin-bottom:15px;
+    color:#2e7d32;
+}
 
-            .header h1 {
-                font-size: 24px;
-                margin-bottom: 5px;
-            }
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
 
-            .header p {
-                font-size: 13px;
-            }
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
 
-            .content {
-                padding: 15px;
-            }
+textarea{
+    resize:vertical;
+    min-height:80px;
+}
 
-            input, select, textarea {
-                font-size: 16px !important;
-            }
+button{
+    cursor:pointer;
+}
 
-            button {
-                padding: 14px 16px;
-                font-size: 15px;
-            }
-        }
+.submit-btn{
 
-        @media (max-height: 600px) and (orientation: landscape) {
-            .container {
-                min-height: auto;
-            }
+    width:100%;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    padding:16px;
+    font-size:18px;
+    border-radius:8px;
+}
 
-            .header {
-                padding: 15px 20px;
-            }
+.submit-btn:hover{
+    background:#1b5e20;
+}
 
-            .header h1 {
-                font-size: 20px;
-                margin-bottom: 3px;
-            }
+.add-btn{
 
-            .header p {
-                font-size: 12px;
-            }
+    background:#2e7d32;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+}
 
-            .content {
-                padding: 15px 20px;
-            }
-        }
+.remove-btn{
 
-        .section {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+    background:#d32f2f;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:6px;
+}
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+.card{
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
+    background:white;
+    border:1px solid #ddd;
+    padding:15px;
+    margin-top:15px;
+    border-radius:8px;
+}
 
-        .add-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.location{
+    background:#eee;
+    padding:12px;
+    border-radius:6px;
+}
 
-        .add-btn:hover {
-            background-color: #45a049;
-        }
+.switch-group{
 
-        .label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #555;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            display: block;
-        }
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
 
-        .required::after {
-            content: " *";
-            color: #f44336;
-        }
+.switch-btn{
 
-        select, input[type="text"], input[type="number"], input[type="date"], textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-            background-color: #fafafa;
-            color: #333;
-            margin-bottom: 10px;
-        }
+    flex:1;
+    padding:12px;
+    border:1px solid #aaa;
+    background:white;
+}
 
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
+.switch-btn.active{
 
-        select:focus, input:focus, textarea:focus {
-            outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
+    background:#2e7d32;
+    color:white;
+}
 
-        .switch-group {
-            display: flex;
-            gap: 5px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .switch-btn {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #fafafa;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .switch-btn.active {
-            background-color: #4CAF50;
-            color: white;
-            border-color: #4CAF50;
-        }
-
-        .location-box {
-            background-color: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 10px;
-        }
-
-        .location-text {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 8px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .update-location-btn {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .update-location-btn:hover {
-            background-color: #45a049;
-        }
-
-        .observation-card {
-            background-color: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 10px;
-        }
-
-        .observation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .observation-index {
-            font-size: 12px;
-            font-weight: 600;
-            color: #4CAF50;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            color: #f44336;
-            cursor: pointer;
-            padding: 0 5px;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        .delete-btn:hover {
-            color: #d32f2f;
-        }
-
-        .footer {
-            padding: 0 20px 20px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .submit-btn:hover {
-            background-color: #45a049;
-        }
-
-        .submit-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .form-hint {
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
-        }
     </style>
+
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🌾 Scout Report</h1>
-            <p id="report-date">Date: </p>
-        </div>
 
-        <div class="content">
-            <div class="section">
-                <div class="section-title">Farm Information</div>
-                
-                <label class="label required">Farm</label>
-                <select id="farm-select">
-                    <option value="">Select Farm...</option>
-                </select>
+<div class="container">
 
-                <label class="label">Greenhouse</label>
-                <div class="switch-group" id="location-type">
-                    <button type="button" class="switch-btn active" data-greenhouse="false" onclick="toggleSwitch(this)">Field</button>
-                    <button type="button" class="switch-btn" data-greenhouse="true" onclick="toggleSwitch(this)">Greenhouse</button>
-                </div>
-            </div>
+<div class="header">
 
-            <div class="section">
-                <div class="section-title">Crop Information</div>
-                
-                <label class="label required">Crop Type</label>
-                <select id="crop-select" onchange="updateVarieties(this)">
-                    <option value="">Select Crop...</option>
-                </select>
+<h1>Scout Report</h1>
 
-                <label class="label required">Variety</label>
-                <select id="variety-select">
-                    <option>Select Variety...</option>
-                </select>
+<p id="report-date"></p>
 
-                <label class="label">Implementation Week</label>
-                <input type="number" id="impl-week" min="1" max="53" value="1" placeholder="Week number (1-53)">
+</div>
 
-                <label class="label">Implementation Year</label>
-                <input type="number" id="impl-year" value="2026" placeholder="Year">
-            </div>
+<div class="content">
 
-            <div class="section">
-                <div class="section-title">Environmental Conditions</div>
-                
-                <label class="label">Weather</label>
-                <select id="weather-select">
-                    <option>Sunny</option>
-                    <option>Cloudy</option>
-                    <option>Rainy</option>
-                    <option>Foggy</option>
-                </select>
+<!-- FARM -->
 
-                <label class="label">Temperature (°C)</label>
-                <input type="number" id="temperature" step="0.1" placeholder="e.g., 25.5">
+<div class="section">
 
-                <label class="label">Humidity (%)</label>
-                <input type="number" id="humidity" min="0" max="100" placeholder="e.g., 65">
+<h2>Farm Information</h2>
 
-                <label class="label">Location</label>
-                <div class="location-box">
-                    <div class="location-text" id="lat-display">Lat: —</div>
-                    <div class="location-text" id="long-display">Long: —</div>
-                    <button type="button" class="update-location-btn" onclick="updateLocation()">📍 Update Location</button>
-                </div>
-            </div>
+<label>Farm</label>
 
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-title">Pest Observations</div>
-                    <button class="add-btn" onclick="addPestObservation()">+ Add</button>
-                </div>
+<select id="farm-select">
 
-                <div id="pest-observations">
-                    <div class="observation-card">
-                        <div class="observation-header">
-                            <div class="observation-index">Pest #1</div>
-                            <button class="delete-btn" onclick="removeObservation(this)">✕</button>
-                        </div>
+<option value="">Select Farm</option>
 
-                        <label class="label">Pest Type</label>
-                        <select class="pest-type-select">
-                            <option value="">Select Pest...</option>
-                        </select>
+</select>
 
-                        <label class="label">Count</label>
-                        <input type="number" min="0" placeholder="Number observed">
+<label>Greenhouse</label>
 
-                        <label class="label">Severity</label>
-                        <select>
-                            <option>Low</option>
-                            <option>Medium</option>
-                            <option>High</option>
-                            <option>Critical</option>
-                        </select>
+<div class="switch-group">
 
-                        <label class="label">Affected Plants (%)</label>
-                        <input type="number" min="0" max="100" placeholder="0-100">
+<button
+type="button"
+class="switch-btn active"
+data-greenhouse="false"
+onclick="toggleSwitch(this)">
 
-                        <label class="label">Location on Plant</label>
-                        <input type="text" placeholder="e.g., leaf, stem, root">
+Field
 
-                        <label class="label">Notes</label>
-                        <textarea placeholder="Additional observations..."></textarea>
-                    </div>
-                </div>
-            </div>
+</button>
 
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-title">Disease Observations</div>
-                    <button class="add-btn" onclick="addDiseaseObservation()">+ Add</button>
-                </div>
+<button
+type="button"
+class="switch-btn"
+data-greenhouse="true"
+onclick="toggleSwitch(this)">
 
-                <div id="disease-observations">
-                    <div class="observation-card">
-                        <div class="observation-header">
-                            <div class="observation-index">Disease #1</div>
-                            <button class="delete-btn" onclick="removeObservation(this)">✕</button>
-                        </div>
+Greenhouse
 
-                        <label class="label">Disease Type</label>
-                        <select class="disease-type-select">
-                            <option value="">Select Disease...</option>
-                        </select>
+</button>
 
-                        <label class="label">Severity</label>
-                        <select>
-                            <option>Low</option>
-                            <option>Medium</option>
-                            <option>High</option>
-                            <option>Critical</option>
-                        </select>
+</div>
 
-                        <label class="label">Affected Plants (%)</label>
-                        <input type="number" min="0" max="100" placeholder="0-100">
+</div>
 
-                        <label class="label">Visible Spots Count</label>
-                        <input type="number" min="0" placeholder="Number of spots">
+<!-- CROP -->
 
-                        <label class="label">Spot Color</label>
-                        <input type="text" placeholder="e.g., black, brown, yellow">
+<div class="section">
 
-                        <label class="label">Notes</label>
-                        <textarea placeholder="Additional observations..."></textarea>
-                    </div>
-                </div>
-            </div>
+<h2>Crop Information</h2>
 
-            <div class="section">
-                <label class="label">General Notes</label>
-                <textarea id="general-notes" placeholder="Any additional observations or notes..."></textarea>
-            </div>
-        </div>
+<label>Crop</label>
 
-        <div class="footer">
-            <button type="button" class="submit-btn" id="submit-btn" onclick="submitReport()">✓ Submit Report</button>
-        </div>
-    </div>
+<select
+id="crop-select"
+onchange="updateVarieties(this)">
 
-    <script>
-        const API = "http://localhost:3000/api";
-        let pestCount = 1;
-        let diseaseCount = 1;
-        let cropTypes = [];
-        let pests = [];
-        let diseases = [];
-        let currentLocation = null;
-        let farms = [];
+<option value="">Select Crop</option>
 
-        let cropTypes = [];
+</select>
 
-        let pests = [];
+<label>Variety</label>
 
-        let diseases = [];
+<select id="variety-select">
 
+<option value="">Select Variety</option>
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            farms = data.farms
-            cropTypes = data.cropTypes;
-            const today = new Date();
-            document.getElementById('report-date').textContent = `Date: ${today.toLocaleDateString()}`;
+</select>
 
-            try {
-                const response = await fetch(`${API}/reference`);
+<label>Implementation Week</label>
 
-                const response1 = async (fetch('${API}/reports'))
-                 => {
-                    
-                }
-const data = await response.json();
+<input
+type="number"
+id="implementation-week">
 
-const farms = data.farms;
+<label>Implementation Year</label>
 
-cropTypes = data.cropTypes;
+<input
+type="number"
+id="implementation-year"
+value="2026">
 
-pests = data.pests.map(name => ({ name }));
+</div>
 
-diseases = data.diseases.map(name => ({ name }));
+<!-- ENVIRONMENT -->
 
-window.varieties = data.varieties;
+<div class="section">
 
-populateSelect(
-    document.getElementById("farm-select"),
-    farms,
-    "name",
-    "id"
-);
+<h2>Environment</h2>
 
-populateSelect(
-    document.getElementById("crop-select"),
-    cropTypes,
-    "name",
-    "id"
-);
-const farm =
-    farms.find(f => f.id === farmId);
+<label>Weather</label>
 
-const payload = {
+<select id="weather">
 
-    farm_id: farm.id,
+<option>Sunny</option>
+<option>Cloudy</option>
+<option>Rainy</option>
+<option>Windy</option>
 
-    farm_name: farm.name,
+</select>
 
-    crop_type: crop.name,
+<label>Temperature</label>
 
-    variety: variety,
+<input
+type="number"
+id="temperature">
 
-    report_date:
-        new Date().toISOString().substring(0,10),
+<label>Humidity</label>
 
-    weather:
-        document.getElementById("weather-select").value,
+<input
+type="number"
+id="humidity">
 
-    temperature:
-        Number(document.getElementById("temperature").value),
+<label>Location</label>
 
-    humidity:
-        Number(document.getElementById("humidity").value),
+<div class="location">
 
-    notes:
-        document.getElementById("general-notes").value
+<div id="lat-display">
 
-};
+Latitude : --
 
-populatePestDiseaseSelects();
+</div>
 
-                populateSelect(document.getElementById('farm-select'), farms, 'name', 'id');
-                populateSelect(document.getElementById('crop-select'), cropTypes, 'name', 'id');
-                populatePestDiseaseSelects();
-            } catch (err) {
-                console.error('Failed to load reference data:', err);
-                alert('Could not connect to the API. Start the server with: npm start');
-            }
-        });
+<div id="long-display">
 
-        function populateSelect(select, items, labelKey, valueKey) {
-            items.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item[valueKey];
-                option.textContent = item[labelKey];
-                select.appendChild(option);
-            });
-        }
+Longitude : --
+
+</div>
+
+<br>
+
+<button
+type="button"
+class="add-btn"
+onclick="updateLocation()">
+
+Update GPS
+
+</button>
+
+</div>
+
+</div>
+
+<!-- PEST -->
+
+<div class="section">
+
+<h2>
+
+Pest Observations
+
+<button
+type="button"
+class="add-btn"
+onclick="addPestObservation()">
+
+Add
+
+</button>
+
+</h2>
+
+<div id="pest-observations">
+
+</div>
+
+</div>
+
+<!-- DISEASE -->
+
+<div class="section">
+
+<h2>
+
+Disease Observations
+
+<button
+type="button"
+class="add-btn"
+onclick="addDiseaseObservation()">
+
+Add
+
+</button>
+
+</h2>
+
+<div id="disease-observations">
+
+</div>
+
+</div>
+
+<!-- NOTES -->
+
+<div class="section">
+
+<h2>Notes</h2>
+
+<textarea
+id="notes">
+
+</textarea>
+
+</div>
+
+<button
+id="submit-btn"
+class="submit-btn"
+onclick="submitReport()">
+
+Submit Scout Report
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+    const API = "http://localhost:3000/api";
+
+let farms = [];
+let cropTypes = [];
+let varieties = {};
+let pests = [];
+let diseases = [];
+let currentLocation = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    document.getElementById("report-date").textContent =
+        new Date().toLocaleDateString();
+
+    await loadReferenceData();
+
+    addPestObservation();
+    addDiseaseObservation();
+
+});
+
+async function loadReferenceData() {
+
+    try {
+
+        const response = await fetch(`${API}/reference`);
+
+        if (!response.ok)
+            throw new Error("Unable to load reference data");
+
+        const data = await response.json();
+
+        farms = data.farms || [];
+        cropTypes = data.cropTypes || [];
+        varieties = data.varieties || {};
+        pests = data.pests || [];
+        diseases = data.diseases || [];
+
+        populateSelect(
+            document.getElementById("farm-select"),
+            farms,
+            "name",
+            "id"
+        );
+
+        populateSelect(
+            document.getElementById("crop-select"),
+            cropTypes,
+            "name",
+            "id"
+        );
+
+    } catch (err) {
+
+        console.error(err);
+        alert(err.message);
+
+    }
+
+}
+
+function populateSelect(select, items, labelKey, valueKey) {
+
+    select.innerHTML =
+        '<option value="">Select...</option>';
+
+    items.forEach(item => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = item[valueKey];
+        option.textContent = item[labelKey];
+
+        select.appendChild(option);
+
+    });
+
+}
+
 function updateVarieties(select) {
 
     const varietySelect =
         document.getElementById("variety-select");
 
     varietySelect.innerHTML =
-        '<option value="">Select Variety...</option>';
+        '<option value="">Select Variety</option>';
 
-    const varieties =
-        window.varieties?.[select.value] || [];
+    const list =
+        varieties[select.value] || [];
 
-    varieties.forEach(v => {
+    list.forEach(v => {
 
-        const option = document.createElement("option");
+        const option =
+            document.createElement("option");
 
         option.value = v;
-
         option.textContent = v;
 
         varietySelect.appendChild(option);
@@ -596,203 +492,425 @@ function updateVarieties(select) {
 
 }
 
+function toggleSwitch(button){
 
-        function populatePestDiseaseSelects() {
-            document.querySelectorAll('.pest-type-select').forEach(select => {
-                pests.forEach(pest => {
-                    const option = document.createElement('option');
-                    option.value = pest.name;
-                    option.textContent = pest.name;
-                    select.appendChild(option);
-                });
-            });
+    document
+        .querySelectorAll(".switch-btn")
+        .forEach(btn=>btn.classList.remove("active"));
 
-            document.querySelectorAll('.disease-type-select').forEach(select => {
-                diseases.forEach(disease => {
-                    const option = document.createElement('option');
-                    option.value = disease.name;
-                    option.textContent = disease.name;
-                    select.appendChild(option);
-                });
-            });
-        }
+    button.classList.add("active");
 
-        function toggleSwitch(button) {
-            const parent = button.parentElement;
-            parent.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-        }
+}
 
-        async function updateVarieties(select) {
-            const varietySelect = document.getElementById('variety-select');
-            varietySelect.innerHTML = '<option value="">Select Variety...</option>';
+function updateLocation(){
 
-            if (!select.value) return;
+    if(!navigator.geolocation){
 
-            try {
-                const res = await fetch(`${API}/crop-types/${select.value}/varieties`);
-                const data = await res.json();
-                data.varieties.forEach(variety => {
-                    const option = document.createElement('option');
-                    option.value = variety;
-                    option.textContent = variety;
-                    varietySelect.appendChild(option);
-                });
-            } catch (err) {
-                console.error('Failed to load varieties:', err);
-            }
-        }
+        alert("GPS not supported");
+        return;
 
-        function updateLocation() {
-            if (!navigator.geolocation) {
-                alert('Geolocation is not supported by this browser.');
-                return;
-            }
+    }
 
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    currentLocation = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    };
-                    document.getElementById('lat-display').textContent = `Lat: ${currentLocation.latitude.toFixed(4)}`;
-                    document.getElementById('long-display').textContent = `Long: ${currentLocation.longitude.toFixed(4)}`;
-                },
-                () => alert('Unable to retrieve location. Please check permissions.')
-            );
-        }
+    navigator.geolocation.getCurrentPosition(pos=>{
 
-        function addPestObservation() {
-            pestCount++;
-            const container = document.getElementById('pest-observations');
-            const newCard = container.querySelector('.observation-card').cloneNode(true);
-            newCard.querySelector('.observation-index').textContent = `Pest #${pestCount}`;
-            newCard.querySelectorAll('input, textarea').forEach(field => field.value = '');
-            newCard.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-            container.appendChild(newCard);
-        }
+        currentLocation={
 
-        function addDiseaseObservation() {
-            diseaseCount++;
-            const container = document.getElementById('disease-observations');
-            const newCard = container.querySelector('.observation-card').cloneNode(true);
-            newCard.querySelector('.observation-index').textContent = `Disease #${diseaseCount}`;
-            newCard.querySelectorAll('input, textarea').forEach(field => field.value = '');
-            newCard.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-            container.appendChild(newCard);
-        }
+            latitude:pos.coords.latitude,
+            longitude:pos.coords.longitude
 
-        function removeObservation(button) {
-            const card = button.closest('.observation-card');
-            const container = card.parentElement;
-            if (container.querySelectorAll('.observation-card').length > 1) {
-                card.remove();
-            } else {
-                alert('You must keep at least one observation!');
-            }
-        }
+        };
 
-        function collectPestObservations() {
-            return Array.from(document.querySelectorAll('#pest-observations .observation-card'))
-                .map(card => {
-                    const selects = card.querySelectorAll('select');
-                    const inputs = card.querySelectorAll('input');
-                    const pestType = selects[0].value;
-                    if (!pestType) return null;
-                    return {
-                        pestType,
-                        count: parseInt(inputs[0].value, 10) || 0,
-                        severity: selects[1].value,
-                        affectedPercent: parseInt(inputs[1].value, 10) || 0,
-                        locationOnPlant: inputs[2].value,
-                        notes: card.querySelector('textarea').value,
-                    };
-                })
-                .filter(Boolean);
-        }
+        document.getElementById("lat-display").textContent =
+            "Latitude : " + currentLocation.latitude.toFixed(6);
 
-        function collectDiseaseObservations() {
-            return Array.from(document.querySelectorAll('#disease-observations .observation-card'))
-                .map(card => {
-                    const selects = card.querySelectorAll('select');
-                    const inputs = card.querySelectorAll('input');
-                    const diseaseType = selects[0].value;
-                    if (!diseaseType) return null;
-                    return {
-                        diseaseType,
-                        severity: selects[1].value,
-                        affectedPercent: parseInt(inputs[0].value, 10) || 0,
-                        spotCount: parseInt(inputs[1].value, 10) || 0,
-                        spotColor: inputs[2].value,
-                        notes: card.querySelector('textarea').value,
-                    };
-                })
-                .filter(Boolean);
-        }
+        document.getElementById("long-display").textContent =
+            "Longitude : " + currentLocation.longitude.toFixed(6);
 
-        async function submitReport() {
-            const farmId = document.getElementById('farm-select').value;
-            const cropId = document.getElementById('crop-select').value;
-            const variety = document.getElementById('variety-select').value;
-            const crop = cropTypes.find(c => c.id === cropId);
+    });
 
-            if (!farmId) {
-                alert('Please select a farm.');
-                return;
-            }
-            if (!crop) {
-                alert('Please select a crop type.');
-                return;
-            }
-            if (!variety) {
-                alert('Please select a variety.');
-                return;
-            }
+}
+let pestCount = 0;
+let diseaseCount = 0;
 
-            const activeLocationBtn = document.querySelector('#location-type .switch-btn.active');
-            const payload = {
-                farmId,
-                cropType: crop.name,
-                variety,
-                isGreenhouse: activeLocationBtn?.dataset.greenhouse === 'true',
-                reportDate: new Date().toISOString().slice(0, 10),
-                implementationWeek: parseInt(document.getElementById('impl-week').value, 10) || 1,
-                implementationYear: parseInt(document.getElementById('impl-year').value, 10) || new Date().getFullYear(),
-                weather: document.getElementById('weather-select').value,
-                temperature: parseFloat(document.getElementById('temperature').value) || null,
-                humidity: parseInt(document.getElementById('humidity').value, 10) || null,
-                location: currentLocation,
-                pestObservations: collectPestObservations(),
-                diseaseObservations: collectDiseaseObservations(),
-                notes: document.getElementById('general-notes').value,
-            };
+function addPestObservation() {
 
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+    pestCount++;
 
-            try {
-                const res = await fetch(`${API}/scout-reports`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
+    const container =
+        document.getElementById("pest-observations");
 
-                if (!res.ok) {
-                    const err = await res.json();
-                    throw new Error(err.error || 'Submission failed');
+    const card =
+        document.createElement("div");
+
+    card.className = "observation-card";
+
+    card.innerHTML = `
+
+        <div class="observation-header">
+            <span class="observation-index">Pest #${pestCount}</span>
+
+            <button type="button"
+                class="delete-btn"
+                onclick="removeObservation(this)">
+                ✕
+            </button>
+        </div>
+
+        <label class="label">Pest</label>
+
+        <select class="pest-type-select">
+            <option value="">Select Pest</option>
+
+            ${pests.map(p=>`
+                <option value="${p}">
+                    ${p}
+                </option>
+            `).join("")}
+
+        </select>
+
+        <label class="label">Count</label>
+
+        <input
+            type="number"
+            class="pest-count"
+            min="0">
+
+        <label class="label">Severity</label>
+
+        <select class="pest-severity">
+
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            <option>Critical</option>
+
+        </select>
+
+        <label class="label">Affected (%)</label>
+
+        <input
+            type="number"
+            class="affected-percent"
+            min="0"
+            max="100">
+
+        <label class="label">Location on Plant</label>
+
+        <input
+            type="text"
+            class="plant-location">
+
+        <label class="label">Notes</label>
+
+        <textarea class="notes"></textarea>
+
+    `;
+
+    container.appendChild(card);
+
+}
+
+function addDiseaseObservation() {
+
+    diseaseCount++;
+
+    const container =
+        document.getElementById("disease-observations");
+
+    const card =
+        document.createElement("div");
+
+    card.className = "observation-card";
+
+    card.innerHTML = `
+
+        <div class="observation-header">
+            <span class="observation-index">
+                Disease #${diseaseCount}
+            </span>
+
+            <button
+                type="button"
+                class="delete-btn"
+                onclick="removeObservation(this)">
+                ✕
+            </button>
+
+        </div>
+
+        <label class="label">Disease</label>
+
+        <select class="disease-type-select">
+
+            <option value="">Select Disease</option>
+
+            ${diseases.map(d=>`
+                <option value="${d}">
+                    ${d}
+                </option>
+            `).join("")}
+
+        </select>
+
+        <label class="label">Severity</label>
+
+        <select class="disease-severity">
+
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            <option>Critical</option>
+
+        </select>
+
+        <label class="label">Affected (%)</label>
+
+        <input
+            type="number"
+            class="affected-percent"
+            min="0"
+            max="100">
+
+        <label class="label">Spot Count</label>
+
+        <input
+            type="number"
+            class="spot-count">
+
+        <label class="label">Spot Color</label>
+
+        <input
+            type="text"
+            class="spot-color">
+
+        <label class="label">Notes</label>
+
+        <textarea class="notes"></textarea>
+
+    `;
+
+    container.appendChild(card);
+
+}
+
+function removeObservation(button){
+
+    const card =
+        button.closest(".observation-card");
+
+    card.remove();
+
+}
+function collectPestObservations(){
+
+    return Array.from(
+        document.querySelectorAll(
+            "#pest-observations .observation-card"
+        )
+    ).map(card=>({
+
+        pestType:
+            card.querySelector(".pest-type-select").value,
+
+        count:
+            Number(card.querySelector(".pest-count").value),
+
+        severity:
+            card.querySelector(".pest-severity").value,
+
+        affectedPercent:
+            Number(card.querySelector(".affected-percent").value),
+
+        locationOnPlant:
+            card.querySelector(".plant-location").value,
+
+        notes:
+            card.querySelector(".notes").value
+
+    }));
+
+}
+
+function collectDiseaseObservations(){
+
+    return Array.from(
+        document.querySelectorAll(
+            "#disease-observations .observation-card"
+        )
+    ).map(card=>({
+
+        diseaseType:
+            card.querySelector(".disease-type-select").value,
+
+        severity:
+            card.querySelector(".disease-severity").value,
+
+        affectedPercent:
+            Number(card.querySelector(".affected-percent").value),
+
+        spotCount:
+            Number(card.querySelector(".spot-count").value),
+
+        spotColor:
+            card.querySelector(".spot-color").value,
+
+        notes:
+            card.querySelector(".notes").value
+
+    }));
+
+}
+async function submitReport() {
+
+    const farmId =
+        document.getElementById("farm-select").value;
+
+    const farm =
+        farms.find(f => f.id === farmId);
+
+    const cropId =
+        document.getElementById("crop-select").value;
+
+    const crop =
+        cropTypes.find(c => c.id === cropId);
+
+    const variety =
+        document.getElementById("variety-select").value;
+
+    if (!farmId) {
+        alert("Please select a farm.");
+        return;
+    }
+
+    if (!cropId) {
+        alert("Please select a crop.");
+        return;
+    }
+
+    if (!variety) {
+        alert("Please select a variety.");
+        return;
+    }
+
+    const greenhouseButton =
+        document.querySelector(
+            "#location-type .switch-btn.active"
+        );
+
+    const payload = {
+
+        farm_id: farm.id,
+
+        farm_name: farm.name,
+
+        crop_type: crop.name,
+
+        variety: variety,
+
+        is_greenhouse:
+            greenhouseButton.dataset.greenhouse === "true",
+
+        report_date:
+            new Date().toISOString().split("T")[0],
+
+        implementation_week:
+            Number(
+                document.getElementById("impl-week").value
+            ),
+
+        implementation_year:
+            Number(
+                document.getElementById("impl-year").value
+            ),
+
+        weather:
+            document.getElementById("weather-select").value,
+
+        temperature:
+            Number(
+                document.getElementById("temperature").value
+            ) || null,
+
+        humidity:
+            Number(
+                document.getElementById("humidity").value
+            ) || null,
+
+        location:
+            currentLocation,
+
+        notes:
+            document.getElementById("general-notes").value,
+
+        status: "Pending",
+
+        pest_observations:
+            collectPestObservations(),
+
+        disease_observations:
+            collectDiseaseObservations()
+
+    };
+
+    console.log(payload);
+
+    const button =
+        document.getElementById("submit-btn");
+
+    button.disabled = true;
+    button.textContent = "Submitting...";
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/reports`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":"application/json"
+                    },
+
+                    body: JSON.stringify(payload)
                 }
+            );
 
-                const report = await res.json();
-                alert(`Scout report ${report.id} submitted successfully!`);
-                location.reload();
-            } catch (err) {
-                alert(`Error: ${err.message}`);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = '✓ Submit Report';
-            }
+        const data =
+            await response.json();
+
+        if(!response.ok){
+
+            throw new Error(
+                data.error || "Submission failed"
+            );
+
         }
-    </script>
-</body>
-</html>
+
+        alert(
+            "Scout Report submitted successfully!"
+        );
+
+        console.log(data);
+
+        location.reload();
+
+    }
+    catch(err){
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+    finally{
+
+        button.disabled = false;
+
+        button.textContent =
+            "✓ Submit Report";
+
+    }
+
+}
