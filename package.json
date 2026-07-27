@@ -22,10 +22,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^4.21.2",
-    "get-port": "^7.2.0",
-    "pg": "^8.11.3"
+    "express": "^4.22.2",
+    "get-port": "^6.1.2",
+    "pg": "^8.22.0"
   }
 }
