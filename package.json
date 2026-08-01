@@ -6,10 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "dev:clean": "node scripts/kill-port.js && node --watch server/index.js",
-    "test": "node --test",
-    "verify": "node server/scripts/verify.js",
-    "migrate": "node server/scripts/migrate.js"
+    "test": "node --test server/**/*.test.js",
+    "verify": "node server/scripts/verify.js"
   },
   "engines": {
     "node": ">=18"
@@ -22,10 +20,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "cors": "^2.8.5",
     "express": "^4.22.2",
-    "get-port": "^6.1.2",
-    "pg": "^8.22.0"
+    "pg": "^8.11.3"
   }
 }
