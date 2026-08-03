@@ -6,7 +6,13 @@
  *
  * Central Route Registration
  *
- * All application routes are mounted here.
+ * Path convention: this matches README.md and the existing
+ * preview frontend (previews/user-form.html, previews/admin-
+ * dashboard.html), which call unprefixed paths like /farms
+ * and /scout-reports directly - not /api/farms. Only the
+ * health check keeps its /api prefix, matching the existing
+ * .github/workflows/azure-webapps-node.yml smoke test that
+ * calls /api/health.
  *
  * ==========================================================
  */
@@ -36,15 +42,15 @@ router.use("/api/health", healthRoutes);
 |--------------------------------------------------------------------------
 */
 
-router.use("/api/auth", authRoutes);
+router.use("/auth", authRoutes);
 
 /*
 |--------------------------------------------------------------------------
-| Reference Data
+| Reference Data (farms, crop-types, pests, diseases)
 |--------------------------------------------------------------------------
 */
 
-router.use("/api/reference", referenceRoutes);
+router.use("/", referenceRoutes);
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +58,7 @@ router.use("/api/reference", referenceRoutes);
 |--------------------------------------------------------------------------
 */
 
-router.use("/api/reports", reportRoutes);
+router.use("/", reportRoutes);
 
 /*
 |--------------------------------------------------------------------------

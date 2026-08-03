@@ -3,107 +3,92 @@
  * Scout Report Routes
  * ==========================================================
  *
- * All Scout Report endpoints are defined here.
+ * All Scout Report endpoints are defined here. Paths and
+ * auth requirements match the table in README.md.
  *
  * Base Route
  * ----------
- * /api/reports
+ * /scout-reports
  *
  * Endpoints
  * ---------
- * GET    /api/reports
- * GET    /api/reports/:id
- * POST   /api/reports
- * PUT    /api/reports/:id
- * DELETE /api/reports/:id
- * POST   /api/reports/:id/pests
- * POST   /api/reports/:id/diseases
+ * GET    /scout-reports                          - auth required
+ * GET    /scout-reports/stats                     - admin only
+ * GET    /scout-reports/:id                       - auth required
+ * POST   /scout-reports                           - admin or scout
+ * PATCH  /scout-reports/:id                       - admin only
+ * POST   /scout-reports/:id/pest-observations      - admin or scout
+ * POST   /scout-reports/:id/disease-observations   - admin or scout
+ * DELETE /scout-reports/:id                       - admin only
+ *
+ * NOTE: /scout-reports/stats must be registered before
+ * /scout-reports/:id, otherwise Express would match "stats"
+ * as an :id value.
  *
  * ==========================================================
  */
+
+"use strict";
 
 const express = require("express");
 
 const router = express.Router();
 
-const reportController =
-    require("../controllers/report.controller");
+const reportController = require("../controllers/report.controller");
+const auth = require("../auth");
 
-/**
- * ----------------------------------------------------------
- * GET
- * Retrieve all scout reports
- * ----------------------------------------------------------
- */
 router.get(
-    "/reports",
+    "/scout-reports/stats",
+    auth.authenticate,
+    auth.authorizeRoles("admin"),
+    reportController.getStats
+);
+
+router.get(
+    "/scout-reports",
+    auth.authenticate,
     reportController.getReports
 );
 
-/**
- * ----------------------------------------------------------
- * GET
- * Retrieve a single report
- * ----------------------------------------------------------
- */
 router.get(
-    "/reports/:id",
+    "/scout-reports/:id",
+    auth.authenticate,
     reportController.getReport
 );
 
-/**
- * ----------------------------------------------------------
- * POST
- * Create a new scout report
- * ----------------------------------------------------------
- */
 router.post(
-    "/reports",
+    "/scout-reports",
+    auth.authenticate,
+    auth.authorizeRoles("admin", "scout"),
     reportController.createReport
 );
 
-/**
- * ----------------------------------------------------------
- * PUT
- * Update an existing report
- * ----------------------------------------------------------
- */
-router.put(
-    "/reports/:id",
+router.patch(
+    "/scout-reports/:id",
+    auth.authenticate,
+    auth.authorizeRoles("admin"),
     reportController.updateReport
 );
 
-/**
- * ----------------------------------------------------------
- * DELETE
- * Remove a report
- * ----------------------------------------------------------
- */
-router.delete(
-    "/reports/:id",
-    reportController.deleteReport
-);
-
-/**
- * ----------------------------------------------------------
- * POST
- * Add pest observation
- * ----------------------------------------------------------
- */
 router.post(
-    "/reports/:id/pests",
+    "/scout-reports/:id/pest-observations",
+    auth.authenticate,
+    auth.authorizeRoles("admin", "scout"),
     reportController.addPestObservation
 );
 
-/**
- * ----------------------------------------------------------
- * POST
- * Add disease observation
- * ----------------------------------------------------------
- */
 router.post(
-    "/reports/:id/diseases",
+    "/scout-reports/:id/disease-observations",
+    auth.authenticate,
+    auth.authorizeRoles("admin", "scout"),
     reportController.addDiseaseObservation
+);
+
+router.delete(
+    "/scout-reports/:id",
+    auth.authenticate,
+    auth.authorizeRoles("admin"),
+    reportController.deleteReport
 );
 
 module.exports = router;
