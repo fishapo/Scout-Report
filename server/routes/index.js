@@ -4,15 +4,33 @@
  * server/routes/index.js
  * ==========================================================
  *
- * Central Route Registration
+ * Central API Route Registration
  *
- * Path convention: this matches README.md and the existing
- * preview frontend (previews/user-form.html, previews/admin-
- * dashboard.html), which call unprefixed paths like /farms
- * and /scout-reports directly - not /api/farms. Only the
- * health check keeps its /api prefix, matching the existing
- * .github/workflows/azure-webapps-node.yml smoke test that
- * calls /api/health.
+ * API Version: 2.0.0
+ *
+ * Base Mount:
+ * app.use(routes)
+ *
+ * Final Routes:
+ *
+ * GET  /api
+ *
+ * Health:
+ * GET  /api/health
+ *
+ * Authentication:
+ * GET  /api/auth/*
+ *
+ * Reference:
+ * GET  /api/reference
+ * GET  /api/reference/farms
+ * GET  /api/reference/crop-types
+ * GET  /api/reference/crop-types/:id/varieties
+ * GET  /api/reference/pests
+ * GET  /api/reference/diseases
+ *
+ * Reports:
+ * GET  /api/reports/*
  *
  * ==========================================================
  */
@@ -21,52 +39,28 @@
 
 const express = require("express");
 
-const authRoutes = require("./auth.routes");
-const reportRoutes = require("./report.routes");
-const referenceRoutes = require("./reference.routes");
-const healthRoutes = require("./health.routes");
-
 const router = express.Router();
 
-/*
-|--------------------------------------------------------------------------
-| Health Check
-|--------------------------------------------------------------------------
-*/
-
-router.use("/api/health", healthRoutes);
 
 /*
 |--------------------------------------------------------------------------
-| Authentication
+| Route Imports
 |--------------------------------------------------------------------------
 */
 
-router.use("/auth", authRoutes);
+const healthRoutes = require("./health.routes");
+const authRoutes = require("./auth.routes");
+const referenceRoutes = require("./reference.routes");
+const reportRoutes = require("./report.routes");
+
 
 /*
 |--------------------------------------------------------------------------
-| Reference Data (farms, crop-types, pests, diseases)
+| API Root
 |--------------------------------------------------------------------------
 */
 
-router.use("/", referenceRoutes);
-
-/*
-|--------------------------------------------------------------------------
-| Scout Reports
-|--------------------------------------------------------------------------
-*/
-
-router.use("/", reportRoutes);
-
-/*
-|--------------------------------------------------------------------------
-| Root Endpoint
-|--------------------------------------------------------------------------
-*/
-
-router.get("/", (req, res) => {
+router.get("/api", (req, res) => {
 
     res.json({
 
@@ -76,16 +70,61 @@ router.get("/", (req, res) => {
 
         version: "2.0.0",
 
-        status: "Running"
+        status: "Running",
+
+        environment: process.env.NODE_ENV || "development"
 
     });
 
 });
 
+
 /*
 |--------------------------------------------------------------------------
-| Export Router
+| Health
 |--------------------------------------------------------------------------
 */
+
+router.use(
+    "/api/health",
+    healthRoutes
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
+
+router.use(
+    "/api/auth",
+    authRoutes
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| Reference Data
+|--------------------------------------------------------------------------
+*/
+
+router.use(
+    "/api/reference",
+    referenceRoutes
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| Reports
+|--------------------------------------------------------------------------
+*/
+
+router.use(
+    "/api/reports",
+    reportRoutes
+);
+
 
 module.exports = router;
