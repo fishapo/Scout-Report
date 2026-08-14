@@ -1,0 +1,35 @@
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const { readWorkbook } = require("../server/xlsx-lite");
+const schema = require("../docs/phase22-master-import/master-import-schema.json");
+const dictionary = require("../docs/next-phases/data-model/field-dictionary.json");
+const form = fs.readFileSync(path.join(process.cwd(), "previews/user-form.html"), "utf8");
+const source = path.join(process.cwd(), "docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx");
+const headers = readWorkbook(fs.readFileSync(source))[0];
+function pass(message) { console.log(`PASS | ${message}`); }
+function fail(message) { throw new Error(`FAIL | ${message}`); }
+if (headers.length !== 38) fail(`source workbook has ${headers.length} columns`); pass("actual source workbook has 38 columns");
+if (JSON.stringify(headers) !== JSON.stringify(schema.columns.map(c => c.source_heading))) fail("source headings do not match approved inventory"); pass("source headings exactly match the 38-column inventory");
+if (schema.columns.length !== 38 || new Set(schema.columns.map(c => c.database_key)).size !== 38) fail("38 source database keys are not unique"); pass("38 source columns have unique application keys");
+if (dictionary.fields.length !== 93) fail(`canonical dictionary has ${dictionary.fields.length} fields`); pass("canonical dictionary contains 93 fields");
+const farms = ["FARM 1","FARM 2","FARM 3","FARM 4","FARM 5","FARM 6","FARM 7","FARM 8","FARM 9","FARM 10","FARM 11","FARM 12A","FARM 12B"];
+for (const farm of farms) if (!form.includes(farm)) fail(`form missing ${farm}`);
+if (form.includes("'GREENHOUSE'") || form.includes('"GREENHOUSE"')) fail("GREENHOUSE must not be a farm choice");
+pass("form contains all 13 farm choices and excludes GREENHOUSE from farm selection");
+for (const mode of ["Field","Greenhouse","Shadenet"]) if (!form.includes(`data-location=\"${mode}\"`)) fail(`form missing ${mode}`);
+pass("form retains Field/Greenhouse/Shadenet");
+if (!form.includes("isGreenhouse:locationType==='Greenhouse'")) fail("isGreenhouse compatibility mapping is incorrect");
+pass("isGreenhouse is reconciled to Greenhouse mode only");
+if (!form.includes('id="gh-value" value=""')) fail("GH field must start empty");
+pass("GH field starts empty for manual greenhouse number entry");
+for (const ref of ["REFERENCE_API+'/pests'","REFERENCE_API+'/diseases'","pest-reference-select","disease-reference-select"]) if (!form.includes(ref)) fail(`missing reference control ${ref}`);
+pass("pest/disease reference controls are wired");
+for (const feature of ["exportMasterCsv()","exportReportJson()","window.print()","master-workbook"]) if (!form.includes(feature)) fail(`missing form utility ${feature}`);
+pass("import/export/print controls are present");
+if (!form.includes("REFERENCE_API+'/crop-types/")) fail("crop variety endpoint is not wired");
+if (!form.includes("/varieties")) fail("crop variety endpoint does not request varieties");
+pass("Crop → Variety dependency uses the reference API");
+for (const f of ["server/migrations/008_phase23_canonical_provenance.sql","server/canonical-report.js","server/phase23.roundtrip.test.js"]) if (!fs.existsSync(f)) fail(`missing ${f}`);
+pass("Phase 23 canonical/provenance artifacts exist");
+console.log("PHASE 23 VERIFICATION: PASS");

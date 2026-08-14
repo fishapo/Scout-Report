@@ -1,0 +1,56 @@
+SCOUT REPORT — PHASE 12 VERIFICATION
+====================================
+
+Phase 12: CI/CD, Observability & Continuous Improvement
+
+Static gate:
+  Checks: 42
+  Passed: 42
+  Failed: 0
+
+Cumulative static gates:
+  Phase 1  29/29 PASS
+  Phase 2  28/28 PASS
+  Phase 3  22/22 PASS
+  Phase 4  28/28 PASS
+  Phase 5  29/29 PASS
+  Phase 6  29/29 PASS
+  Phase 7  PASS
+  Phase 8  28/28 PASS
+  Phase 9  28/28 PASS
+  Phase 10 30/30 PASS
+  Phase 11 21/21 PASS
+  Phase 12 42/42 PASS
+
+Focused new test:
+  server/metrics.test.js  1/1 PASS
+
+Admin dashboard verification:
+  PASS
+
+Shell syntax:
+  backup-postgres.sh  PASS
+  restore-postgres.sh PASS
+  build-release-artifact.sh PASS
+
+Full npm test in current environment:
+  Tests discovered: 66
+  Passed: 51
+  Failed: 14
+  Skipped: 1
+
+Runtime limitation:
+  The 14 failures are dependency/environment failures caused by the unavailable/incomplete
+  node_modules tree (representative error: MODULE_NOT_FOUND: dotenv). PostgreSQL is also not
+  available here, so the RUN_DB_INTEGRATION=1 test is executed by CI rather than claimed green locally.
+
+Release artifact:
+  release/scout-report-local.zip
+  SHA-256: 61cd8034c4f4808cb48472a8e9b1277f1286db982fb94a832e3b5acc1d507f7a
+  ZIP integrity: PASS
+
+Public Scout reference API:
+  /api/reference/* remains separately mounted and its raw response contract is preserved.
+
+Next measure:
+  Phase 13 — Live Release Execution, CI Acceptance, Deployment Validation and Production Observability Drill.

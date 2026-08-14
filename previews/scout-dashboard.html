@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scout Dashboard | Scout Report</title>
+<style>
+:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#172033;background:#f4f7f8}
+*{box-sizing:border-box}body{margin:0}.app{min-height:100vh}.top{background:#173b2b;color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:20px;font-weight:800}.top small{opacity:.75}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}.primary{background:#22a06b;color:#fff}.light{background:#fff;color:#173b2b}.danger{background:#b42318;color:#fff}.main{max-width:1200px;margin:0 auto;padding:28px}.welcome{background:#fff;border-radius:16px;padding:24px;box-shadow:0 5px 20px rgba(0,0,0,.06);margin-bottom:22px}.welcome h1{margin:0 0 7px}.muted{color:#667085}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.05)}.label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#667085}.value{font-size:30px;font-weight:800;margin-top:8px}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}.card h2{margin-top:0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid #eaecf0;white-space:nowrap}th{font-size:12px;color:#667085;text-transform:uppercase}.status{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}.status.Critical{background:#fee4e2;color:#b42318}.status.Completed{background:#dcfae9;color:#067647}.status.Pending{background:#fef0c7;color:#b54708}.quick{display:grid;gap:12px}.quick .btn{text-align:left;padding:15px}.error{color:#b42318;margin-top:10px}.empty{padding:25px;text-align:center;color:#667085}@media(max-width:850px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}@media(max-width:520px){.top{padding:15px;align-items:flex-start;flex-direction:column}.main{padding:15px}.stats{grid-template-columns:1fr}.actions{width:100%}.actions .btn{flex:1}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div><div class="brand">🌿 Scout Report</div><small>Field Scout Dashboard</small></div>
+  <div class="actions"><button class="btn light" onclick="location.href='/dashboard.html'">📊 Analytics</button><button class="btn light" onclick="location.href='/scout-form'">＋ New Scout Report</button><button class="btn danger" onclick="logout()">Logout</button></div>
+</header>
+<main class="main">
+  <section class="welcome"><h1 id="welcome">Scout Dashboard</h1><div class="muted">Review your scouting activity, monitor report status, and start a new field report.</div></section>
+  <section class="stats">
+    <div class="card"><div class="label">My Reports</div><div class="value" id="total">—</div></div>
+    <div class="card"><div class="label">Critical</div><div class="value" id="critical">—</div></div>
+    <div class="card"><div class="label">Completed</div><div class="value" id="completed">—</div></div>
+    <div class="card"><div class="label">Farms Covered</div><div class="value" id="farms">—</div></div>
+  </section>
+  <section class="grid">
+    <div class="card"><h2>Recent Reports</h2><div class="table-wrap"><table><thead><tr><th>ID</th><th>Farm</th><th>Crop</th><th>Date</th><th>Status</th><th>Workflow</th><th></th></tr></thead><tbody id="reports"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody></table></div><div id="error" class="error"></div></div>
+    <aside class="card"><h2>Quick Actions</h2><div class="quick">
+      <button class="btn primary" onclick="location.href='/scout-form'">📝 Create Scout Report</button>
+      <button class="btn light" onclick="loadDashboard()">↻ Refresh Dashboard</button>
+      <button class="btn light" onclick="showReference()">📚 View Reference Summary</button>
+    </div><div id="reference" class="muted" style="margin-top:18px"></div></aside>
+  </section>
+</main>
+</div>
+<script src="/assets/auth.js"></script>
+<script>
+const API='/api';
+let currentReports=[];
+async function api(url,options={}){const r=await browserAuth.fetchWithAuth(url,options);if(!r.ok){let b={};try{b=await r.json()}catch{}throw new Error(b.error||`Request failed (${r.status})`)}return r.json()}
+async function loadDashboard(){
+ document.getElementById('error').textContent='';
+ try{
+  const user=await browserAuth.init({redirectTo:'/login'}); if(!user||user.role!=='scout'){location.href='/dashboard';return}
+  document.getElementById('welcome').textContent=`Welcome, ${user.name||user.email}`;
+  currentReports=await api(`${API}/reports?limit=100`);
+  document.getElementById('total').textContent=currentReports.length;
+  document.getElementById('critical').textContent=currentReports.filter(r=>r.status==='Critical').length;
+  document.getElementById('completed').textContent=currentReports.filter(r=>r.status==='Completed').length;
+  document.getElementById('farms').textContent=new Set(currentReports.map(r=>r.farmId||r.farmName)).size;
+  renderReports();
+  await loadWorkflowStates();
+ }catch(e){console.error(e);document.getElementById('error').textContent=e.message||'Unable to load dashboard.'}
+}
+function renderReports(){const body=document.getElementById('reports');if(!currentReports.length){body.innerHTML='<tr><td colspan="7" class="empty">No reports have been submitted yet.</td></tr>';return}body.innerHTML=currentReports.slice(0,20).map(r=>`<tr><td>${esc(r.id)}</td><td>${esc(r.farmName)}</td><td>${esc(r.cropType)}</td><td>${esc(r.reportDate||'')}</td><td><span class="status ${esc(r.status)}">${esc(r.status)}</span></td><td><span class="status Pending" id="wf-${escAttr(r.id)}">Loading</span></td><td><button class="btn light" onclick="viewReport('${escAttr(r.id)}')">View</button><button class="btn primary" onclick="shareToSupervisor('${escAttr(r.id)}')">Share</button></td></tr>`).join('')}
+async function viewReport(id){try{const r=await api(`${API}/reports/${encodeURIComponent(id)}`);alert(`Report ${r.id}\nFarm: ${r.farmName}\nCrop: ${r.cropType}\nDate: ${r.reportDate}\nStatus: ${r.status}\nPests: ${r.pestCount||0}\nDiseases: ${r.diseaseCount||0}\n\n${r.notes||''}`)}catch(e){alert(e.message)}}
+async function loadWorkflowStates(){
+ for(const r of currentReports){
+  try{const w=(await api(`${API}/workflow/${encodeURIComponent(r.id)}`)).workflow; const el=document.getElementById(`wf-${r.id}`); if(el){el.textContent=workflowLabel(w.stage); el.className=`status ${workflowClass(w.stage)}`;}}catch(_e){}
+ }
+}
+function workflowLabel(stage){return ({draft:'Draft',awaiting_supervisor:'Awaiting Supervisor',supervisor_verified:'Supervisor Verified',awaiting_hod:'Awaiting HOD',hod_verified:'HOD Verified',awaiting_admin:'Awaiting Admin',approved:'Approved',returned_to_scout:'Returned for Correction'})[stage]||stage}
+function workflowClass(stage){if(stage==='approved')return 'Completed';if(stage.includes('awaiting'))return 'Pending';if(stage.includes('returned'))return 'Critical';return 'Pending'}
+async function shareToSupervisor(id){try{const list=await api('/workflow/recipients/inter_farm_supervisor');if(!list.recipients?.length){alert('No active Inter-Farm Supervisor is configured.');return}const names=list.recipients.map((u,i)=>`${i+1}. ${u.name} — ${u.email}`).join('\n');const choice=prompt(`Select Inter-Farm Supervisor number:\n${names}`);const idx=Number(choice)-1;const target=list.recipients[idx];if(!target)return;await api(`/workflow/${encodeURIComponent(id)}/share`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({recipientUserId:target.id,comment:'Submitted by field scout for verification.'})});alert('Report shared to the Inter-Farm Supervisor.');await loadDashboard();}catch(e){alert(e.message)}}
+async function showReference(){try{const r=await api(`${API}/reference`);document.getElementById('reference').innerHTML=`${r.farms.length} farms · ${r.cropTypes.length} crop types · ${r.pests.length} pests · ${r.diseases.length} diseases`;}catch(e){document.getElementById('reference').textContent=e.message}}
+async function logout(){try{await browserAuth.logout()}catch(e){location.href='/login'}}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(v){return esc(v)}
+document.addEventListener('DOMContentLoaded',loadDashboard);
+</script>
+</body>
+</html>

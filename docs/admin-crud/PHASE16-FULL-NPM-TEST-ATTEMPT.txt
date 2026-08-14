@@ -1,0 +1,17 @@
+PHASE 16 FULL NPM TEST ATTEMPT
+
+Command:
+npm test
+
+Result:
+66 tests discovered
+51 passed
+14 failed
+1 skipped
+
+Failure class:
+dependency/environment failures, including MODULE_NOT_FOUND: dotenv from database/store test paths.
+
+Interpretation:
+The Phase 16 source/release gate is green, but the local runtime suite is not production-certified in this environment.
+Run clean npm ci and npm test in GitHub Actions with PostgreSQL 16 before claiming live certification.

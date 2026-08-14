@@ -1,0 +1,2 @@
+farmId,farmName,cropType,variety,reportDate,weather,temperature,humidity,notes
+FARM-001,Green Valley Farm,Tomato,Cherry Tomato,2026-08-11,Sunny,24.5,65,Example legacy row

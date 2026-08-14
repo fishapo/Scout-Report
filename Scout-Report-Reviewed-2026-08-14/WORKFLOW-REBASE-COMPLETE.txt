@@ -1,0 +1,44 @@
+SCOUT REPORT — WORKFLOW REBASE
+10 August 2026
+
+Roles preserved and expanded:
+- scout
+- inter_farm_supervisor
+- head_of_department
+- admin
+
+Mandatory route:
+Scout -> Inter-Farm Supervisor verification -> Head of Department verification -> Admin final verification.
+
+New workflow tables:
+- report_workflows
+- report_workflow_events
+
+New dashboards:
+- /inter-farm-supervisor-dashboard
+- /head-of-department-dashboard
+- /admin-verification-dashboard
+- /admin-users
+
+New API:
+- /api/workflow/inbox
+- /api/workflow/:id
+- /api/workflow/recipients/:role
+- /api/workflow/:id/share
+- /api/workflow/:id/verify
+- /api/admin/users
+- /api/admin/users/:id/role
+
+Verification rule:
+No report can skip a verification gate. Rejections return the report to the immediately previous operational stage, and the complete event history remains auditable.
+
+Validation performed in the build environment:
+- Node syntax checks for changed server modules: PASS
+- Workflow transition tests: 2/2 PASS
+- Existing full npm test was not executed here because the release artifact does not contain node_modules and this environment cannot retrieve all npm packages.
+
+Run on the developer machine:
+1. npm install
+2. npm run migrate
+3. npm test
+4. npm start

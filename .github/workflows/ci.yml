@@ -1,0 +1,75 @@
+name: Scout Report CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: scout_user
+          POSTGRES_PASSWORD: scout_password
+          POSTGRES_DB: scout_report
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U scout_user -d scout_report"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      NODE_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_NAME: scout_report
+      DB_USER: scout_user
+      DB_PASSWORD: scout_password
+      JWT_SECRET: ci-only-test-secret
+      JWT_TTL_SECONDS: 3600
+      RUN_DB_INTEGRATION: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Clean install
+        run: npm ci
+      - name: Apply PostgreSQL schema
+        run: PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f server/migrations/init.sql
+      - name: Run phase verification gates
+        run: |
+          for phase in {1..19}; do npm run "verify:phase${phase}"; done
+      - name: Generate SLO evidence template
+        run: |
+          mkdir -p phase19-evidence
+          cp docs/operations/PHASE19-LIVE-EVIDENCE.md phase19-evidence/PHASE19-LIVE-EVIDENCE.md
+          cp docs/operations/PHASE19-LOCAL-ACCEPTANCE-2026-08-10.md phase19-evidence/PHASE19-LOCAL-ACCEPTANCE-2026-08-10.md
+      - name: Run focused UI and admin tests
+        run: npm run verify:ui
+      - name: Run full test suite
+        run: npm test
+      - name: Run PostgreSQL integration test
+        run: node --test server/integration.runtime.test.js
+      - name: Build release artifact
+        run: npm run release:artifact
+      - name: Upload Phase 19 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase19-evidence
+          path: phase19-evidence/*
+      - name: Verify release artifact checksum
+        run: sha256sum -c release/*.sha256
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-report-release
+          path: release/*

@@ -1,0 +1,19 @@
+SCOUT REPORT — PHASE 22
+Canonical Report Payload & Verification Checklist Extension
+12 August 2026
+
+STATUS: SOURCE-COMPLETE / RUNTIME DATABASE GATE PENDING
+
+Delivered:
+- canonical repeatable observation API
+- full canonical report aggregation
+- structured verification checklist
+- checklist-enforced approval gate
+- Phase 22 static verifier
+- Phase 22 contract tests
+- implementation and verification documentation
+
+Retained roles:
+scout -> inter_farm_supervisor -> head_of_department -> admin
+
+Next measure: Phase 23 controlled multi-source import, provenance, duplicate detection and reconciliation.

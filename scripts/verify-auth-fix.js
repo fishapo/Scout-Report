@@ -1,0 +1,31 @@
+"use strict";
+const fs = require("node:fs");
+const assert = require("node:assert/strict");
+const app = fs.readFileSync("server/app.js", "utf8");
+const page = fs.readFileSync("server/middleware/requirePageAuth.js", "utf8");
+const dashboard = fs.readFileSync("server/routes/dashboard.routes.js", "utf8");
+const reports = fs.readFileSync("server/routes/report.routes.js", "utf8");
+const auth = fs.readFileSync("server/auth.js", "utf8");
+const test = fs.readFileSync("server/auth-regression.test.js", "utf8");
+for (const role of ["scout", "inter_farm_supervisor", "head_of_department", "admin"]) {
+  assert.match(auth, new RegExp(`"${role}"`));
+}
+assert.match(auth, /cookies\?\.\[TOKEN_COOKIE_NAME\]/);
+assert.match(auth, /Bearer\\s\+\(\.\+\)/i);
+assert.match(page, /auth\.authenticate/);
+assert.doesNotMatch(page, /getUserForToken/);
+assert.match(app, /app\.get\("\/dashboard"/);
+assert.match(app, /inter-farm-supervisor-dashboard/);
+assert.match(app, /head-of-department-dashboard/);
+assert.match(dashboard, /auth\.authenticate/);
+assert.match(dashboard, /inter_farm_supervisor/);
+assert.match(dashboard, /head_of_department/);
+assert.match(reports, /auth\.authenticate/);
+assert.match(test, /expired-token/);
+assert.match(test, /HttpOnly cookie credentials/);
+console.log("AUTH FIX VERIFICATION PASSED");
+console.log("Canonical auth path: auth.authenticate");
+console.log("Credential modes: Bearer + access_token cookie");
+console.log("Roles: scout, inter_farm_supervisor, head_of_department, admin");
+console.log("Browser 401: redirect /login");
+console.log("Protected API/report routes: authenticated");

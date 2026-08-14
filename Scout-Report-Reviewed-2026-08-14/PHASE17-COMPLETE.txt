@@ -1,0 +1,13 @@
+SCOUT REPORT — PHASE 17 COMPLETE
+
+Phase 17 release-evidence and local PostgreSQL acceptance milestone is complete.
+
+Verified operator baseline:
+- clean npm ci: PASS (115 packages)
+- Express 4.22.2 / dotenv 16.4.7 / pg 8.22.0
+- PostgreSQL 17.10 reachable
+- RUN_DB_INTEGRATION=1 npm test: 68 tests / 67 pass / 0 fail / 1 skip
+- Phase 16 verification: 56/56 PASS
+
+Production/staging/CI execution is intentionally still marked pending where no external evidence was supplied.
+Next: Phase 18 — execute the exact release through CI, staging and controlled production/rollback/DR gates.

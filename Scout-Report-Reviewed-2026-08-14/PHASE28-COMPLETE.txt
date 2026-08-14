@@ -1,0 +1,19 @@
+PHASE 28 COMPLETE — 2026-08-14
+
+Fixed Scout Report pest/disease form submission reference mismatch.
+
+Key changes:
+- Added live PostgreSQL reference ID resolution for master pest observations.
+- Added live PostgreSQL reference ID resolution for master disease observations.
+- Added controlled spreadsheet/reference aliases.
+- Added standalone browser reference mapping module.
+- Added focused tests.
+- Updated README and Phase 28 implementation documentation.
+
+Focused verification:
+node --test previews/master-reference.test.js
+Result: 8 passed.
+
+Full npm test requires:
+npm ci
+npm test

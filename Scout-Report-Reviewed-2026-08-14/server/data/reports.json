@@ -1,0 +1,121 @@
+[
+  {
+    "id": "SR-001247",
+    "farmId": "farm-1",
+    "farmName": "Green Valley Farm",
+    "cropType": "Tomato",
+    "variety": "Cherry Tomato",
+    "isGreenhouse": false,
+    "reportDate": "2026-06-09",
+    "implementationWeek": 23,
+    "implementationYear": 2026,
+    "weather": "Sunny",
+    "temperature": 28.5,
+    "humidity": 65,
+    "location": { "latitude": 40.7128, "longitude": -74.0060 },
+    "pestObservations": [
+      {
+        "id": "po-1",
+        "pestType": "Whitefly",
+        "count": 12,
+        "severity": "High",
+        "affectedPercent": 35,
+        "locationOnPlant": "leaf",
+        "notes": ""
+      },
+      {
+        "id": "po-2",
+        "pestType": "Aphid",
+        "count": 8,
+        "severity": "Medium",
+        "affectedPercent": 20,
+        "locationOnPlant": "stem",
+        "notes": ""
+      }
+    ],
+    "diseaseObservations": [],
+    "notes": "Significant pest pressure on lower leaf surfaces. Recommend immediate intervention.",
+    "status": "Critical",
+    "createdAt": "2026-06-09T10:30:00.000Z"
+  },
+  {
+    "id": "SR-001246",
+    "farmId": "farm-2",
+    "farmName": "Sunset Ridge Farm",
+    "cropType": "Pepper",
+    "variety": "Bell Pepper",
+    "isGreenhouse": true,
+    "reportDate": "2026-06-08",
+    "implementationWeek": 23,
+    "implementationYear": 2026,
+    "weather": "Cloudy",
+    "temperature": 24.0,
+    "humidity": 70,
+    "location": { "latitude": 34.0522, "longitude": -118.2437 },
+    "pestObservations": [
+      {
+        "id": "po-3",
+        "pestType": "Spider Mite",
+        "count": 5,
+        "severity": "Medium",
+        "affectedPercent": 15,
+        "locationOnPlant": "leaf",
+        "notes": ""
+      }
+    ],
+    "diseaseObservations": [],
+    "notes": "",
+    "status": "Pending",
+    "createdAt": "2026-06-08T14:15:00.000Z"
+  },
+  {
+    "id": "SR-001245",
+    "farmId": "farm-3",
+    "farmName": "Highland Plains Farm",
+    "cropType": "Cucumber",
+    "variety": "English Cucumber",
+    "isGreenhouse": false,
+    "reportDate": "2026-06-07",
+    "implementationWeek": 23,
+    "implementationYear": 2026,
+    "weather": "Sunny",
+    "temperature": 26.0,
+    "humidity": 55,
+    "location": { "latitude": 39.7392, "longitude": -104.9903 },
+    "pestObservations": [],
+    "diseaseObservations": [],
+    "notes": "No issues detected during routine inspection.",
+    "status": "Completed",
+    "createdAt": "2026-06-07T09:00:00.000Z"
+  },
+  {
+    "id": "SR-001244",
+    "farmId": "farm-1",
+    "farmName": "Green Valley Farm",
+    "cropType": "Lettuce",
+    "variety": "Romaine",
+    "isGreenhouse": false,
+    "reportDate": "2026-06-06",
+    "implementationWeek": 23,
+    "implementationYear": 2026,
+    "weather": "Rainy",
+    "temperature": 18.0,
+    "humidity": 85,
+    "location": { "latitude": 40.7128, "longitude": -74.0060 },
+    "pestObservations": [
+      {
+        "id": "po-4",
+        "pestType": "Thrips",
+        "count": 15,
+        "severity": "High",
+        "affectedPercent": 25,
+        "locationOnPlant": "leaf",
+        "notes": ""
+      }
+    ],
+    "diseaseObservations": [],
+    "notes": "",
+    "status": "Pending",
+    "createdAt": "2026-06-06T11:45:00.000Z"
+  }
+]

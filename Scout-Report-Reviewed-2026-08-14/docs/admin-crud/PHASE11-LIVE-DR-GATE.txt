@@ -1,0 +1,7 @@
+LIVE DR GATE
+
+Status: ENVIRONMENT-GATED
+
+A real PostgreSQL backup/restore test was not claimed in the current execution environment because
+PostgreSQL/psql is unavailable. Execute scripts/backup-postgres.sh and scripts/restore-postgres.sh
+against a disposable PostgreSQL database and complete docs/operations/PHASE11-DR-TEST-RECORD-TEMPLATE.md.

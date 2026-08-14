@@ -1,0 +1,21 @@
+{
+  "phase": 24,
+  "title": "Scout Report Form Operations and Reference Alignment",
+  "source_workbook": "docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx",
+  "master_columns": 38,
+  "farm_choices": 13,
+  "location_modes": ["Field", "Greenhouse", "Shadenet"],
+  "crop_types": 130,
+  "varieties": 3466,
+  "pest_types": 14,
+  "disease_types": 12,
+  "features": ["crop-variety dependency", "GH greenhouse number", "master import", "CSV export", "JSON export", "print", "GPS/location", "pest references", "disease references"],
+  "verification": {
+    "phase23": "PASS",
+    "master_form": "PASS (farm/location alignment corrected)",
+    "master_key_coverage": "38/38 PASS",
+    "inline_form_javascript": "PASS",
+    "server_syntax": "PASS"
+  },
+  "integration_gate": "Clean Windows npm install + PostgreSQL migration + full test suite"
+}

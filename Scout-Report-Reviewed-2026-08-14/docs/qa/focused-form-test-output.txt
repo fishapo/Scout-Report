@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: latest master spreadsheet crop catalog is embedded with 130 crop types
+ok 1 - latest master spreadsheet crop catalog is embedded with 130 crop types
+  ---
+  duration_ms: 3.150118
+  type: 'test'
+  ...
+# Subtest: every catalog crop has spreadsheet-tied varieties with source codes
+ok 2 - every catalog crop has spreadsheet-tied varieties with source codes
+  ---
+  duration_ms: 3.456891
+  type: 'test'
+  ...
+# Subtest: form uses spreadsheet master crop catalog and active GH field
+ok 3 - form uses spreadsheet master crop catalog and active GH field
+  ---
+  duration_ms: 0.882967
+  type: 'test'
+  ...
+# Subtest: form exposes separate disease and other-condition references
+ok 4 - form exposes separate disease and other-condition references
+  ---
+  duration_ms: 0.24617
+  type: 'test'
+  ...
+# Subtest: form no longer labels the save action as a draft
+ok 5 - form no longer labels the save action as a draft
+  ---
+  duration_ms: 0.582266
+  type: 'test'
+  ...
+# Subtest: master spreadsheet has 38 canonical source columns
+ok 6 - master spreadsheet has 38 canonical source columns
+  ---
+  duration_ms: 2.3365
+  type: 'test'
+  ...
+# Subtest: canonical dictionary remains 93 fields
+ok 7 - canonical dictionary remains 93 fields
+  ---
+  duration_ms: 0.148427
+  type: 'test'
+  ...
+# Subtest: Scout Report form contains all 38 master database keys
+ok 8 - Scout Report form contains all 38 master database keys
+  ---
+  duration_ms: 1.086337
+  type: 'test'
+  ...
+# Subtest: Scout Report form exposes required farm choices and location modes
+ok 9 - Scout Report form exposes required farm choices and location modes
+  ---
+  duration_ms: 0.615489
+  type: 'test'
+  ...
+# Subtest: form retains environment and GPS controls
+ok 10 - form retains environment and GPS controls
+  ---
+  duration_ms: 0.227254
+  type: 'test'
+  ...
+# Subtest: crop selection uses nested spreadsheet-seeded varieties
+ok 11 - crop selection uses nested spreadsheet-seeded varieties
+  ---
+  duration_ms: 0.16609
+  type: 'test'
+  ...
+# Subtest: form submits the selected spreadsheet crop name and only uses a live farm id
+ok 12 - form submits the selected spreadsheet crop name and only uses a live farm id
+  ---
+  duration_ms: 0.285363
+  type: 'test'
+  ...
+# Subtest: spreadsheet pest and disease reference labels are present
+ok 13 - spreadsheet pest and disease reference labels are present
+  ---
+  duration_ms: 0.418671
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 130.749946

@@ -1,0 +1,93 @@
+npm notice run scout-report@2.0.0 test
+npm notice run node --test server/**/*.test.js
+G£ö health endpoint reports healthy and degraded database states (1364.8073ms)
+G£ö web client is served from the application root (33.5613ms)
+G£ö production middleware emits security headers and redirects forwarded HTTP (41.2159ms)
+G£ö auth endpoints cover register login me and logout (83.8379ms)
+G£ö authentication attempts are throttled after repeated failures (107.4934ms)
+G£ö reference endpoints return data and variety misses return 404 (49.4416ms)
+Error: Authentication required
+    at authenticate (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\server\app.test.js:115:21)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\server\app.test.js:115:21)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\server\app.test.js:115:21)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+G£ö protected report routes require authentication and pass filters to store (59.6974ms)
+Error: Forbidden
+    at C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\server\app.test.js:125:21
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:149:13)
+    at authenticate (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\server\app.test.js:121:7)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\node_modules\express\lib\router\index.js:346:12) {
+  statusCode: 403
+}
+G£ö role-based routes allow admins and reject scouts (47.8812ms)
+G£ö report controller endpoints cover create update observations delete and not-found edges (56.82ms)
+Error: Invalid status filter
+    at TestContext.<anonymous> (C:\Users\Isaac\Documents\Codex\2026-08-06\cgh\work\scout-report-review\Scout-Report-main\server\app.test.js:366:27)
+    at Test.runInAsyncScope (node:async_hooks:227:14)
+    at Test.run (node:internal/test_runner/test:1306:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+  statusCode: 400
+}
+G£ö controller errors return safe client responses (33.3291ms)
+G£ö hashPassword stores a non-plaintext hash and verifyPassword validates it (2024.6625ms)
+G£ö registerUser creates the first user as admin and rejects weak passwords (368.1669ms)
+G£ö loginUser issues a JWT-backed session and logout revokes it (1456.1312ms)
+G£ö authorizeRoles rejects authenticated users without the required role (2.1213ms)
+G£ö saveReport creates a report and observations transactionally (131.4647ms)
+G£ö saveReport validates crop variety and maps duplicate ids to conflict errors (8.6042ms)
+G£ö findReport returns null for missing reports (2.8037ms)
+G£ö updateReport validates fields and returns the updated report (5.0623ms)
+G£ö addPestObservation returns null for missing reports and refreshes status when found (19.7264ms)
+G£ö deleteReport removes existing reports and reports misses (8.2125ms)
+G£ö deriveStatus returns Critical when critical severity present (2.6894ms)
+G£ö deriveStatus returns Completed when no observations (0.4648ms)
+n¦ú getReference returns farms and crop types when database is available (0.7483ms) # SKIP
+Gä¦ tests 23
+Gä¦ suites 0
+Gä¦ pass 22
+Gä¦ fail 0
+Gä¦ cancelled 0
+Gä¦ skipped 1
+Gä¦ todo 0
+Gä¦ duration_ms 4418.7316

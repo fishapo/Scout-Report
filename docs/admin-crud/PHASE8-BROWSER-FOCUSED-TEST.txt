@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: admin reference client sends authenticated farm create and unwraps data
+ok 1 - admin reference client sends authenticated farm create and unwraps data
+  ---
+  duration_ms: 2.059645
+  type: 'test'
+  ...
+# Subtest: admin reference client handles dependency-protected delete errors
+ok 2 - admin reference client handles dependency-protected delete errors
+  ---
+  duration_ms: 0.893465
+  type: 'test'
+  ...
+# Subtest: admin reference client handles 204 deletes without parsing JSON
+ok 3 - admin reference client handles 204 deletes without parsing JSON
+  ---
+  duration_ms: 0.63377
+  type: 'test'
+  ...
+# Subtest: admin reference client keeps variety parent scoped
+ok 4 - admin reference client keeps variety parent scoped
+  ---
+  duration_ms: 1.854541
+  type: 'test'
+  ...
+# Subtest: browser auth login stores token and user state in sessionStorage
+ok 5 - browser auth login stores token and user state in sessionStorage
+  ---
+  duration_ms: 1.936252
+  type: 'test'
+  ...
+# Subtest: fetchWithAuth attaches bearer token and clears state on 401
+ok 6 - fetchWithAuth attaches bearer token and clears state on 401
+  ---
+  duration_ms: 1.196104
+  type: 'test'
+  ...
+# Subtest: logout clears stored auth state and redirects to login
+ok 7 - logout clears stored auth state and redirects to login
+  ---
+  duration_ms: 1.647524
+  type: 'test'
+  ...
+# Subtest: init loads authenticated user from saved token via /auth/me
+ok 8 - init loads authenticated user from saved token via /auth/me
+  ---
+  duration_ms: 0.821448
+  type: 'test'
+  ...
+# Subtest: init restores an authenticated browser session from the HttpOnly cookie
+ok 9 - init restores an authenticated browser session from the HttpOnly cookie
+  ---
+  duration_ms: 1.016317
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 91.685062

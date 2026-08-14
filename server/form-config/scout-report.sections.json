@@ -1,0 +1,184 @@
+{
+  "version": "2.0.0",
+  "sections": [
+    {
+      "id": "visit",
+      "label": "Visit & Field",
+      "fields": [
+        "farm",
+        "field",
+        "grower",
+        "scout",
+        "visitPurpose",
+        "scoutingPattern",
+        "reportDate",
+        "visitStartedAt",
+        "visitEndedAt"
+      ]
+    },
+    {
+      "id": "crop",
+      "label": "Crop & Growth",
+      "fields": [
+        "cropType",
+        "variety",
+        "growthStage",
+        "plantingDate",
+        "plantHeight",
+        "plantPopulation",
+        "rowWidth",
+        "plantSpacing",
+        "vigour"
+      ]
+    },
+    {
+      "id": "environment",
+      "label": "Weather, Soil & Water",
+      "fields": [
+        "weather",
+        "temperature",
+        "humidity",
+        "windSpeed",
+        "windDirection",
+        "cloudCover",
+        "rainfallMm",
+        "soilMoistureStatus",
+        "soilPh",
+        "soilEc",
+        "irrigationMethod",
+        "waterStress"
+      ]
+    },
+    {
+      "id": "weeds",
+      "label": "Weeds",
+      "repeatable": true,
+      "fields": [
+        "weedType",
+        "pressure",
+        "averageHeight",
+        "maxHeight",
+        "density",
+        "affectedPercent",
+        "growthStage",
+        "notes"
+      ]
+    },
+    {
+      "id": "pests",
+      "label": "Pests & Beneficials",
+      "repeatable": true,
+      "fields": [
+        "pestType",
+        "scientificName",
+        "lifeStage",
+        "count",
+        "samplingMethod",
+        "affectedPercent",
+        "severity",
+        "locationOnPlant",
+        "economicThreshold",
+        "notes"
+      ]
+    },
+    {
+      "id": "diseases",
+      "label": "Diseases & Symptoms",
+      "repeatable": true,
+      "fields": [
+        "diseaseType",
+        "scientificName",
+        "symptom",
+        "severity",
+        "affectedPercent",
+        "plantPart",
+        "diagnosticConfidence",
+        "sampleId",
+        "notes"
+      ]
+    },
+    {
+      "id": "management",
+      "label": "Actions & Recommendations",
+      "repeatable": true,
+      "fields": [
+        "actionType",
+        "targetName",
+        "productName",
+        "activeIngredient",
+        "rateValue",
+        "rateUnit",
+        "method",
+        "recommendationText",
+        "priority",
+        "followUpDate"
+      ]
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence & Samples",
+      "repeatable": true,
+      "fields": [
+        "media",
+        "sampleType",
+        "sampleCode",
+        "requestedTest",
+        "result"
+      ]
+    },
+    {
+      "id": "sampling",
+      "label": "Survey Stops & Sampling",
+      "repeatable": true,
+      "fields": [
+        "sequenceNo",
+        "latitude",
+        "longitude",
+        "gpsAccuracyM",
+        "locationLabel",
+        "samplingMethod",
+        "sampleSize",
+        "sampleUnit",
+        "notes"
+      ]
+    },
+    {
+      "id": "soil_water",
+      "label": "Soil & Irrigation Detail",
+      "repeatable": true,
+      "fields": [
+        "moistureStatus",
+        "moisturePercent",
+        "soilPh",
+        "soilEc",
+        "texture",
+        "drainage",
+        "soilTemperature",
+        "irrigationMethod",
+        "irrigationStatus",
+        "frequency",
+        "durationMinutes",
+        "estimatedVolume",
+        "volumeUnit",
+        "waterSource",
+        "waterStress"
+      ]
+    },
+    {
+      "id": "nutrients_stress",
+      "label": "Nutrients & Abiotic Stress",
+      "repeatable": true,
+      "fields": [
+        "nutrient",
+        "deficiencyLevel",
+        "symptomDescription",
+        "affectedPercent",
+        "suspectedCause",
+        "stressType",
+        "severity",
+        "cause",
+        "description"
+      ]
+    }
+  ]
+}
