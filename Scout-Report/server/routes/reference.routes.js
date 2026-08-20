@@ -1,0 +1,13 @@
+"use strict";
+const express = require("express");
+const router = express.Router();
+const referenceController = require("../controllers/reference.controller");
+router.get("/", referenceController.getReference);
+router.get("/farms", referenceController.getFarms);
+router.get("/master-crops", referenceController.getMasterCrops);
+router.get("/stress-references", referenceController.getStressReferences);
+router.get("/crop-types", referenceController.getCropTypes);
+router.get("/crop-types/:id/varieties", referenceController.getCropVarieties);
+router.get("/pests", referenceController.getPests);
+router.get("/diseases", referenceController.getDiseases);
+module.exports = router;

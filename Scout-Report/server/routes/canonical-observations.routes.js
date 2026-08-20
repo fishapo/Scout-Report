@@ -1,0 +1,10 @@
+"use strict";
+const express = require("express");
+const auth = require("../auth");
+const controller = require("../controllers/canonical-observations.controller");
+const router = express.Router();
+const roles = auth.authorizeRoles("admin","scout","inter_farm_supervisor","head_of_department");
+router.get("/:id/full", auth.authenticate, roles, controller.full);
+router.get("/:id/:domain", auth.authenticate, roles, controller.list);
+router.post("/:id/:domain", auth.authenticate, roles, controller.create);
+module.exports = router;

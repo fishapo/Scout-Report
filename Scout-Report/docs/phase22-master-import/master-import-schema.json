@@ -1,0 +1,397 @@
+{
+  "schema_version": "phase22.master-import.v1",
+  "source_workbook": "Copy of Combined Scout Report Master ver_21-2026(1).xlsx",
+  "source_sheet": "Clean Data",
+  "source_column_count": 38,
+  "status": "proposed_pending_business_approval",
+  "import_policy": {
+    "unknown_columns": "reject_with_report",
+    "missing_columns": "warn_and_continue_only_if_optional",
+    "blank_observations": "do_not_assume_zero",
+    "reference_values": "resolve_against_reference_tables",
+    "duplicates": "detect_and_report_before_commit",
+    "transaction": "all_rows_or_none_per_import_batch"
+  },
+  "columns": [
+    {
+      "column": "A1",
+      "source_heading": "WEEK",
+      "database_key": "week",
+      "domain": "report_header",
+      "proposed_type": "integer",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Source heading retained."
+    },
+    {
+      "column": "B1",
+      "source_heading": "Farm",
+      "database_key": "farm",
+      "domain": "report_header",
+      "proposed_type": "string",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Maps to farm reference; confirm whether source value is farm ID or display code."
+    },
+    {
+      "column": "C1",
+      "source_heading": "GH",
+      "database_key": "gh",
+      "domain": "report_header",
+      "proposed_type": "string",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Greenhouse identifier."
+    },
+    {
+      "column": "D1",
+      "source_heading": "Inpl. wk-year",
+      "database_key": "inplanting_week_year",
+      "domain": "report_header",
+      "proposed_type": "string",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Preserve source format such as 40/25 until business-approved parsing is defined."
+    },
+    {
+      "column": "E1",
+      "source_heading": "Crop",
+      "database_key": "crop",
+      "domain": "report_header",
+      "proposed_type": "string",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Maps to crop reference."
+    },
+    {
+      "column": "F1",
+      "source_heading": "Variety",
+      "database_key": "variety",
+      "domain": "report_header",
+      "proposed_type": "string",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Maps to crop variety reference; source contains free-text/encoded values."
+    },
+    {
+      "column": "G1",
+      "source_heading": "Thrips_Larvae",
+      "database_key": "thrips_larvae",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "H1",
+      "source_heading": "Thrips_adults",
+      "database_key": "thrips_adults",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "I1",
+      "source_heading": "LEAF MINER_feeding point",
+      "database_key": "leaf_miner_feeding_point",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "J1",
+      "source_heading": "LEAF MINER_complete mines",
+      "database_key": "leaf_miner_complete_mines",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "K1",
+      "source_heading": "White fly_eggs",
+      "database_key": "white_fly_eggs",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "L1",
+      "source_heading": "White fly_adult",
+      "database_key": "white_fly_adult",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "M1",
+      "source_heading": "Aphids_nymphs",
+      "database_key": "aphids_nymphs",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "N1",
+      "source_heading": "Aphids_adult",
+      "database_key": "aphids_adult",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "O1",
+      "source_heading": "Spider mite_eggs",
+      "database_key": "spider_mite_eggs",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "P1",
+      "source_heading": "Spider mite_adults",
+      "database_key": "spider_mite_adults",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "Q1",
+      "source_heading": "Beetles_countimg",
+      "database_key": "beetles_counting",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation. Source spelling appears to be 'countimg'; proposed canonical key uses 'counting'."
+    },
+    {
+      "column": "R1",
+      "source_heading": "Cater pillar_spots",
+      "database_key": "caterpillar_spots",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation. Proposed key removes source spacing in organism name."
+    },
+    {
+      "column": "S1",
+      "source_heading": "Butter-flies_counting",
+      "database_key": "butterflies_counting",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "T1",
+      "source_heading": "Sciara fly_spots",
+      "database_key": "sciara_fly_spots",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "U1",
+      "source_heading": "Cut worms_counting",
+      "database_key": "cut_worms_counting",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "V1",
+      "source_heading": "Mealy bugs_spots",
+      "database_key": "mealy_bugs_spots",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "W1",
+      "source_heading": "Slugs_counting",
+      "database_key": "slugs_counting",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "X1",
+      "source_heading": "Snails_counting",
+      "database_key": "snails_counting",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "Y1",
+      "source_heading": "Nema- todes_spots",
+      "database_key": "nematodes_spots",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation. Proposed key removes source hyphenation."
+    },
+    {
+      "column": "Z1",
+      "source_heading": "Chlo- rosis_spots/MP",
+      "database_key": "chlorosis_spots_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation. Proposed key removes source hyphenation and slash for database safety."
+    },
+    {
+      "column": "AA1",
+      "source_heading": "Fusarium_MP",
+      "database_key": "fusarium_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AB1",
+      "source_heading": "Rhyzoc tonia_MP",
+      "database_key": "rhizoctonia_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation. Source spelling is preserved; proposed key uses the conventional 'rhizoctonia' spelling only as a technical key."
+    },
+    {
+      "column": "AC1",
+      "source_heading": "Powdery mildew_MP",
+      "database_key": "powdery_mildew_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AD1",
+      "source_heading": "Botrytis_spots/MP",
+      "database_key": "botrytis_spots_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AE1",
+      "source_heading": "Leafspot_Black",
+      "database_key": "leafspot_black",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AF1",
+      "source_heading": "Leafspot_Brown",
+      "database_key": "leafspot_brown",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AG1",
+      "source_heading": "Flower buds_Cuttings",
+      "database_key": "flower_buds_cuttings",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AH1",
+      "source_heading": "Chem. Damage_MP",
+      "database_key": "chemical_damage_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AI1",
+      "source_heading": "Virus doubt_MP",
+      "database_key": "virus_doubt_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AJ1",
+      "source_heading": "Mix_MP",
+      "database_key": "mix_mp",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AK1",
+      "source_heading": "Dry spots_Bags/spots",
+      "database_key": "dry_spots_bags_spots",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    },
+    {
+      "column": "AL1",
+      "source_heading": "Others",
+      "database_key": "others",
+      "domain": "observation",
+      "proposed_type": "number_or_text",
+      "normalization_required": true,
+      "status": "PROPOSED_PENDING_BUSINESS_APPROVAL",
+      "notes": "Observation field. Confirm whether blank means zero, not observed, or not applicable before enforcing numeric validation."
+    }
+  ]
+}

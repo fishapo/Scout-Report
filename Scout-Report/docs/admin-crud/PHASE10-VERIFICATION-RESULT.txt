@@ -1,0 +1,34 @@
+Phase 10 Final Release Candidate Verification
+PASS | package metadata consistent
+PASS | npm pinned
+PASS | lockfile v3
+PASS | public npm registry declared
+PASS | exists: docs/RELEASE-RUNBOOK.md
+PASS | exists: scripts/verify-phase9.js
+PASS | exists: scripts/verify-phase8.js
+PASS | exists: docker-compose.yml
+PASS | exists: server/migrations/init.sql
+PASS | exists: .env.example
+PASS | exists: previews/admin-dashboard.html
+PASS | exists: previews/admin-reference.js
+PASS | public reference routes mounted
+PASS | admin reference routes mounted
+PASS | production JWT protection
+PASS | health endpoint present
+PASS | security headers mounted
+PASS | auth rate limiter present
+PASS | clean install documented
+PASS | syntax: server/index.js
+PASS | syntax: server/app.js
+PASS | syntax: server/config/env.js
+PASS | syntax: server/db.js
+PASS | syntax: server/auth.js
+PASS | syntax: server/controllers/auth.controller.js
+PASS | syntax: server/routes/auth.routes.js
+PASS | syntax: server/routes/index.js
+PASS | syntax: previews/admin-reference.js
+PASS | syntax: scripts/verify-phase9.js
+PASS | syntax: scripts/verify-phase10.js
+Checks: 30
+Passed: 30
+Failed: 0

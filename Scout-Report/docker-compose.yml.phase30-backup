@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: scout_user
+      POSTGRES_PASSWORD: scout_password
+      POSTGRES_DB: scout_report
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - "C:/Scout-Report-29-migrations:/docker-entrypoint-initdb.d:ro"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scout_user -d scout_report"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

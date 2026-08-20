@@ -1,0 +1,39 @@
+position,source_heading,database_key,domain,form_control,canonical_field_or_strategy,preservation
+1,WEEK,week,report_header,impl-week,implementationWeek,source_payload + masterObservations
+2,Farm,farm,report_header,farm-select,farmId + farmName,source_payload + masterObservations
+3,GH,gh,report_header,gh-value,isGreenhouse compatibility + master location mode,source_payload + masterObservations
+4,Inpl. wk-year,inplanting_week_year,report_header,inpl-wk-year,source-specific; preserve until business-approved canonical interpretation,source_payload + masterObservations
+5,Crop,crop,report_header,crop-select,cropType,source_payload + masterObservations
+6,Variety,variety,report_header,variety-select,variety,source_payload + masterObservations
+7,Thrips_Larvae,thrips_larvae,observation,data-master=thrips_larvae,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+8,Thrips_adults,thrips_adults,observation,data-master=thrips_adults,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+9,LEAF MINER_feeding point,leaf_miner_feeding_point,observation,data-master=leaf_miner_feeding_point,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+10,LEAF MINER_complete mines,leaf_miner_complete_mines,observation,data-master=leaf_miner_complete_mines,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+11,White fly_eggs,white_fly_eggs,observation,data-master=white_fly_eggs,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+12,White fly_adult,white_fly_adult,observation,data-master=white_fly_adult,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+13,Aphids_nymphs,aphids_nymphs,observation,data-master=aphids_nymphs,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+14,Aphids_adult,aphids_adult,observation,data-master=aphids_adult,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+15,Spider mite_eggs,spider_mite_eggs,observation,data-master=spider_mite_eggs,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+16,Spider mite_adults,spider_mite_adults,observation,data-master=spider_mite_adults,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+17,Beetles_countimg,beetles_counting,observation,data-master=beetles_counting,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+18,Cater pillar_spots,caterpillar_spots,observation,data-master=caterpillar_spots,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+19,Butter-flies_counting,butterflies_counting,observation,data-master=butterflies_counting,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+20,Sciara fly_spots,sciara_fly_spots,observation,data-master=sciara_fly_spots,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+21,Cut worms_counting,cut_worms_counting,observation,data-master=cut_worms_counting,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+22,Mealy bugs_spots,mealy_bugs_spots,observation,data-master=mealy_bugs_spots,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+23,Slugs_counting,slugs_counting,observation,data-master=slugs_counting,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+24,Snails_counting,snails_counting,observation,data-master=snails_counting,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+25,Nema- todes_spots,nematodes_spots,observation,data-master=nematodes_spots,repeatable pest observation: pestType/pestLifeStage/pestCount/pestAffectedPercent/pestSeverity,source_payload + masterObservations
+26,Chlo- rosis_spots/MP,chlorosis_spots_mp,observation,data-master=chlorosis_spots_mp,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+27,Fusarium_MP,fusarium_mp,observation,data-master=fusarium_mp,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+28,Rhyzoc tonia_MP,rhizoctonia_mp,observation,data-master=rhizoctonia_mp,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+29,Powdery mildew_MP,powdery_mildew_mp,observation,data-master=powdery_mildew_mp,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+30,Botrytis_spots/MP,botrytis_spots_mp,observation,data-master=botrytis_spots_mp,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+31,Leafspot_Black,leafspot_black,observation,data-master=leafspot_black,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+32,Leafspot_Brown,leafspot_brown,observation,data-master=leafspot_brown,repeatable disease observation: diseaseType/diseaseAffectedPercent/diseaseSeverity,source_payload + masterObservations
+33,Flower buds_Cuttings,flower_buds_cuttings,observation,data-master=flower_buds_cuttings,canonical payload preserves source-specific value; semantic mapping pending approval,source_payload + masterObservations
+34,Chem. Damage_MP,chemical_damage_mp,observation,data-master=chemical_damage_mp,canonical payload preserves source-specific value; semantic mapping pending approval,source_payload + masterObservations
+35,Virus doubt_MP,virus_doubt_mp,observation,data-master=virus_doubt_mp,canonical payload preserves source-specific value; semantic mapping pending approval,source_payload + masterObservations
+36,Mix_MP,mix_mp,observation,data-master=mix_mp,canonical payload preserves source-specific value; semantic mapping pending approval,source_payload + masterObservations
+37,Dry spots_Bags/spots,dry_spots_bags_spots,observation,data-master=dry_spots_bags_spots,canonical payload preserves source-specific value; semantic mapping pending approval,source_payload + masterObservations
+38,Others,others,observation,data-master=others,canonical payload preserves source-specific value; semantic mapping pending approval,source_payload + masterObservations

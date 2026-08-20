@@ -1,0 +1,20 @@
+node_modules/
+.npm-cache
+.env
+*.log
+backups/
+*.dump
+*.sql.gz
+
+# Local environment and secrets
+.env.*
+!.env.example
+
+# Local backups and generated source maps
+*.bak
+*.tmp
+*.swp
+
+# Local dependency/install artifacts
+node_modules/
+.npm-cache/

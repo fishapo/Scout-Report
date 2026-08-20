@@ -1,0 +1,42 @@
+SCOUT REPORT - PHASE 2 REFACTORED / ROUTING + DATABASE FIX
+
+1. Open Git Bash in this folder.
+2. Run:
+   npm install
+3. Make sure PostgreSQL is running.
+4. Verify .env:
+   DB_HOST=localhost
+   DB_PORT=5432   (use 5433 if using the included docker-compose.yml)
+   DB_NAME=scout_report
+   DB_USER=scout_user
+   DB_PASSWORD=<your-local-db-password>
+5. Start:
+   npm start
+6. Open:
+   http://localhost:3000/
+
+Expected browser flow:
+   / -> Login
+   successful login -> /dashboard
+   scout -> /scout-dashboard
+   New Scout Report -> /scout-form
+   admin -> /admin-dashboard.html
+
+API checks:
+   /health
+   /api/health
+   /api/reference
+   /api/reference/farms
+   /api/reference/crop-types
+   /api/reference/pests
+   /api/reference/diseases
+
+If the server reports:
+   SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string
+
+This release loads .env directly from the project root inside server/db.js.
+If the message still appears, check that DB_PASSWORD exists and is not empty in .env.
+
+If using Docker Compose, run:
+   docker compose up -d postgres
+and set DB_PORT=5433 in .env because compose maps host 5433 -> container 5432.

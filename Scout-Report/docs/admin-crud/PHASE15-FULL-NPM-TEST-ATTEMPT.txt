@@ -1,0 +1,15 @@
+PHASE 15 FULL npm test ATTEMPT
+
+Command:
+npm test
+
+Result:
+66 tests discovered
+51 passed
+14 failed
+1 skipped
+
+The failures are dependency/environment failures caused by the incomplete dependency tree after npm ci could not complete. Representative failure:
+MODULE_NOT_FOUND: dotenv
+
+The result is NOT claimed as production-certified. The real CI runner must perform clean npm ci before interpreting the full test result.

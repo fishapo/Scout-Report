@@ -1,0 +1,28 @@
+{
+  "baseline_zip": "Scout-Report-Admin-Dashboard-Rebase-2026-08-10.zip",
+  "plan_date": "2026-08-11",
+  "new_paths": [
+    "NEXT-DEV-PROMPT-PHASE20.md",
+    "docs/next-phases/NEXT-PHASE-MASTER-PLAN.md",
+    "docs/next-phases/data-model/CANONICAL-SCHEMA.md",
+    "docs/next-phases/data-model/004_expanded_scouting_model.sql",
+    "docs/next-phases/templates/legacy_flat_scout_report.csv",
+    "docs/next-phases/templates/kenya_ipm_surveillance.csv",
+    "docs/next-phases/templates/uw_style_survey_stops.csv",
+    "docs/next-phases/templates/SCOUT-REPORT-CANONICAL-IMPORT-TEMPLATE.xlsx",
+    "docs/next-phases/templates/digital_scouting.csv",
+    "docs/next-phases/import-mapping/source-adapters.json",
+    "docs/next-phases/import-mapping/EXTERNAL-STRUCTURE-REVIEW.md",
+    "docs/next-phases/testing/PHASE20-29-TEST-MATRIX.md",
+    "docs/next-phases/milestones/PHASE20-29-EXECUTION-PLAN.md",
+    "docs/next-phases/architecture/GAP-ANALYSIS.md",
+    "docs/next-phases/architecture/API-EXTENSION-PLAN.md"
+  ],
+  "source_research": [
+    "UW-Madison",
+    "Jotform",
+    "Agri-Data",
+    "KALRO",
+    "Kenya PP&FSD"
+  ]
+}

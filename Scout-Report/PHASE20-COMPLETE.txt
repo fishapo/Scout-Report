@@ -1,0 +1,31 @@
+SCOUT REPORT — PHASE 20 WORKFLOW REBASE COMPLETE
+10 August 2026
+
+Scope: Multi-stage report ownership, sharing and verification.
+
+Roles:
+- scout
+- inter_farm_supervisor
+- head_of_department
+- admin
+
+Mandatory workflow:
+Scout -> Inter-Farm Supervisor verification -> Head of Department verification -> Administrator final verification.
+
+Delivered:
+- server/workflow.js
+- server/workflow.store.js
+- server/controllers/workflow.controller.js
+- server/controllers/admin/users.controller.js
+- server/routes/workflow.routes.js
+- server/routes/admin/users.routes.js
+- server/migrations/002_report_workflow.sql
+- workflow dashboards and admin role-management UI
+- workflow transition tests
+- workflow operations and rebase documentation
+
+Validation:
+- changed JavaScript syntax checks: PASS
+- workflow transition tests: 2/2 PASS
+- migration files present: PASS
+- full npm test: MUST be rerun on the developer machine after npm install because node_modules is intentionally excluded from the release artifact.

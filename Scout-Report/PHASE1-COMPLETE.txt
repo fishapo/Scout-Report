@@ -1,0 +1,43 @@
+SCOUT REPORT — PHASE 1 COMPLETE
+
+Phase: Schema & Dependency Audit
+Date: 2026-08-08
+
+STATUS: COMPLETE (source/schema gate)
+
+Static Phase 1 verifier:
+  npm run verify:phase1
+  29 checks
+  29 passed
+  0 failed
+
+JavaScript syntax:
+  32 JS files checked with node --check
+  PASS
+
+Admin dashboard static verifier:
+  node scripts/verify-admin-dashboard.js
+  PASS
+
+Key safety decision:
+  scout_reports.farm_id -> farms.id ON DELETE CASCADE
+  Therefore unrestricted farm hard-delete is prohibited for the first CRUD implementation.
+
+Existing scout reference API remains stable:
+  GET /api/reference/farms
+  GET /api/reference/crop-types
+  GET /api/reference/crop-types/:id/varieties
+  GET /api/reference/pests
+  GET /api/reference/diseases
+
+Existing authorization foundation is ready:
+  authenticate
+  authorizeRoles("admin")
+
+Environment-dependent checks still required on the developer machine:
+  - live PostgreSQL catalog verification
+  - fresh npm install / npm test
+
+Next measure:
+  Phase 2 — Admin Reference CRUD API Foundation
+  First entity: Farms

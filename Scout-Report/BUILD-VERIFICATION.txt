@@ -1,0 +1,26 @@
+Scout Report — Next Dev Step Verification
+Date: 2026-08-08
+
+UI verification:
+PASS — npm run verify:ui
+PASS — grep -Rni "admin-reference" previews server --exclude-dir=node_modules returned no matches.
+
+Automated tests:
+PASS — npm test
+31 tests
+30 passed
+0 failed
+1 skipped
+
+Project verification:
+PASS — npm run verify
+
+Server startup decision:
+npm run dev now uses `node server/index.js` to avoid the Windows/Git-Bash filesystem watcher issue documented in the supplied project notes.
+Optional legacy watcher remains available as `npm run dev:watch`.
+
+Security:
+The local `.env` file is intentionally excluded from this delivery archive. Copy `.env.example` to `.env` and configure local PostgreSQL/JWT values.
+
+Backend scope:
+No changes were made to `server/controllers/reference.controller.js` or `server/routes/reference.routes.js`; the supplied audit states their current read contract is already correct.

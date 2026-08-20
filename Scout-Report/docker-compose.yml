@@ -1,0 +1,22 @@
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    image: scout-report-postgres:phase30
+    environment:
+      POSTGRES_USER: scout_user
+      POSTGRES_PASSWORD: scout_password
+      POSTGRES_DB: scout_report
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scout_user -d scout_report"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

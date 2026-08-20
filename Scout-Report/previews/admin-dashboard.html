@@ -1,0 +1,2928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Scout Report - Admin Dashboard</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    width:100%;
+    height:100%;
+
+    margin:0;
+    padding:0;
+
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+    background:#f4f6f9;
+
+    color:#333;
+
+}
+
+
+body {
+
+    overflow-x:hidden;
+
+}
+
+
+
+/* ======================================================
+   Layout
+====================================================== */
+
+
+.container {
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+
+
+/* ======================================================
+   Sidebar
+====================================================== */
+
+
+.sidebar {
+
+    width:260px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #1e3c72,
+        #2a5298
+    );
+
+    color:white;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+}
+
+
+
+.logo {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    margin-bottom:35px;
+
+}
+
+
+
+.logo span {
+
+    font-size:28px;
+
+}
+
+
+
+.nav-menu {
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+
+
+.nav-menu li {
+
+    margin-bottom:8px;
+
+}
+
+
+
+.nav-menu a {
+
+    display:block;
+
+    padding:12px 15px;
+
+    border-radius:8px;
+
+    color:
+    rgba(255,255,255,.75);
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    transition:.2s;
+
+}
+
+
+
+.nav-menu a:hover,
+.nav-menu a.active {
+
+    background:
+    rgba(255,255,255,.15);
+
+    color:white;
+
+}
+
+
+
+
+
+/* ======================================================
+   Main Content
+====================================================== */
+
+
+.main-content {
+
+    margin-left:260px;
+
+    width:
+    calc(100% - 260px);
+
+    padding:20px;
+
+}
+
+
+
+
+
+/* ======================================================
+ Header
+====================================================== */
+
+
+.header {
+
+    background:white;
+
+    padding:18px;
+
+    border-radius:10px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 2px 6px
+    rgba(0,0,0,.08);
+
+}
+
+
+
+.header h1 {
+
+    margin:0;
+
+    font-size:22px;
+
+}
+
+
+
+.header-actions {
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+
+
+
+/* ======================================================
+ Buttons
+====================================================== */
+
+
+.btn {
+
+    border:none;
+
+    border-radius:6px;
+
+    padding:10px 16px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+
+.btn-primary {
+
+    background:#2a5298;
+
+    color:white;
+
+}
+
+
+
+.btn-primary:hover {
+
+    background:#1e3c72;
+
+}
+
+
+
+.btn-secondary {
+
+    background:#eee;
+
+    color:#333;
+
+}
+
+
+
+.btn-secondary:hover {
+
+    background:#ddd;
+
+}
+
+
+
+/* ======================================================
+ Stats
+====================================================== */
+
+
+.stats-grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:15px;
+
+    margin-bottom:18px;
+
+}
+
+
+
+.stat-card {
+
+    background:white;
+
+    padding:18px;
+
+    border-radius:10px;
+
+    box-shadow:
+    0 2px 6px
+    rgba(0,0,0,.08);
+
+}
+
+
+
+.stat-label {
+
+    font-size:12px;
+
+    color:#777;
+
+    text-transform:uppercase;
+
+}
+
+
+
+.stat-value {
+
+    margin-top:10px;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#2a5298;
+
+}
+
+
+
+.stat-detail {
+
+    margin-top:8px;
+
+    font-size:12px;
+
+    color:#666;
+
+}
+
+
+
+/* ======================================================
+ Filters
+====================================================== */
+
+
+.filters {
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    margin-bottom:18px;
+
+}
+
+
+
+.filter-group {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+
+.filter-group label {
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+
+select,
+input {
+
+    padding:8px 12px;
+
+    border:
+
+    1px solid #ddd;
+
+    border-radius:6px;
+
+}
+
+
+
+/* ======================================================
+ Table
+====================================================== */
+
+
+.table-container {
+
+    background:white;
+
+    border-radius:10px;
+
+    overflow:auto;
+
+    box-shadow:
+    0 2px 6px
+    rgba(0,0,0,.08);
+
+}
+
+
+
+table {
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+
+thead {
+
+    background:#f5f6f8;
+
+}
+
+
+
+th {
+
+    text-align:left;
+
+    padding:14px;
+
+    font-size:12px;
+
+    color:#666;
+
+}
+
+
+
+td {
+
+    padding:14px;
+
+    border-top:
+    1px solid #eee;
+
+    font-size:13px;
+
+}
+
+
+
+
+/* ======================================================
+ Modal
+====================================================== */
+
+
+.modal {
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.5);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:2000;
+
+}
+
+
+
+.modal.active {
+
+    display:flex;
+
+}
+
+
+
+.modal-content {
+
+    background:white;
+
+    width:90%;
+
+    max-width:650px;
+
+    max-height:85vh;
+
+    overflow:auto;
+
+    padding:25px;
+
+    border-radius:12px;
+
+}
+
+
+
+.close-modal {
+
+    float:right;
+
+    background:none;
+
+    border:none;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+/* ======================================================
+   Reference Data
+====================================================== */
+
+.reference-section {
+    margin-top: 32px;
+    scroll-margin-top: 24px;
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+}
+
+.section-header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.reference-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.reference-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.reference-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eef0f2;
+}
+
+.reference-card-header h3 {
+    margin: 0 0 3px;
+    font-size: 18px;
+}
+
+.reference-card-header span:not(.reference-icon) {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.reference-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f0fdf4;
+    font-size: 22px;
+}
+
+.reference-list {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.reference-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.reference-item:last-child {
+    border-bottom: none;
+}
+
+.reference-item-name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.reference-item-description {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.reference-varieties {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.reference-variety {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: #4b5563;
+    font-size: 12px;
+}
+
+.reference-empty {
+    padding: 20px 0;
+    text-align: center;
+    color: #9ca3af;
+}
+
+.reference-error {
+    padding: 15px;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 13px;
+}
+
+@media (max-width: 900px) {
+    .reference-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.admin-reference-management{margin-top:18px}.admin-reference-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}.admin-reference-toolbar p{margin:0;color:#667085;font-size:13px}.crud-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.crud-card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.08)}.crud-table-wrap{overflow:auto;margin-top:12px}.crud-table{width:100%;border-collapse:collapse;min-width:520px}.crud-table th,.crud-table td{padding:9px 8px;border-bottom:1px solid #edf0f4;text-align:left;vertical-align:top;font-size:13px}.crud-table th{color:#667085;font-weight:600}.crud-actions{display:flex;gap:6px;flex-wrap:wrap}.crud-actions .btn{padding:7px 10px;font-size:12px}.crud-empty,.crud-loading,.crud-error{padding:14px;color:#667085;text-align:center}.crud-error{color:#b42318;background:#fef3f2;border-radius:7px}.crud-success{color:#067647;background:#ecfdf3;border-radius:7px;padding:10px 12px;margin-bottom:12px;display:none}.variety-list{margin:0;padding-left:18px}.variety-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}.crud-modal{position:fixed;inset:0;background:rgba(16,24,40,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}.crud-modal.active{display:flex}.crud-dialog{width:min(560px,100%);background:#fff;border-radius:12px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.crud-dialog h3{margin:0 0 4px}.crud-dialog .muted{color:#667085;font-size:13px;margin-bottom:16px}.crud-field{margin-bottom:13px}.crud-field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}.crud-field input,.crud-field textarea{width:100%;padding:10px;border:1px solid #d0d5dd;border-radius:7px;font:inherit}.crud-field textarea{min-height:90px;resize:vertical}.crud-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.crud-form-error{color:#b42318;font-size:13px;min-height:18px}@media(max-width:900px){.crud-grid{grid-template-columns:1fr}}
+
+
+/* ======================================================
+   Admin Analytics + User Administration
+====================================================== */
+.admin-analytics-section,.admin-user-settings{margin-top:22px}.analytics-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:16px 0}.analytics-kpi{background:#fff;border:1px solid #eaecf0;border-radius:12px;padding:15px;box-shadow:0 2px 8px rgba(16,24,40,.05)}.analytics-kpi span{display:block;font-size:11px;text-transform:uppercase;color:#667085}.analytics-kpi strong{display:block;font-size:27px;margin-top:6px}.analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.analytics-card{background:#fff;border:1px solid #eaecf0;border-radius:12px;padding:16px;min-width:0}.analytics-card h3{margin:0 0 10px;font-size:16px}.analytics-card svg{width:100%;height:auto;min-height:250px}.admin-pie-wrap{display:flex;align-items:center;gap:20px;min-height:250px}.admin-pie{width:210px;height:210px;border-radius:50%;flex:0 0 auto}.admin-legend{display:grid;gap:8px;font-size:13px}.admin-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px}.analytics-table-wrap,.admin-user-table-wrap{overflow:auto}.analytics-table-wrap table,.admin-user-table{width:100%;border-collapse:collapse}.analytics-table-wrap th,.analytics-table-wrap td,.admin-user-table th,.admin-user-table td{padding:9px;border-bottom:1px solid #eaecf0;text-align:left;font-size:12px;white-space:nowrap}.admin-user-form{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr auto;gap:10px;align-items:center;margin:15px 0}.admin-user-form input,.admin-user-form select,.admin-user-table select{padding:10px;border:1px solid #d0d5dd;border-radius:7px;background:#fff}.admin-user-message{min-height:25px;font-weight:700}.admin-user-message.ok{color:#067647}.admin-user-message.error{color:#b42318}
+@media(max-width:1100px){.analytics-kpis{grid-template-columns:repeat(3,1fr)}.admin-user-form{grid-template-columns:1fr 1fr}.admin-user-form button{width:max-content}.analytics-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.analytics-kpis{grid-template-columns:repeat(2,1fr)}.admin-user-form{grid-template-columns:1fr}.admin-pie-wrap{flex-direction:column;align-items:flex-start}}
+@media print{body{background:#fff}.sidebar,.header-actions,.filters,.crud-actions,.btn,.nav-menu,#addModal,#viewModal,#crudModal,.admin-user-form{display:none!important}.main-content{margin:0;width:100%;padding:0}.analytics-grid{grid-template-columns:1fr 1fr}.analytics-card,.stat-card,.table-container,.dashboard-section{break-inside:avoid;box-shadow:none;border:1px solid #ddd}.admin-user-settings{display:block}.admin-user-table{font-size:10px}}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+
+<!-- ======================================================
+     Sidebar
+====================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <span>🌱</span>
+        Scout Report
+    </div>
+
+
+    <ul class="nav-menu">
+
+        <li>
+            <a href="/dashboard" class="active">
+                📊 Dashboard
+            </a>
+        </li>
+
+
+        <li>
+            <a href="/scout-form">
+                📝 New Report
+            </a>
+        </li>
+        <li><a href="#analytics">📈 Analytics</a></li>
+        <li><a href="#user-settings">⚙️ User & Role Settings</a></li>
+<li>
+            <a href="#reference-data">
+                🌾 Reference Data
+            </a>
+        </li>
+
+
+    </ul>
+
+</aside>
+
+
+
+
+
+<!-- ======================================================
+     Main Content
+====================================================== -->
+
+<main class="main-content">
+
+
+
+<header class="header">
+
+
+    <h1>
+        Scout Report Dashboard
+    </h1>
+
+
+    <div class="header-actions">
+
+
+        <button class="btn btn-secondary" onclick="exportReports()">📥 Export Excel</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('admin-import-file').click()">📤 Import Excel</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
+        <input id="admin-import-file" type="file" accept=".xlsx" style="display:none" onchange="importAdminExcel(event)">
+
+
+
+        <button
+            class="btn btn-secondary"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+
+
+        <button
+            class="btn btn-primary"
+            onclick="openAddModal()">
+
+            + New Report
+
+        </button>
+
+
+    </div>
+
+
+</header>
+
+
+
+
+
+
+
+<!-- ======================================================
+     Statistics Cards
+====================================================== -->
+
+
+<section class="stats-grid">
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Total Reports
+    </div>
+
+
+    <div
+        class="stat-value"
+        id="stat-total">
+
+        —
+
+    </div>
+
+
+    <div class="stat-detail">
+        All submitted reports
+    </div>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Critical Issues
+    </div>
+
+
+    <div
+        class="stat-value"
+        id="stat-critical">
+
+        —
+
+    </div>
+
+
+    <div class="stat-detail">
+        Requiring immediate action
+    </div>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Active Farms
+    </div>
+
+
+    <div
+        class="stat-value"
+        id="stat-farms">
+
+        —
+
+    </div>
+
+
+    <div class="stat-detail">
+        Farms with reports
+    </div>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Response Rate
+    </div>
+
+
+    <div
+        class="stat-value"
+        id="stat-response">
+
+        —
+
+    </div>
+
+
+    <div class="stat-detail">
+        Reports acted upon
+    </div>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ======================================================
+     Filters
+====================================================== -->
+
+
+<section class="filters">
+
+
+<div class="filter-group">
+
+<label>
+Farm
+</label>
+
+
+<select
+id="filter-farm"
+onchange="loadReports()">
+
+<option value="all">
+All Farms
+</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="filter-group">
+
+<label>
+Status
+</label>
+
+
+<select
+id="filter-status"
+onchange="loadReports()">
+
+
+<option value="all">
+All Status
+</option>
+
+
+<option value="Completed">
+Completed
+</option>
+
+
+<option value="Pending">
+Pending
+</option>
+
+
+<option value="Critical">
+Critical
+</option>
+
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="filter-group">
+
+<label>
+From
+</label>
+
+
+<input
+type="date"
+id="filter-date-from"
+onchange="loadReports()">
+
+
+</div>
+
+
+
+
+
+<div class="filter-group">
+
+<label>
+To
+</label>
+
+
+<input
+type="date"
+id="filter-date-to"
+onchange="loadReports()">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ======================================================
+     Reports Table
+====================================================== -->
+
+
+<section class="table-container">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+ID
+</th>
+
+
+<th>
+Farm
+</th>
+
+
+<th>
+Crop
+</th>
+
+
+<th>
+Date
+</th>
+
+
+<th>
+Pests
+</th>
+
+
+<th>
+Severity
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="reports-body">
+
+
+<tr>
+
+<td colspan="8"
+style="text-align:center">
+
+Loading reports...
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</section>
+
+
+
+
+<!-- ======================================================
+     Analytics
+====================================================== -->
+<section id="analytics" class="dashboard-section admin-analytics-section">
+    <div class="section-header">
+        <div>
+            <h2>📈 Management Analytics</h2>
+            <p>Live report, workflow and user statistics. Charts refresh automatically.</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="loadAdminAnalytics()">↻ Refresh</button>
+            <button class="btn btn-secondary" onclick="window.print()">🖨 Print Dashboard</button>
+        </div>
+    </div>
+    <div class="analytics-kpis">
+        <div class="analytics-kpi"><span>Total Reports</span><strong id="analytics-total">—</strong></div>
+        <div class="analytics-kpi"><span>Critical</span><strong id="analytics-critical">—</strong></div>
+        <div class="analytics-kpi"><span>Completed</span><strong id="analytics-completed">—</strong></div>
+        <div class="analytics-kpi"><span>Pending</span><strong id="analytics-pending">—</strong></div>
+        <div class="analytics-kpi"><span>Active Farms</span><strong id="analytics-farms">—</strong></div>
+        <div class="analytics-kpi"><span>Active Users</span><strong id="analytics-users">—</strong></div>
+    </div>
+    <div class="analytics-grid">
+        <div class="analytics-card"><h3>Reports by Crop</h3><svg id="admin-crop-chart" viewBox="0 0 700 270" role="img" aria-label="Reports by crop"></svg></div>
+        <div class="analytics-card"><h3>Monthly Report Trend</h3><svg id="admin-month-chart" viewBox="0 0 700 270" role="img" aria-label="Monthly report trend"></svg></div>
+        <div class="analytics-card"><h3>Workflow Distribution</h3><div class="admin-pie-wrap"><div id="admin-workflow-pie" class="admin-pie"></div><div id="admin-workflow-legend" class="admin-legend"></div></div></div>
+        <div class="analytics-card"><h3>Reports by Farm</h3><svg id="admin-farm-chart" viewBox="0 0 700 270" role="img" aria-label="Reports by farm"></svg></div>
+        <div class="analytics-card"><h3>Users by Role</h3><svg id="admin-role-chart" viewBox="0 0 700 270" role="img" aria-label="Users by role"></svg></div>
+        <div class="analytics-card analytics-table-card"><h3>Recent Reports</h3><div class="analytics-table-wrap"><table><thead><tr><th>Report</th><th>Farm</th><th>Crop</th><th>Status</th><th>Workflow</th><th>Owner</th></tr></thead><tbody id="admin-analytics-recent"></tbody></table></div></div>
+    </div>
+</section>
+
+<!-- ======================================================
+     User & Role Administration
+====================================================== -->
+<section id="user-settings" class="dashboard-section admin-user-settings">
+    <div class="section-header">
+        <div>
+            <h2>⚙️ User & Role Administration</h2>
+            <p>Create users, change application roles and remove accounts. Only administrators can use these controls.</p>
+        </div>
+    </div>
+    <div id="admin-user-message" class="admin-user-message" aria-live="polite"></div>
+    <form id="admin-create-user" class="admin-user-form" onsubmit="createAdminUser(event)">
+        <input id="admin-user-name" placeholder="Full name" required>
+        <input id="admin-user-email" type="email" placeholder="Email" required>
+        <input id="admin-user-password" type="password" minlength="8" placeholder="Temporary password" required>
+        <select id="admin-user-role" required>
+            <option value="scout">Field Scout</option>
+            <option value="inter_farm_supervisor">Inter-Farm Supervisor</option>
+            <option value="head_of_department">Head of Department</option>
+            <option value="admin">Administrator</option>
+        </select>
+        <button class="btn btn-primary" type="submit">＋ Add User</button>
+    </form>
+    <div class="admin-user-table-wrap">
+        <table class="admin-user-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Current Role</th><th>Status</th><th>Change Role</th><th>Action</th></tr></thead>
+            <tbody id="admin-users-body"><tr><td colspan="6">Loading users…</td></tr></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ======================================================
+     Reference Data
+====================================================== -->
+
+<section
+    id="reference-data"
+    class="dashboard-section reference-section"
+>
+
+    <div class="section-header">
+        <div>
+            <h2>🌾 Reference Data</h2>
+            <p>
+                Manage and review farms, crop types, pests and diseases
+                used by the Scout Report system.
+            </p>
+        </div>
+    </div>
+
+    <div class="reference-grid">
+
+        <!-- Farms -->
+        <div class="reference-card">
+
+            <div class="reference-card-header">
+                <span class="reference-icon">🌱</span>
+
+                <div>
+                    <h3>Farms</h3>
+                    <span id="reference-farm-count">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+
+            <div
+                id="reference-farms"
+                class="reference-list"
+            >
+                Loading farms...
+            </div>
+
+        </div>
+
+
+        <!-- Crop Types -->
+        <div class="reference-card">
+
+            <div class="reference-card-header">
+                <span class="reference-icon">🌾</span>
+
+                <div>
+                    <h3>Crop Types</h3>
+                    <span id="reference-crop-count">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+
+            <div
+                id="reference-crops"
+                class="reference-list"
+            >
+                Loading crop types...
+            </div>
+
+        </div>
+
+
+        <!-- Pests -->
+        <div class="reference-card">
+
+            <div class="reference-card-header">
+                <span class="reference-icon">🐛</span>
+
+                <div>
+                    <h3>Pests</h3>
+                    <span id="reference-pest-count">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+
+            <div
+                id="reference-pests"
+                class="reference-list"
+            >
+                Loading pests...
+            </div>
+
+        </div>
+
+
+        <!-- Diseases -->
+        <div class="reference-card">
+
+            <div class="reference-card-header">
+                <span class="reference-icon">🦠</span>
+
+                <div>
+                    <h3>Diseases</h3>
+                    <span id="reference-disease-count">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+
+            <div
+                id="reference-diseases"
+                class="reference-list"
+            >
+                Loading diseases...
+            </div>
+
+        </div>
+
+    </div>
+
+
+<section id="admin-reference-management" class="dashboard-section admin-reference-management">
+  <div class="section-header"><div><h2>⚙️ Manage Reference Data</h2><p>Create, edit and delete reference records through the admin-only API.</p></div><button class="btn btn-primary" type="button" onclick="refreshAdminReferenceData()">Refresh</button></div>
+  <div id="admin-reference-success" class="crud-success"></div>
+  <div class="crud-grid">
+    <div class="crud-card"><div class="admin-reference-toolbar"><div><h3>Farms</h3><p>Delete is blocked when reports depend on a farm.</p></div><button class="btn btn-primary" onclick="openReferenceForm('farm')">Add Farm</button></div><div id="crud-farms"><div class="crud-loading">Loading farms…</div></div></div>
+    <div class="crud-card"><div class="admin-reference-toolbar"><div><h3>Crop Types &amp; Varieties</h3><p>Varieties remain scoped to their crop type.</p></div><button class="btn btn-primary" onclick="openReferenceForm('cropType')">Add Crop Type</button></div><div id="crud-crop-types"><div class="crud-loading">Loading crop types…</div></div></div>
+    <div class="crud-card"><div class="admin-reference-toolbar"><div><h3>Pests</h3><p>Reference edits do not rewrite historical observations.</p></div><button class="btn btn-primary" onclick="openReferenceForm('pest')">Add Pest</button></div><div id="crud-pests"><div class="crud-loading">Loading pests…</div></div></div>
+    <div class="crud-card"><div class="admin-reference-toolbar"><div><h3>Diseases</h3><p>Reference edits do not rewrite historical observations.</p></div><button class="btn btn-primary" onclick="openReferenceForm('disease')">Add Disease</button></div><div id="crud-diseases"><div class="crud-loading">Loading diseases…</div></div></div>
+  </div>
+</section>
+
+</main>
+
+<div id="crudModal" class="crud-modal" role="dialog" aria-modal="true" aria-labelledby="crudModalTitle"><div class="crud-dialog"><h3 id="crudModalTitle">Reference record</h3><div id="crudModalSubtitle" class="muted"></div><form id="crudForm"><div id="crudFields"></div><div id="crudFormError" class="crud-form-error"></div><div class="crud-dialog-actions"><button class="btn btn-secondary" type="button" onclick="closeReferenceForm()">Cancel</button><button class="btn btn-primary" type="submit">Save</button></div></form></div></div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ======================================================
+     View Report Modal
+====================================================== -->
+
+
+<div
+class="modal"
+id="viewModal">
+
+
+<div class="modal-content">
+
+
+<button
+class="close-modal"
+onclick="closeViewModal()">
+
+×
+
+</button>
+
+
+<h2 id="modal-title">
+
+Report Details
+
+</h2>
+
+
+<div
+id="modal-body">
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ======================================================
+     Create Report Modal
+====================================================== -->
+
+
+<div
+class="modal"
+id="addModal">
+
+
+<div class="modal-content">
+
+
+<button
+class="close-modal"
+onclick="closeAddModal()">
+
+×
+
+</button>
+
+
+
+<h2>
+Create New Report
+</h2>
+
+
+
+<p>
+
+Redirecting to report form...
+
+</p>
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="openReportForm()">
+
+Continue
+
+</button>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+<script src="/assets/auth.js"></script>
+<script src="/assets/admin-reference.js"></script>
+<script>
+
+"use strict";
+
+
+const API = "/api";
+const adminReference = new AdminReferenceClient(browserAuth);
+let currentReports = [];
+let adminReferenceState = { farms: [], cropTypes: [], pests: [], diseases: [], varieties: {} };
+let referenceFormState = null;
+
+
+
+
+// ======================================================
+// Page Startup
+// ======================================================
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+
+        try {
+
+
+            await browserAuth.init({
+
+                redirectTo: "/login"
+
+            });
+
+
+
+            const user =
+                browserAuth.getUser();
+
+
+
+            if (!user) {
+
+                window.location.href =
+                    "/login";
+
+                return;
+
+            }
+
+
+
+            if (user.role !== "admin") {
+
+
+                window.location.href =
+                    "/scout-dashboard";
+
+
+                return;
+
+            }
+
+
+
+            await loadFarms();
+
+            await loadStats();
+
+            await loadReports();
+            await loadAdminAnalytics();
+            await loadAdminUsers();
+
+            await loadReferenceData();
+
+            await refreshAdminReferenceData();
+
+
+        }
+        catch(error) {
+
+
+            console.error(
+                "Dashboard startup failed:",
+                error
+            );
+
+
+            alert(
+                "Unable to load dashboard. Please login again."
+            );
+
+
+            window.location.href =
+                "/login";
+
+
+        }
+
+
+
+    }
+);
+
+
+
+
+
+
+
+// ======================================================
+// API Helper
+// ======================================================
+
+
+async function apiRequest(
+    url,
+    options={}
+) {
+
+
+    const response =
+        await browserAuth.fetchWithAuth(
+            url,
+            options
+        );
+
+
+
+    if (response.status === 401) {
+
+
+        window.location.href =
+            "/login";
+
+
+        throw new Error(
+            "Authentication expired"
+        );
+
+
+    }
+
+
+
+    const data =
+        await response.json();
+
+
+
+    if (!response.ok) {
+
+
+        throw new Error(
+            data.error ||
+            "API request failed"
+        );
+
+
+    }
+
+
+
+    return data.data ?? data;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Load Farms
+// ======================================================
+
+
+async function loadFarms(){
+
+
+    const farms =
+        await apiRequest(
+            `${API}/reference/farms`
+        );
+
+
+
+    const select =
+        document.getElementById(
+            "filter-farm"
+        );
+
+
+
+    if (!Array.isArray(farms)) {
+
+        return;
+
+    }
+
+
+
+    farms.forEach(
+        farm => {
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                farm.id;
+
+
+
+            option.textContent =
+                farm.name;
+
+
+
+            select.appendChild(
+                option
+            );
+
+
+        }
+    );
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Load Reference Data
+// ======================================================
+
+async function loadReferenceData() {
+
+    try {
+
+        const [
+            farms,
+            cropTypes,
+            pests,
+            diseases
+        ] = await Promise.all([
+
+            apiRequest(
+                `${API}/reference/farms`
+            ),
+
+            apiRequest(
+                `${API}/reference/crop-types`
+            ),
+
+            apiRequest(
+                `${API}/reference/pests`
+            ),
+
+            apiRequest(
+                `${API}/reference/diseases`
+            )
+
+        ]);
+
+
+        renderReferenceFarms(farms);
+
+        renderReferenceCrops(cropTypes);
+
+        renderReferencePests(pests);
+
+        renderReferenceDiseases(diseases);
+
+    }
+    catch (error) {
+
+        console.error(
+            "Reference data loading failed:",
+            error
+        );
+
+        document.querySelectorAll(
+            ".reference-list"
+        ).forEach(element => {
+
+            element.innerHTML = `
+                <div class="reference-error">
+                    Unable to load reference data.
+                    Please refresh the page.
+                </div>
+            `;
+
+        });
+
+    }
+
+}
+
+
+// ======================================================
+// Render Farms
+// ======================================================
+
+function renderReferenceFarms(farms) {
+
+    const container =
+        document.getElementById(
+            "reference-farms"
+        );
+
+    const count =
+        document.getElementById(
+            "reference-farm-count"
+        );
+
+
+    if (!Array.isArray(farms) || farms.length === 0) {
+
+        count.textContent = "0 records";
+
+        container.innerHTML = `
+            <div class="reference-empty">
+                No farms found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        `${farms.length} record${farms.length === 1 ? "" : "s"}`;
+
+
+    container.innerHTML =
+        farms.map(farm => `
+
+            <div class="reference-item">
+
+                <div class="reference-item-name">
+                    ${escapeHtml(farm.name)}
+                </div>
+
+                ${
+                    farm.location
+                        ? `
+                            <div class="reference-item-description">
+                                📍 ${escapeHtml(farm.location)}
+                            </div>
+                          `
+                        : ""
+                }
+
+            </div>
+
+        `).join("");
+
+}
+
+
+// ======================================================
+// Render Crop Types
+// ======================================================
+
+function renderReferenceCrops(cropTypes) {
+
+    const container =
+        document.getElementById(
+            "reference-crops"
+        );
+
+    const count =
+        document.getElementById(
+            "reference-crop-count"
+        );
+
+
+    if (
+        !Array.isArray(cropTypes) ||
+        cropTypes.length === 0
+    ) {
+
+        count.textContent = "0 records";
+
+        container.innerHTML = `
+            <div class="reference-empty">
+                No crop types found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        `${cropTypes.length} record${cropTypes.length === 1 ? "" : "s"}`;
+
+
+    container.innerHTML =
+        cropTypes.map(crop => {
+
+            const varieties =
+                Array.isArray(crop.varieties)
+                    ? crop.varieties
+                    : [];
+
+
+            return `
+
+                <div class="reference-item">
+
+                    <div class="reference-item-name">
+                        ${escapeHtml(crop.name)}
+                    </div>
+
+                    ${
+                        varieties.length
+                            ? `
+                                <div class="reference-varieties">
+
+                                    ${varieties.map(
+                                        variety => `
+                                            <span class="reference-variety">
+                                                ${escapeHtml(
+                                                    typeof variety === "string"
+                                                        ? variety
+                                                        : variety.name
+                                                )}
+                                            </span>
+                                        `
+                                    ).join("")}
+
+                                </div>
+                              `
+                            : `
+                                <div class="reference-item-description">
+                                    No varieties recorded.
+                                </div>
+                              `
+                    }
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+// ======================================================
+// Render Pests
+// ======================================================
+
+function renderReferencePests(pests) {
+
+    const container =
+        document.getElementById(
+            "reference-pests"
+        );
+
+    const count =
+        document.getElementById(
+            "reference-pest-count"
+        );
+
+
+    if (!Array.isArray(pests) || pests.length === 0) {
+
+        count.textContent = "0 records";
+
+        container.innerHTML = `
+            <div class="reference-empty">
+                No pests found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        `${pests.length} record${pests.length === 1 ? "" : "s"}`;
+
+
+    container.innerHTML =
+        pests.map(pest => `
+
+            <div class="reference-item">
+
+                <div class="reference-item-name">
+                    ${escapeHtml(pest.name)}
+                </div>
+
+                ${
+                    pest.description
+                        ? `
+                            <div class="reference-item-description">
+                                ${escapeHtml(pest.description)}
+                            </div>
+                          `
+                        : ""
+                }
+
+            </div>
+
+        `).join("");
+
+}
+
+
+// ======================================================
+// Render Diseases
+// ======================================================
+
+function renderReferenceDiseases(diseases) {
+
+    const container =
+        document.getElementById(
+            "reference-diseases"
+        );
+
+    const count =
+        document.getElementById(
+            "reference-disease-count"
+        );
+
+
+    if (
+        !Array.isArray(diseases) ||
+        diseases.length === 0
+    ) {
+
+        count.textContent = "0 records";
+
+        container.innerHTML = `
+            <div class="reference-empty">
+                No diseases found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        `${diseases.length} record${diseases.length === 1 ? "" : "s"}`;
+
+
+    container.innerHTML =
+        diseases.map(disease => `
+
+            <div class="reference-item">
+
+                <div class="reference-item-name">
+                    ${escapeHtml(disease.name)}
+                </div>
+
+                ${
+                    disease.description
+                        ? `
+                            <div class="reference-item-description">
+                                ${escapeHtml(disease.description)}
+                            </div>
+                          `
+                        : ""
+                }
+
+            </div>
+
+        `).join("");
+
+}
+
+
+// ======================================================
+// HTML Escape
+// ======================================================
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+// ======================================================
+// Load Statistics
+// ======================================================
+
+
+async function loadStats(){
+
+
+    const stats =
+        await apiRequest(
+            `${API}/reports/stats`
+        );
+
+
+
+    document.getElementById(
+        "stat-total"
+    ).textContent =
+        stats.totalReports ?? 0;
+
+
+
+    document.getElementById(
+        "stat-critical"
+    ).textContent =
+        stats.criticalIssues ?? 0;
+
+
+
+    document.getElementById(
+        "stat-farms"
+    ).textContent =
+        stats.activeFarms ?? 0;
+
+
+
+    document.getElementById(
+        "stat-response"
+    ).textContent =
+        `${stats.responseRate ?? 0}%`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Load Reports
+// ======================================================
+
+
+async function loadReports(){
+
+
+    try {
+
+
+        const params =
+            new URLSearchParams();
+
+
+
+        const farm =
+            document.getElementById(
+                "filter-farm"
+            ).value;
+
+
+
+        const status =
+            document.getElementById(
+                "filter-status"
+            ).value;
+
+
+
+        const from =
+            document.getElementById(
+                "filter-date-from"
+            ).value;
+
+
+
+        const to =
+            document.getElementById(
+                "filter-date-to"
+            ).value;
+
+
+
+        if (farm !== "all") {
+
+            params.set(
+                "farm",
+                farm
+            );
+
+        }
+
+
+
+        if (status !== "all") {
+
+            params.set(
+                "status",
+                status
+            );
+
+        }
+
+
+
+        if (from) {
+
+            params.set(
+                "dateFrom",
+                from
+            );
+
+        }
+
+
+
+        if (to) {
+
+            params.set(
+                "dateTo",
+                to
+            );
+
+        }
+
+
+
+
+        const reports =
+            await apiRequest(
+                `${API}/reports?${params}`
+            );
+
+
+
+        currentReports =
+            Array.isArray(reports)
+            ? reports
+            : [];
+
+
+
+        renderReports(
+            currentReports
+        );
+
+
+
+    }
+    catch(error){
+
+
+        console.error(
+            error
+        );
+
+
+        document.getElementById(
+            "reports-body"
+        ).innerHTML = `
+
+        <tr>
+
+        <td colspan="8">
+
+        Failed loading reports
+
+        </td>
+
+        </tr>
+
+        `;
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Render Reports
+// ======================================================
+
+
+function renderReports(
+    reports
+){
+
+
+    const tbody =
+        document.getElementById(
+            "reports-body"
+        );
+
+
+
+    tbody.innerHTML = "";
+
+
+
+    if (!reports.length){
+
+
+        tbody.innerHTML = `
+
+        <tr>
+
+        <td colspan="8">
+
+        No reports found
+
+        </td>
+
+        </tr>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+
+
+    reports.forEach(
+        report => {
+
+
+            const severity =
+                getSeverity(report);
+
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+
+            row.innerHTML = `
+
+
+<td>
+${report.id ?? "-"}
+</td>
+
+
+<td>
+${report.farmName ?? "-"}
+</td>
+
+
+<td>
+${report.cropType ?? "-"}
+</td>
+
+
+<td>
+${report.reportDate ?? "-"}
+</td>
+
+
+<td>
+${countPests(report)}
+</td>
+
+
+<td>
+${severity}
+</td>
+
+
+<td>
+${report.status ?? "-"}
+</td>
+
+
+<td>
+
+
+<button
+class="btn btn-secondary"
+onclick="viewReport('${report.id}')">
+
+View
+
+</button>
+
+
+<button
+class="btn btn-secondary"
+onclick="deleteReport('${report.id}')">
+
+Delete
+
+</button>
+
+
+</td>
+
+
+`;
+
+
+
+            tbody.appendChild(
+                row
+            );
+
+
+        }
+    );
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function countPests(report){
+
+
+    return (
+        report.pestObservations
+        ?.length
+        ??
+        0
+    );
+
+
+}
+
+
+
+
+
+
+
+function getSeverity(report){
+
+
+    const levels =
+    [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+    ];
+
+
+
+    let result =
+        "Low";
+
+
+
+    const items =
+    [
+        ...(report.pestObservations || []),
+        ...(report.diseaseObservations || [])
+    ];
+
+
+
+    items.forEach(
+        item => {
+
+
+            if (
+                levels.indexOf(
+                    item.severity
+                )
+                >
+                levels.indexOf(
+                    result
+                )
+            ){
+
+                result =
+                    item.severity;
+
+            }
+
+
+        }
+    );
+
+
+
+    return result;
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// View Report
+// ======================================================
+
+
+async function viewReport(id){
+
+
+    const report =
+        await apiRequest(
+            `${API}/reports/${id}`
+        );
+
+
+
+    document.getElementById(
+        "modal-title"
+    ).textContent =
+        `Report #${id}`;
+
+
+
+    document.getElementById(
+        "modal-body"
+    ).innerHTML = `
+
+
+<p>
+<b>Farm:</b>
+${report.farmName ?? "-"}
+</p>
+
+
+<p>
+<b>Crop:</b>
+${report.cropType ?? "-"}
+</p>
+
+
+<p>
+<b>Date:</b>
+${report.reportDate ?? "-"}
+</p>
+
+
+<p>
+<b>Pests:</b>
+${countPests(report)}
+</p>
+
+
+<p>
+<b>Notes:</b>
+${report.notes ?? "-"}
+</p>
+
+
+`;
+
+
+
+    document
+    .getElementById(
+        "viewModal"
+    )
+    .classList.add(
+        "active"
+    );
+
+
+}
+
+
+
+
+
+
+
+
+function closeViewModal(){
+
+
+    document
+    .getElementById(
+        "viewModal"
+    )
+    .classList.remove(
+        "active"
+    );
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Delete Report
+// ======================================================
+
+
+async function deleteReport(id){
+
+
+    if(
+        !confirm(
+            `Delete report ${id}?`
+        )
+    ){
+
+        return;
+
+    }
+
+
+
+    await apiRequest(
+        `${API}/reports/${id}`,
+        {
+            method:"DELETE"
+        }
+    );
+
+
+
+    await loadStats();
+
+    await loadReports();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// Admin Reference CRUD UI
+async function refreshAdminReferenceData(){setCrudLoading();try{const [farms,cropTypes,pests,diseases]=await Promise.all([adminReference.list("farms"),adminReference.list("crop-types"),adminReference.list("pests"),adminReference.list("diseases")]);const entries=await Promise.all((cropTypes||[]).map(async c=>[c.id,await adminReference.listVarieties(c.id)]));adminReferenceState={farms:farms||[],cropTypes:cropTypes||[],pests:pests||[],diseases:diseases||[],varieties:Object.fromEntries(entries)};renderAdminFarms();renderAdminCropTypes();renderAdminPests();renderAdminDiseases();}catch(error){["crud-farms","crud-crop-types","crud-pests","crud-diseases"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=`<div class="crud-error">${escapeHtml(formatCrudError(error))}</div>`})}}
+function setCrudLoading(){["crud-farms","crud-crop-types","crud-pests","crud-diseases"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML='<div class="crud-loading">Loading…</div>'})}
+function formatCrudError(e){if(e?.code==="REFERENCE_IN_USE")return `${e.message}${e.dependencyCount?` (${e.dependencyCount} dependent records)`:""}`;if(e?.status===403)return "Administrator permission is required.";if(e?.status===401)return "Your session has expired. Please sign in again.";return e?.message||"The request could not be completed."}
+function showCrudSuccess(m){const e=document.getElementById("admin-reference-success");if(!e)return;e.textContent=m;e.style.display="block";clearTimeout(showCrudSuccess.timer);showCrudSuccess.timer=setTimeout(()=>e.style.display="none",3000)}
+function renderAdminFarms(){const e=document.getElementById("crud-farms");if(!adminReferenceState.farms.length){e.innerHTML='<div class="crud-empty">No farms found.</div>';return}e.innerHTML=`<div class="crud-table-wrap"><table class="crud-table"><thead><tr><th>Name</th><th>Location</th><th>Actions</th></tr></thead><tbody>${adminReferenceState.farms.map(f=>`<tr><td>${escapeHtml(f.name)}</td><td>${escapeHtml(f.location||"—")}</td><td><div class="crud-actions"><button class="btn btn-secondary" onclick="openReferenceForm('farm','${escapeHtml(f.id)}')">Edit</button><button class="btn btn-secondary" onclick="deleteReference('farm','${escapeHtml(f.id)}','${escapeHtml(f.name)}')">Delete</button></div></td></tr>`).join("")}</tbody></table></div>`}
+function renderAdminCropTypes(){const e=document.getElementById("crud-crop-types");if(!adminReferenceState.cropTypes.length){e.innerHTML='<div class="crud-empty">No crop types found.</div>';return}e.innerHTML=`<div class="crud-table-wrap"><table class="crud-table"><thead><tr><th>Crop type</th><th>Varieties</th><th>Actions</th></tr></thead><tbody>${adminReferenceState.cropTypes.map(c=>{const vs=adminReferenceState.varieties[c.id]||[];return `<tr><td><strong>${escapeHtml(c.name)}</strong><div class="muted">${escapeHtml(c.id)}</div></td><td>${vs.length?`<ul class="variety-list">${vs.map(v=>`<li>${escapeHtml(v.name)} <span class="crud-actions" style="display:inline-flex"><button class="btn btn-secondary" onclick="openReferenceForm('variety','${v.id}','${escapeHtml(c.id)}')">Edit</button><button class="btn btn-secondary" onclick="deleteVariety('${escapeHtml(c.id)}','${v.id}','${escapeHtml(v.name)}')">Delete</button></span></li>`).join("")}</ul>`:"No varieties"}<div class="variety-toolbar"><span></span><button class="btn btn-secondary" onclick="openReferenceForm('variety',null,'${escapeHtml(c.id)}')">Add Variety</button></div></td><td><div class="crud-actions"><button class="btn btn-secondary" onclick="openReferenceForm('cropType','${escapeHtml(c.id)}')">Edit</button><button class="btn btn-secondary" onclick="deleteReference('cropType','${escapeHtml(c.id)}','${escapeHtml(c.name)}')">Delete</button></div></td></tr>`}).join("")}</tbody></table></div>`}
+function renderSimpleReferenceTable(id,rows,type,label){const e=document.getElementById(id);if(!rows.length){e.innerHTML=`<div class="crud-empty">No ${label.toLowerCase()} found.</div>`;return}e.innerHTML=`<div class="crud-table-wrap"><table class="crud-table"><thead><tr><th>Name</th><th>Description</th><th>Actions</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.description||"—")}</td><td><div class="crud-actions"><button class="btn btn-secondary" onclick="openReferenceForm('${type}','${escapeHtml(r.id)}')">Edit</button><button class="btn btn-secondary" onclick="deleteReference('${type}','${escapeHtml(r.id)}','${escapeHtml(r.name)}')">Delete</button></div></td></tr>`).join("")}</tbody></table></div>`}
+function renderAdminPests(){renderSimpleReferenceTable("crud-pests",adminReferenceState.pests,"pest","pests")}function renderAdminDiseases(){renderSimpleReferenceTable("crud-diseases",adminReferenceState.diseases,"disease","diseases")}
+function findReferenceRecord(type,id,parent){if(type==="farm")return adminReferenceState.farms.find(x=>x.id===id);if(type==="cropType")return adminReferenceState.cropTypes.find(x=>x.id===id);if(type==="pest")return adminReferenceState.pests.find(x=>x.id===id);if(type==="disease")return adminReferenceState.diseases.find(x=>x.id===id);return (adminReferenceState.varieties[parent]||[]).find(x=>String(x.id)===String(id))}
+function fieldHtml(n,l,v,req,ta=false){const val=escapeHtml(v||"");return `<div class="crud-field"><label for="crud-${n}">${l}${req?" *":""}</label>${ta?`<textarea id="crud-${n}" name="${n}" ${req?"required":""}>${val}</textarea>`:`<input id="crud-${n}" name="${n}" value="${val}" maxlength="255" ${req?"required":""}>`}</div>`}
+function openReferenceForm(type,id=null,parent=null){referenceFormState={type,id,parent};const title={farm:"Farm",cropType:"Crop Type",variety:"Crop Variety",pest:"Pest",disease:"Disease"}[type];const c=id?findReferenceRecord(type,id,parent):{};document.getElementById("crudModalTitle").textContent=`${id?"Edit":"Add"} ${title}`;document.getElementById("crudModalSubtitle").textContent=type==="variety"?`Crop type: ${parent}`:"Changes are validated by the server.";let h=fieldHtml("name","Name",c?.name,true);if(type==="farm")h+=fieldHtml("location","Location",c?.location,false);if(type==="pest"||type==="disease")h+=fieldHtml("description","Description",c?.description,false,true);document.getElementById("crudFields").innerHTML=h;document.getElementById("crudFormError").textContent="";document.getElementById("crudModal").classList.add("active");document.querySelector("#crudFields input,#crudFields textarea")?.focus()}
+function closeReferenceForm(){document.getElementById("crudModal").classList.remove("active");referenceFormState=null}
+document.getElementById("crudForm")?.addEventListener("submit",async ev=>{ev.preventDefault();const err=document.getElementById("crudFormError");err.textContent="";const payload=Object.fromEntries(new FormData(ev.target).entries());Object.keys(payload).forEach(k=>{if(typeof payload[k]==="string")payload[k]=payload[k].trim()});if(!payload.name){err.textContent="Name is required.";return}try{const s=referenceFormState;if(s.type==="farm")s.id?await adminReference.update("farms",s.id,payload):await adminReference.create("farms",payload);if(s.type==="cropType")s.id?await adminReference.update("crop-types",s.id,payload):await adminReference.create("crop-types",payload);if(s.type==="pest")s.id?await adminReference.update("pests",s.id,payload):await adminReference.create("pests",payload);if(s.type==="disease")s.id?await adminReference.update("diseases",s.id,payload):await adminReference.create("diseases",payload);if(s.type==="variety")s.id?await adminReference.updateVariety(s.parent,s.id,payload):await adminReference.createVariety(s.parent,payload);closeReferenceForm();await refreshAdminReferenceData();showCrudSuccess(`${s.id?"Updated":"Created"} ${s.type==="cropType"?"crop type":s.type==="variety"?"crop variety":s.type}.`)}catch(e){err.textContent=formatCrudError(e)}});
+async function deleteReference(type,id,name){const label=type==="cropType"?"crop type":type;if(!confirm(`Delete ${label} “${name}”? This action cannot be undone.`))return;try{const resource={farm:"farms",cropType:"crop-types",pest:"pests",disease:"diseases"}[type];await adminReference.remove(resource,id);await refreshAdminReferenceData();showCrudSuccess(`Deleted ${label}.`)}catch(e){alert(formatCrudError(e))}}
+async function deleteVariety(parent,id,name){if(!confirm(`Delete crop variety “${name}”? This action cannot be undone.`))return;try{await adminReference.removeVariety(parent,id);await refreshAdminReferenceData();showCrudSuccess("Deleted crop variety.")}catch(e){alert(formatCrudError(e))}}
+
+// ======================================================
+// Navigation
+// ======================================================
+
+
+function openAddModal(){
+
+
+    document
+    .getElementById(
+        "addModal"
+    )
+    .classList.add(
+        "active"
+    );
+
+
+}
+
+
+
+function closeAddModal(){
+
+
+    document
+    .getElementById(
+        "addModal"
+    )
+    .classList.remove(
+        "active"
+    );
+
+
+}
+
+
+
+function openReportForm(){
+
+
+    window.location.href =
+        "/scout-form";
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Logout
+// ======================================================
+
+
+async function logout(){
+
+
+    try {
+
+
+        await browserAuth.logout();
+
+
+    }
+    finally {
+
+
+        window.location.href =
+            "/login";
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================================
+// Admin Analytics / Excel / Printing / User Settings
+// ======================================================
+
+const ADMIN_ROLE_LABELS = {
+    scout: "Field Scout",
+    inter_farm_supervisor: "Inter-Farm Supervisor",
+    head_of_department: "Head of Department",
+    admin: "Administrator"
+};
+
+const ADMIN_WORKFLOW_LABELS = {
+    draft: "Draft",
+    awaiting_supervisor: "Awaiting Supervisor",
+    supervisor_verified: "Supervisor Verified",
+    awaiting_hod: "Awaiting HOD",
+    hod_verified: "HOD Verified",
+    awaiting_admin: "Awaiting Admin",
+    approved: "Approved",
+    returned_to_scout: "Returned to Scout",
+    returned_to_supervisor: "Returned to Supervisor",
+    returned_to_hod: "Returned to HOD"
+};
+
+const adminEsc = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+function renderAdminBars(id, items) {
+    const svg = document.getElementById(id);
+    if (!svg) return;
+    svg.innerHTML = "";
+    if (!items?.length) {
+        svg.innerHTML = '<text x="350" y="135" text-anchor="middle" fill="#667085">No data available</text>';
+        return;
+    }
+    const w=700,h=270,left=55,bottom=45,top=20,right=10,gap=10;
+    const max=Math.max(1,...items.map(x=>Number(x.count)||0));
+    const bw=Math.max(18,(w-left-right)/items.length-gap);
+    items.forEach((x,i)=>{
+        const value=Number(x.count)||0;
+        const bh=(h-top-bottom)*value/max;
+        const xx=left+i*(bw+gap), yy=h-bottom-bh;
+        svg.insertAdjacentHTML("beforeend",`<rect x="${xx}" y="${yy}" width="${bw}" height="${bh}" rx="5" fill="#1769aa"></rect><text x="${xx+bw/2}" y="${yy-7}" text-anchor="middle" font-size="12">${value}</text><text x="${xx+bw/2}" y="${h-15}" text-anchor="middle" font-size="10">${adminEsc(String(x.label).slice(0,14))}</text>`);
+    });
+    svg.insertAdjacentHTML("beforeend",`<line x1="${left}" y1="${h-bottom}" x2="${w-right}" y2="${h-bottom}" stroke="#98a2b3"/>`);
+}
+
+function renderAdminLine(id, items) {
+    const svg=document.getElementById(id);
+    if(!svg)return;
+    svg.innerHTML="";
+    if(!items?.length){svg.innerHTML='<text x="350" y="135" text-anchor="middle" fill="#667085">No data available</text>';return;}
+    const w=700,h=270,l=45,r=20,t=20,b=45,max=Math.max(1,...items.map(x=>Number(x.count)||0));
+    const points=items.map((x,i)=>{const px=l+i*((w-l-r)/Math.max(items.length-1,1));const py=h-b-(Number(x.count)||0)/max*(h-t-b);return [px,py,x];});
+    svg.insertAdjacentHTML("beforeend",`<polyline fill="none" stroke="#22a06b" stroke-width="4" points="${points.map(p=>p[0]+","+p[1]).join(" ")}"/>`);
+    points.forEach(p=>svg.insertAdjacentHTML("beforeend",`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#22a06b"/><text x="${p[0]}" y="${p[1]-10}" text-anchor="middle" font-size="11">${Number(p[2].count)||0}</text><text x="${p[0]}" y="${h-15}" text-anchor="middle" font-size="10">${adminEsc(p[2].label)}</text>`));
+}
+
+function renderAdminPie(items){
+    const pie=document.getElementById("admin-workflow-pie"), legend=document.getElementById("admin-workflow-legend");
+    if(!pie||!legend)return;
+    const palette=["#22a06b","#1769aa","#f79009","#b42318","#7a5af8","#667085","#12b76a","#6941c6"];
+    const total=Math.max(1,(items||[]).reduce((a,x)=>a+(Number(x.count)||0),0));
+    let angle=0,stops=[];
+    (items||[]).forEach((x,i)=>{const next=angle+(Number(x.count)||0)/total*360;stops.push(`${palette[i%palette.length]} ${angle}deg ${next}deg`);angle=next;});
+    pie.style.background=stops.length?`conic-gradient(${stops.join(",")})`:"#eaecf0";
+    legend.innerHTML=(items||[]).map((x,i)=>`<div><i style="background:${palette[i%palette.length]}"></i>${adminEsc(ADMIN_WORKFLOW_LABELS[x.label]||x.label)}: <strong>${Number(x.count)||0}</strong></div>`).join("")||"<span>No workflow records.</span>";
+}
+
+async function loadAdminAnalytics(){
+    try{
+        const response=await browserAuth.fetchWithAuth("/api/dashboard");
+        if(!response.ok)throw new Error("Unable to load analytics");
+        const payload=await response.json();
+        const d=payload.dashboard||{};
+        const t=d.totals||{};
+        [
+            ["analytics-total",t.total_reports],
+            ["analytics-critical",t.critical],
+            ["analytics-completed",t.completed],
+            ["analytics-pending",t.pending],
+            ["analytics-farms",t.farms],
+            ["analytics-users",(d.byRole||[]).reduce((a,x)=>a+(Number(x.count)||0),0)]
+        ].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v??0;});
+        renderAdminBars("admin-crop-chart",d.byCrop||[]);
+        renderAdminLine("admin-month-chart",d.byMonth||[]);
+        renderAdminPie(d.workflow||[]);
+        renderAdminBars("admin-farm-chart",d.byFarm||[]);
+        renderAdminBars("admin-role-chart",(d.byRole||[]).map(x=>({...x,label:ADMIN_ROLE_LABELS[x.label]||x.label})));
+        const rows=document.getElementById("admin-analytics-recent");
+        if(rows)rows.innerHTML=(d.recent||[]).map(r=>`<tr><td>${adminEsc(r.id)}</td><td>${adminEsc(r.farm_name)}</td><td>${adminEsc(r.crop_type)}</td><td>${adminEsc(r.status)}</td><td>${adminEsc(ADMIN_WORKFLOW_LABELS[r.stage]||r.stage)}</td><td>${adminEsc(r.owner_name||"—")}</td></tr>`).join("")||'<tr><td colspan="6">No reports yet.</td></tr>';
+    }catch(error){console.error("Admin analytics failed:",error);}
+}
+
+async function exportReports(){
+    try{
+        const response=await browserAuth.fetchWithAuth("/api/reports/export.xlsx");
+        if(!response.ok)throw new Error("Excel export failed");
+        const blob=await response.blob();
+        const url=URL.createObjectURL(blob), a=document.createElement("a");
+        a.href=url;a.download=`scout-reports-${new Date().toISOString().slice(0,10)}.xlsx`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }catch(error){alert(error.message||"Excel export failed");}
+}
+
+async function importAdminExcel(event){
+    const file=event.target.files?.[0];
+    if(!file)return;
+    try{
+        const buffer=await file.arrayBuffer();
+        const bytes=new Uint8Array(buffer);let binary="";
+        for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));
+        const response=await browserAuth.fetchWithAuth("/api/reports/import.xlsx",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({workbookBase64:btoa(binary)})});
+        const body=await response.json();
+        if(!response.ok)throw new Error(body?.error||"Excel import failed");
+        alert(`Imported ${body.imported||0} report(s).${body.errors?.length?` ${body.errors.length} row(s) failed validation.`:""}`);
+        event.target.value="";
+        await Promise.all([loadReports(),loadStats(),loadAdminAnalytics()]);
+    }catch(error){alert(error.message||"Excel import failed");event.target.value="";}
+}
+
+function adminUserMessage(text,ok=false){const e=document.getElementById("admin-user-message");if(!e)return;e.textContent=text;e.className=`admin-user-message ${ok?"ok":"error"}`;}
+
+async function adminApi(url,options={}){
+    const response=await browserAuth.fetchWithAuth(url,options);
+    let body=null;try{body=await response.json();}catch{}
+    if(!response.ok)throw new Error(body?.error||`Request failed (${response.status})`);
+    return body;
+}
+
+async function loadAdminUsers(){
+    const body=document.getElementById("admin-users-body");
+    if(!body)return;
+    try{
+        const data=await adminApi("/api/admin/users");
+        const roles=["scout","inter_farm_supervisor","head_of_department","admin"];
+        body.innerHTML=(data.users||[]).map(user=>`<tr><td>${adminEsc(user.name)}</td><td>${adminEsc(user.email)}</td><td>${adminEsc(ADMIN_ROLE_LABELS[user.role]||user.role)}</td><td>${user.is_active?"Active":"Inactive"}</td><td><select id="admin-role-${adminEsc(user.id)}">${roles.map(role=>`<option value="${role}" ${role===user.role?"selected":""}>${ADMIN_ROLE_LABELS[role]}</option>`).join("")}</select> <button class="btn btn-secondary" onclick="saveAdminRole('${adminEsc(user.id)}')">Save</button></td><td><button class="btn btn-secondary" onclick="deleteAdminUser('${adminEsc(user.id)}','${adminEsc(user.name)}')">Delete</button></td></tr>`).join("")||'<tr><td colspan="6">No users found.</td></tr>';
+    }catch(error){body.innerHTML=`<tr><td colspan="6">${adminEsc(error.message)}</td></tr>`;}
+}
+
+async function createAdminUser(event){
+    event.preventDefault();
+    try{
+        await adminApi("/api/admin/users",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:document.getElementById("admin-user-name").value.trim(),email:document.getElementById("admin-user-email").value.trim(),password:document.getElementById("admin-user-password").value,role:document.getElementById("admin-user-role").value})});
+        event.target.reset();adminUserMessage("User created successfully.",true);await Promise.all([loadAdminUsers(),loadAdminAnalytics()]);
+    }catch(error){adminUserMessage(error.message);}
+}
+
+async function saveAdminRole(id){
+    try{
+        const role=document.getElementById(`admin-role-${id}`).value;
+        await adminApi(`/api/admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({role})});
+        adminUserMessage("User role updated successfully.",true);await Promise.all([loadAdminUsers(),loadAdminAnalytics()]);
+    }catch(error){adminUserMessage(error.message);}
+}
+
+async function deleteAdminUser(id,name){
+    if(!confirm(`Delete user ${name}? This action cannot be undone.`))return;
+    try{await adminApi(`/api/admin/users/${encodeURIComponent(id)}`,{method:"DELETE"});adminUserMessage("User deleted successfully.",true);await Promise.all([loadAdminUsers(),loadAdminAnalytics()]);}
+    catch(error){adminUserMessage(error.message);}
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

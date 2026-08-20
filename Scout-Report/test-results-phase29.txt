@@ -1,0 +1,400 @@
+npm notice run scout-report@2.3.1 pretest
+npm notice run node scripts/verify-dependencies.js
+PASS | required runtime dependencies are installed
+npm notice run scout-report@2.3.1 test
+npm notice run node --test server/*.test.js server/**/*.test.js previews/*.test.js previews/**/*.test.js
+✔ admin reference client sends authenticated farm create and unwraps data (99.5134ms)
+✔ admin reference client handles dependency-protected delete errors (6.8946ms)
+✔ admin reference client handles 204 deletes without parsing JSON (3.5421ms)
+✔ admin reference client keeps variety parent scoped (8.9582ms)
+✔ browser auth login stores token and user state in sessionStorage (20.5412ms)
+✔ fetchWithAuth attaches bearer token and clears state on 401 (9.1189ms)
+✔ logout clears stored auth state and redirects to login (9.9488ms)
+✔ init loads authenticated user from saved token via /auth/me (4.4408ms)
+✔ init restores an authenticated browser session from the HttpOnly cookie (14.8731ms)
+✔ latest master spreadsheet crop catalog is embedded with 130 crop types (11.4847ms)
+✔ every catalog crop has spreadsheet-tied varieties with source codes (12.1704ms)
+✔ form uses spreadsheet master crop catalog and active GH field (1.8251ms)
+✔ form exposes separate disease and other-condition references (0.6341ms)
+✔ form no longer labels the save action as a draft (11.1964ms)
+✔ pest observation labels resolve to live reference IDs despite master spelling differences (1.2376ms)
+✔ disease observation labels resolve to authoritative master reference IDs (0.9557ms)
+✔ form submission uses live reference mapping instead of raw spreadsheet pest/disease labels (4.277ms)
+✔ form provides database-backed Autofill from DB using authenticated reports (12.4857ms)
+✔ admin crop controller handles list/create/get/update (616.5512ms)
+✔ admin crop controller maps not-found and dependency conflict (25.1304ms)
+✔ admin crop controller returns 204 for successful delete (7.0361ms)
+✔ admin variety controller handles list/create/get/update/delete (604.9631ms)
+✔ admin variety controller maps missing parent and variety (5.3187ms)
+✔ admin disease controller handles list/create/get/update/delete (526.2073ms)
+✔ admin disease controller maps missing disease to 404 (2.9277ms)
+✔ admin pest controller handles list/create/get/update/delete (51.6172ms)
+✔ admin pest controller maps missing pest to 404 (2.8176ms)
+✔ admin reference controller returns wrapped farm list/create/update responses (54.4803ms)
+✔ admin reference controller maps missing farm to 404 (2.1572ms)
+✔ admin reference controller maps in-use farm delete to 409 (8.6984ms)
+✔ admin reference controller returns 204 for successful farm deletion (8.1362ms)
+✔ admin can reset an HOD password and revoke existing sessions (120.4175ms)
+✔ admin password reset rejects weak passwords (4.715ms)
+✔ health endpoint reports healthy and degraded database states (15261.1224ms)
+✔ web client is served from the application root (49.1014ms)
+✔ browser routing sends scouts to scout dashboard and protects scout pages (89.4105ms)
+✔ browser routing sends workflow roles to their verification dashboards (69.6816ms)
+✔ browser routing sends admins to admin dashboard and blocks admin page for scouts (67.8601ms)
+✔ production middleware emits security headers and redirects forwarded HTTP (46.2268ms)
+✔ auth endpoints cover register login me and logout (539.9135ms)
+✔ authentication attempts are throttled after repeated failures (86.306ms)
+✔ reference endpoints return data and variety misses return 404 (65.0079ms)
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+✔ protected report routes require authentication and pass filters to store (113.7212ms)
+✔ authentication regression covers cookie and bearer credentials (60.3781ms)
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+✔ authentication regression rejects expired and invalid sessions (118.0677ms)
+✔ all four roles can access the shared API dashboard (285.157ms)
+✔ browser authentication redirects unauthenticated requests to login (20.4634ms)
+✔ browser dashboard routing supports all four roles (85.0694ms)
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+Error: Authentication required
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:143:21)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:175:3)
+    at router (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:47:12) {
+  statusCode: 401
+}
+✔ protected report endpoints return 401 without authentication (34.6645ms)
+Error: Forbidden
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:158:21
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at authenticate (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:154:7)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at next (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\layer.js:95:5)
+    at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:284:15
+    at router.process_params (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\node_modules\express\lib\router\index.js:346:12) {
+  statusCode: 403
+}
+✔ role-based routes allow admins and reject scouts (74.8677ms)
+✔ report controller endpoints cover create update observations delete and not-found edges (56.3724ms)
+✔ scouts only access reports they own while admins retain full access (46.8548ms)
+Error: Invalid status filter
+    at TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\app.test.js:573:27)
+    at Test.runInAsyncScope (node:async_hooks:227:14)
+    at Test.run (node:internal/test_runner/test:1306:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+  statusCode: 400
+}
+✔ controller errors return safe client responses (46.4713ms)
+✔ page authentication accepts bearer credentials for scout (70.2398ms)
+✔ page authentication accepts bearer credentials for inter_farm_supervisor (1.4576ms)
+✔ page authentication accepts bearer credentials for head_of_department (1.9038ms)
+✔ page authentication accepts bearer credentials for admin (1.2473ms)
+✔ page authentication accepts HttpOnly cookie credentials (1.9048ms)
+✔ browser authentication redirects 401 to login (4.2577ms)
+✔ non-authentication page errors continue to global handler (2.3243ms)
+✔ hashPassword stores a non plaintext hash and verifyPassword validates it (1237.8058ms)
+✔ registerUser creates first user as admin and rejects weak passwords (453.347ms)
+✔ loginUser issues JWT session and logout revokes it (1290.7705ms)
+✔ authorizeRoles rejects authenticated users without required role (2.4595ms)
+✔ canonical model exposes all Phase 21 child domains (5.9063ms)
+✔ canonical model exposes all 13 report-header extensions (1.6109ms)
+✔ crop type CRUD creates, lists, updates and rejects duplicate names (987.481ms)
+✔ crop type update validates input and missing records (3.067ms)
+✔ crop type delete blocks varieties and deletes unused types (10.8267ms)
+✔ crop variety CRUD uses nested parent context and protects parent moves (0.4651ms)
+✔ variety list and create validate parent and preserve nested context (130.6117ms)
+✔ variety duplicate and validation are rejected (5.2218ms)
+✔ variety update and delete are parent-scoped (9.875ms)
+✔ disease CRUD creates, lists, updates and deletes (137.894ms)
+✔ disease CRUD validates missing, duplicate and invalid input (5.1016ms)
+✔ disease deletion is independent of historical text observations (4.6184ms)
+✔ farm CRUD store creates and lists farms with server-generated IDs (125.9485ms)
+✔ farm create validates required fields and maps duplicates to 409 (6.4241ms)
+✔ farm update supports partial fields and rejects an empty patch (7.5552ms)
+✖ farm delete blocks farms referenced by scout reports (3.3268ms)
+✖ farm delete removes an unused farm and reports missing farms (4.5463ms)
+✔ master schema inventories 38 source columns (3.0155ms)
+✔ master row maps source headings (2.14ms)
+✔ master row rejects negative observations (1.1342ms)
+✔ master observations classify pest disease stress (0.9473ms)
+✔ normalizes headers and booleans (4.228ms)
+✔ normalizes percentages and dates (1.5845ms)
+✔ validates canonical minimum (1.5405ms)
+✔ detects UW repeated-survey source (1.0099ms)
+✔ detects Kenya IPM source (2.5148ms)
+✔ resolves source aliases into canonical paths (1.2177ms)
+✔ canonical dictionary is unique and has required fields (0.8968ms)
+﹣ PostgreSQL runtime integration (set RUN_DB_INTEGRATION=1 to run) (1.3684ms) # SKIP
+✔ master spreadsheet has 38 canonical source columns (5.6094ms)
+✔ canonical dictionary remains 93 fields (0.5802ms)
+✔ Scout Report form contains all 38 master database keys (2.2659ms)
+✔ Scout Report form exposes required farm choices and location modes (2.7597ms)
+✔ form retains environment and GPS controls (0.9211ms)
+✔ crop selection uses nested spreadsheet-seeded varieties (0.6011ms)
+✔ form submits the selected spreadsheet crop name and only uses a live farm id (0.6277ms)
+✔ spreadsheet pest and disease reference labels are present (1.5439ms)
+✔ metrics middleware records request status and duration (333.5173ms)
+✔ pest CRUD creates, lists, updates and deletes (146.9975ms)
+✔ pest CRUD validates missing, duplicate and invalid input (11.485ms)
+✔ pest deletion is independent of historical text observations (4.4261ms)
+✔ Phase 22 declares all twelve canonical repeatable observation domains (9.9299ms)
+✔ Phase 22 enforces required child observation fields (1.0932ms)
+✔ Phase 22 defines six verification checklist items (7.1683ms)
+✔ returned workflow stages map to active verification gates (1.5639ms)
+✔ Phase 22 registers visit, full-report and checklist routes (71.06ms)
+✔ actual Combined Scout Report Master workbook has the exact 38 source headings (2499.2316ms)
+✔ all 38 source columns map to recognized application database keys (10.528ms)
+✔ 93-field canonical XLSX round trip preserves every canonical field (236.7766ms)
+✔ canonical report builder emits exactly the approved 93-field dictionary (3.4024ms)
+✔ scout_reports INSERT has one value expression for every target column (6.7066ms)
+✔ report INSERT canonical columns are provided by the migration chain (3.5181ms)
+✖ Docker PostgreSQL initialization runs the complete migration directory (4.0976ms)
+✖ saveReport creates a report and observations transactionally (362.4153ms)
+✔ saveReport validates crop variety and maps duplicate ids to conflict errors (179.9574ms)
+✖ findReport returns null for missing reports (1.3013ms)
+✖ updateReport validates fields and returns the updated report (1.7716ms)
+✖ addPestObservation returns null for missing reports and refreshes status when found (237.6564ms)
+✖ deleteReport removes existing reports and reports misses (2.8582ms)
+✔ deriveStatus returns Critical when critical severity present (3.4441ms)
+✔ deriveStatus returns Completed when no observations (0.628ms)
+﹣ getReference returns farms and crop types when database is available (0.3959ms) # SKIP
+✔ workflow enforces scout -> supervisor -> HOD -> admin sharing order (4.292ms)
+✔ workflow requires verification at every review gate (1.3575ms)
+✔ xlsx-lite round trips a report worksheet (24.8813ms)
+ℹ tests 129
+ℹ suites 0
+ℹ pass 119
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 20060.434
+
+✖ failing tests:
+
+test at server\farm.store.test.js:123:1
+✖ farm delete blocks farms referenced by scout reports (3.3268ms)
+  Error: Unhandled SQL in farm test mock: SELECT COUNT(*)::int AS count FROM scout_reports sr WHERE farm_id = $1
+      at Object.runQuery [as query] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\farm.store.test.js:67:11)
+      at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:424:45
+
+test at server\farm.store.test.js:135:1
+✖ farm delete removes an unused farm and reports missing farms (4.5463ms)
+  Error: Unhandled SQL in farm test mock: SELECT COUNT(*)::int AS count FROM scout_reports sr WHERE farm_id = $1
+      at Object.runQuery [as query] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\farm.store.test.js:67:11)
+      at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:424:45
+
+test at server\report-persistence.contract.test.js:42:1
+✖ Docker PostgreSQL initialization runs the complete migration directory (4.0976ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\.\/server\/migrations:\/docker-entrypoint-initdb\.d/. Input:
+  
+  "version: '3.8'\n" +
+    '\n' +
+    'services:\n' +
+    '  postgres:\n' +
+    '    image: postgres:16-alpine\n' +
+    '    environment:\n' +
+    '      POSTGRES_USER: scout_user\n' +
+    '      POSTGRES_PASSWORD: scout_password\n' +
+    '      POSTGRES_DB: scout_report\n' +
+    '    ports:\n' +
+    '      - "5433:5432"\n' +
+    '    volumes:\n' +
+    '      - postgres_data:/var/lib/postgresql/data\n' +
+    '      - "C:/Scout-Report-29-migrations:/docker-entrypoint-initdb.d:ro"\n' +
+    '    healthcheck:\n' +
+    '      test: ["CMD-SHELL", "pg_isready -U scout_user -d scout_report"]\n' +
+    '      interval: 5s\n' +
+    '      timeout: 5s\n' +
+    '      retries: 5\n' +
+    '\n' +
+    'volumes:\n' +
+    '  postgres_data:\n'
+  
+      at TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\report-persistence.contract.test.js:43:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `version: '3.8'\n\nservices:\n  postgres:\n    image: postgres:16-alpine\n    environment:\n      POSTGRES_USER: scout_user\n      POSTGRES_PASSWORD: scout_password\n      POSTGRES_DB: scout_report\n    ports:\n      - "5433:5432"\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n      - "C:/Scout-Report-29-migrations:/docker-entrypoint-initdb.d:ro"\n    healthcheck:\n      test: ["CMD-SHELL", "pg_isready -U scout_user -d scout_report"]\n      interval: 5s\n      timeout: 5s\n      retries: 5\n\nvolumes:\n  postgres_data:\n`,
+    expected: /\.\/server\/migrations:\/docker-entrypoint-initdb\.d/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at server\store.crud.test.js:222:1
+✖ saveReport creates a report and observations transactionally (362.4153ms)
+  Error: Unhandled SQL in test mock: SELECT id, farm_id, farm_name, crop_type, variety, is_greenhouse, report_date, implementation_week, implementation_year, weather, temperature, humidity, location, notes, status, canonical_payload, created_at, updated_at FROM scout_reports sr WHERE sr.id = $1
+      at Object.runQuery [as query] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:198:11)
+      at findReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:682:24)
+      at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:783:14
+      at async withStoreErrors (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:984:12)
+      at async TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:225:18)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at server\store.crud.test.js:278:1
+✖ findReport returns null for missing reports (1.3013ms)
+  Error: Unhandled SQL in test mock: SELECT id, farm_id, farm_name, crop_type, variety, is_greenhouse, report_date, implementation_week, implementation_year, weather, temperature, humidity, location, notes, status, canonical_payload, created_at, updated_at FROM scout_reports sr WHERE sr.id = $1
+      at runQuery (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:198:11)
+      at Object.findReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:682:24)
+      at TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:281:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at server\store.crud.test.js:286:1
+✖ updateReport validates fields and returns the updated report (1.7716ms)
+  Error: Unhandled SQL in test mock: SELECT id, farm_id, farm_name, crop_type, variety, is_greenhouse, report_date, implementation_week, implementation_year, weather, temperature, humidity, location, notes, status, canonical_payload, created_at, updated_at FROM scout_reports sr WHERE sr.id = $1
+      at runQuery (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:198:11)
+      at findReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:682:24)
+      at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:795:28
+      at withStoreErrors (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:984:18)
+      at Object.updateReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:789:10)
+      at TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:302:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+
+test at server\store.crud.test.js:311:1
+✖ addPestObservation returns null for missing reports and refreshes status when found (237.6564ms)
+  Error: Unhandled SQL in test mock: SELECT id, farm_id, farm_name, crop_type, variety, is_greenhouse, report_date, implementation_week, implementation_year, weather, temperature, humidity, location, notes, status, canonical_payload, created_at, updated_at FROM scout_reports sr WHERE sr.id = $1
+      at Object.runQuery [as query] (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:198:11)
+      at findReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:682:24)
+      at refreshReportStatus (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:1222:24)
+      at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:866:13
+      at async withStoreErrors (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:984:12)
+      at async TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:329:18)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at server\store.crud.test.js:339:1
+✖ deleteReport removes existing reports and reports misses (2.8582ms)
+  Error: Unhandled SQL in test mock: SELECT id, farm_id, farm_name, crop_type, variety, is_greenhouse, report_date, implementation_week, implementation_year, weather, temperature, humidity, location, notes, status, canonical_payload, created_at, updated_at FROM scout_reports sr WHERE sr.id = $1
+      at runQuery (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:198:11)
+      at findReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:682:24)
+      at Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:834:26
+      at withStoreErrors (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:984:18)
+      at Object.deleteReport (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.js:832:10)
+      at TestContext.<anonymous> (Z:\Scout-Report\Scout-Report-Phase29-Clean-Dev-Package_30_1\Scout-Report\server\store.crud.test.js:356:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)

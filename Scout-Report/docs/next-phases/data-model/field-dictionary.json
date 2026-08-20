@@ -1,0 +1,940 @@
+{
+  "version": "1.1.0",
+  "status": "phase20-approved-for-phase21",
+  "policy": "Canonical names are stable API/data-contract identifiers. Legacy columns remain supported through adapters; workflow status from source files is never treated as approval.",
+  "fields": [
+    {
+      "canonical": "reportId",
+      "domain": "identity",
+      "type": "uuid|string",
+      "required": false,
+      "aliases": [
+        "id",
+        "report_id"
+      ]
+    },
+    {
+      "canonical": "organisationId",
+      "domain": "identity",
+      "type": "reference",
+      "required": false,
+      "aliases": [
+        "organisation",
+        "organization",
+        "organisation_id"
+      ]
+    },
+    {
+      "canonical": "farmId",
+      "domain": "identity",
+      "type": "reference",
+      "required": true,
+      "aliases": [
+        "farm_id",
+        "farmid"
+      ]
+    },
+    {
+      "canonical": "farmName",
+      "domain": "identity",
+      "type": "string",
+      "required": true,
+      "aliases": [
+        "farm",
+        "farm_name"
+      ]
+    },
+    {
+      "canonical": "growerName",
+      "domain": "identity",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "grower",
+        "producer",
+        "grower_name"
+      ]
+    },
+    {
+      "canonical": "scoutName",
+      "domain": "identity",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "scout",
+        "scout_name"
+      ]
+    },
+    {
+      "canonical": "fieldName",
+      "domain": "location",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "field",
+        "field_name",
+        "block",
+        "plot"
+      ]
+    },
+    {
+      "canonical": "latitude",
+      "domain": "location",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "lat",
+        "gps_latitude"
+      ]
+    },
+    {
+      "canonical": "longitude",
+      "domain": "location",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "lng",
+        "lon",
+        "gps_longitude"
+      ]
+    },
+    {
+      "canonical": "gpsAccuracyM",
+      "domain": "location",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "gps_accuracy",
+        "gps_accuracy_m"
+      ]
+    },
+    {
+      "canonical": "fieldArea",
+      "domain": "location",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "area",
+        "field_area"
+      ]
+    },
+    {
+      "canonical": "fieldAreaUnit",
+      "domain": "location",
+      "type": "enum",
+      "required": false,
+      "aliases": [
+        "area_unit",
+        "field_area_unit"
+      ]
+    },
+    {
+      "canonical": "cropType",
+      "domain": "crop",
+      "type": "reference|string",
+      "required": true,
+      "aliases": [
+        "crop",
+        "crop_type",
+        "crop_name"
+      ]
+    },
+    {
+      "canonical": "variety",
+      "domain": "crop",
+      "type": "reference|string",
+      "required": false,
+      "aliases": [
+        "cultivar",
+        "variety_name"
+      ]
+    },
+    {
+      "canonical": "growthStage",
+      "domain": "crop",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "crop_stage",
+        "crop_growth_stage",
+        "growth_stage"
+      ]
+    },
+    {
+      "canonical": "plantingDate",
+      "domain": "crop",
+      "type": "date",
+      "required": false,
+      "aliases": [
+        "planting_date"
+      ]
+    },
+    {
+      "canonical": "expectedHarvestDate",
+      "domain": "crop",
+      "type": "date",
+      "required": false,
+      "aliases": [
+        "expected_harvest_date",
+        "harvest_date"
+      ]
+    },
+    {
+      "canonical": "plantHeight",
+      "domain": "crop",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "crop_height",
+        "plant_height"
+      ]
+    },
+    {
+      "canonical": "plantPopulation",
+      "domain": "crop",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "plants_per_acre",
+        "plant_population",
+        "stand_count"
+      ]
+    },
+    {
+      "canonical": "rowWidth",
+      "domain": "crop",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "row_spacing",
+        "row_width"
+      ]
+    },
+    {
+      "canonical": "plantSpacing",
+      "domain": "crop",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "plant_spacing"
+      ]
+    },
+    {
+      "canonical": "vigour",
+      "domain": "crop",
+      "type": "enum",
+      "required": false,
+      "aliases": [
+        "vigor",
+        "vigour"
+      ]
+    },
+    {
+      "canonical": "reportDate",
+      "domain": "visit",
+      "type": "date",
+      "required": true,
+      "aliases": [
+        "date",
+        "report_date",
+        "date_of_observation"
+      ]
+    },
+    {
+      "canonical": "visitPurpose",
+      "domain": "visit",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "visit_purpose"
+      ]
+    },
+    {
+      "canonical": "scoutingPattern",
+      "domain": "visit",
+      "type": "enum|string",
+      "required": false,
+      "aliases": [
+        "scouting_pattern",
+        "pattern"
+      ]
+    },
+    {
+      "canonical": "visitStartedAt",
+      "domain": "visit",
+      "type": "datetime",
+      "required": false,
+      "aliases": [
+        "visit_started_at",
+        "start_time"
+      ]
+    },
+    {
+      "canonical": "visitEndedAt",
+      "domain": "visit",
+      "type": "datetime",
+      "required": false,
+      "aliases": [
+        "visit_ended_at",
+        "end_time"
+      ]
+    },
+    {
+      "canonical": "weather",
+      "domain": "weather",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "weather_condition",
+        "conditions"
+      ]
+    },
+    {
+      "canonical": "temperature",
+      "domain": "weather",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "temperature_c",
+        "air_temperature",
+        "temperature"
+      ]
+    },
+    {
+      "canonical": "humidity",
+      "domain": "weather",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "humidity_percent",
+        "relative_humidity",
+        "humidity"
+      ]
+    },
+    {
+      "canonical": "windSpeed",
+      "domain": "weather",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "wind_speed"
+      ]
+    },
+    {
+      "canonical": "windDirection",
+      "domain": "weather",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "wind_direction"
+      ]
+    },
+    {
+      "canonical": "cloudCover",
+      "domain": "weather",
+      "type": "decimal|string",
+      "required": false,
+      "aliases": [
+        "cloud_cover"
+      ]
+    },
+    {
+      "canonical": "rainfallMm",
+      "domain": "weather",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "rainfall",
+        "rainfall_mm",
+        "recent_rainfall"
+      ]
+    },
+    {
+      "canonical": "leafWetness",
+      "domain": "weather",
+      "type": "decimal|string",
+      "required": false,
+      "aliases": [
+        "leaf_wetness"
+      ]
+    },
+    {
+      "canonical": "soilMoistureStatus",
+      "domain": "soil",
+      "type": "enum|string",
+      "required": false,
+      "aliases": [
+        "soil_moisture_status",
+        "soil_moisture"
+      ]
+    },
+    {
+      "canonical": "soilMoisturePercent",
+      "domain": "soil",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "moisture_percent"
+      ]
+    },
+    {
+      "canonical": "soilPh",
+      "domain": "soil",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "ph",
+        "soil_ph"
+      ]
+    },
+    {
+      "canonical": "soilEc",
+      "domain": "soil",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "ec",
+        "soil_ec",
+        "salinity"
+      ]
+    },
+    {
+      "canonical": "soilTexture",
+      "domain": "soil",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "texture",
+        "soil_texture"
+      ]
+    },
+    {
+      "canonical": "drainage",
+      "domain": "soil",
+      "type": "enum|string",
+      "required": false,
+      "aliases": [
+        "drainage"
+      ]
+    },
+    {
+      "canonical": "soilTemperature",
+      "domain": "soil",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "soil_temperature"
+      ]
+    },
+    {
+      "canonical": "irrigationMethod",
+      "domain": "water",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "irrigation_method"
+      ]
+    },
+    {
+      "canonical": "irrigationStatus",
+      "domain": "water",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "irrigation_status"
+      ]
+    },
+    {
+      "canonical": "waterStress",
+      "domain": "water",
+      "type": "enum|string",
+      "required": false,
+      "aliases": [
+        "water_stress"
+      ]
+    },
+    {
+      "canonical": "weedType",
+      "domain": "weed",
+      "type": "reference|string",
+      "required": false,
+      "aliases": [
+        "weed",
+        "weed_type",
+        "weed_species"
+      ]
+    },
+    {
+      "canonical": "weedPressure",
+      "domain": "weed",
+      "type": "enum|decimal",
+      "required": false,
+      "aliases": [
+        "weed_pressure",
+        "weed_pressure_level",
+        "weed_presence"
+      ]
+    },
+    {
+      "canonical": "weedAverageHeight",
+      "domain": "weed",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "average_weed_height"
+      ]
+    },
+    {
+      "canonical": "weedMaxHeight",
+      "domain": "weed",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "max_weed_height"
+      ]
+    },
+    {
+      "canonical": "weedDensity",
+      "domain": "weed",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "weed_density"
+      ]
+    },
+    {
+      "canonical": "weedAffectedPercent",
+      "domain": "weed",
+      "type": "percent",
+      "required": false,
+      "aliases": [
+        "weed_affected_percent"
+      ]
+    },
+    {
+      "canonical": "pestType",
+      "domain": "pest",
+      "type": "reference|string",
+      "required": false,
+      "aliases": [
+        "pest",
+        "pest_type",
+        "pest_species"
+      ]
+    },
+    {
+      "canonical": "pestScientificName",
+      "domain": "pest",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "pest_scientific_name",
+        "scientific_name"
+      ]
+    },
+    {
+      "canonical": "pestLifeStage",
+      "domain": "pest",
+      "type": "enum|string",
+      "required": false,
+      "aliases": [
+        "life_stage",
+        "pest_life_stage"
+      ]
+    },
+    {
+      "canonical": "pestCount",
+      "domain": "pest",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "pest_count",
+        "pest_population",
+        "count"
+      ]
+    },
+    {
+      "canonical": "pestSamplingMethod",
+      "domain": "pest",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "sampling_method"
+      ]
+    },
+    {
+      "canonical": "pestAffectedPercent",
+      "domain": "pest",
+      "type": "percent",
+      "required": false,
+      "aliases": [
+        "insect_damage",
+        "pest_affected_percent",
+        "damage_percent"
+      ]
+    },
+    {
+      "canonical": "pestSeverity",
+      "domain": "pest",
+      "type": "enum|decimal",
+      "required": false,
+      "aliases": [
+        "pest_severity",
+        "severity"
+      ]
+    },
+    {
+      "canonical": "economicThreshold",
+      "domain": "pest",
+      "type": "decimal|string",
+      "required": false,
+      "aliases": [
+        "economic_threshold",
+        "threshold"
+      ]
+    },
+    {
+      "canonical": "diseaseType",
+      "domain": "disease",
+      "type": "reference|string",
+      "required": false,
+      "aliases": [
+        "disease",
+        "disease_type",
+        "disease_name"
+      ]
+    },
+    {
+      "canonical": "diseaseScientificName",
+      "domain": "disease",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "disease_scientific_name",
+        "pathogen"
+      ]
+    },
+    {
+      "canonical": "diseaseSymptom",
+      "domain": "disease",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "symptom",
+        "symptoms"
+      ]
+    },
+    {
+      "canonical": "diseaseSeverity",
+      "domain": "disease",
+      "type": "enum|decimal",
+      "required": false,
+      "aliases": [
+        "disease_severity"
+      ]
+    },
+    {
+      "canonical": "diseaseAffectedPercent",
+      "domain": "disease",
+      "type": "percent",
+      "required": false,
+      "aliases": [
+        "disease_incidence",
+        "disease_infection",
+        "infection_percent",
+        "affected_percent"
+      ]
+    },
+    {
+      "canonical": "diseasePlantPart",
+      "domain": "disease",
+      "type": "enum|string",
+      "required": false,
+      "aliases": [
+        "plant_part",
+        "affected_plant_part"
+      ]
+    },
+    {
+      "canonical": "diagnosticConfidence",
+      "domain": "disease",
+      "type": "enum|decimal",
+      "required": false,
+      "aliases": [
+        "diagnostic_confidence"
+      ]
+    },
+    {
+      "canonical": "beneficialOrganism",
+      "domain": "beneficial",
+      "type": "string|reference",
+      "required": false,
+      "aliases": [
+        "beneficial",
+        "beneficial_insect",
+        "organism_type"
+      ]
+    },
+    {
+      "canonical": "beneficialCount",
+      "domain": "beneficial",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "beneficial_count"
+      ]
+    },
+    {
+      "canonical": "overallPlantHealth",
+      "domain": "crop_health",
+      "type": "enum|decimal",
+      "required": false,
+      "aliases": [
+        "overall_plant_health",
+        "plant_health"
+      ]
+    },
+    {
+      "canonical": "healthIssue",
+      "domain": "crop_health",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "issue_type",
+        "health_issue"
+      ]
+    },
+    {
+      "canonical": "healthAffectedPercent",
+      "domain": "crop_health",
+      "type": "percent",
+      "required": false,
+      "aliases": [
+        "affected_percent",
+        "health_affected_percent"
+      ]
+    },
+    {
+      "canonical": "plantPart",
+      "domain": "crop_health",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "plant_part"
+      ]
+    },
+    {
+      "canonical": "suspectedCause",
+      "domain": "crop_health",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "suspected_cause",
+        "cause"
+      ]
+    },
+    {
+      "canonical": "managementAction",
+      "domain": "management",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "control_measure",
+        "management_action",
+        "action_required"
+      ]
+    },
+    {
+      "canonical": "productName",
+      "domain": "management",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "product_name",
+        "product"
+      ]
+    },
+    {
+      "canonical": "activeIngredient",
+      "domain": "management",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "active_ingredient"
+      ]
+    },
+    {
+      "canonical": "rateValue",
+      "domain": "management",
+      "type": "decimal",
+      "required": false,
+      "aliases": [
+        "rate_value",
+        "rate",
+        "dose"
+      ]
+    },
+    {
+      "canonical": "rateUnit",
+      "domain": "management",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "rate_unit",
+        "unit"
+      ]
+    },
+    {
+      "canonical": "applicationMethod",
+      "domain": "management",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "method",
+        "application_method"
+      ]
+    },
+    {
+      "canonical": "recommendationText",
+      "domain": "recommendation",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "recommendation",
+        "recommendation_text"
+      ]
+    },
+    {
+      "canonical": "recommendationPriority",
+      "domain": "recommendation",
+      "type": "enum",
+      "required": false,
+      "aliases": [
+        "priority"
+      ]
+    },
+    {
+      "canonical": "followUpDate",
+      "domain": "recommendation",
+      "type": "date",
+      "required": false,
+      "aliases": [
+        "follow_up_date"
+      ]
+    },
+    {
+      "canonical": "media",
+      "domain": "evidence",
+      "type": "attachment",
+      "required": false,
+      "aliases": [
+        "photo",
+        "photos",
+        "image",
+        "images",
+        "media"
+      ]
+    },
+    {
+      "canonical": "sampleType",
+      "domain": "diagnostics",
+      "type": "string|enum",
+      "required": false,
+      "aliases": [
+        "sample_type"
+      ]
+    },
+    {
+      "canonical": "sampleCode",
+      "domain": "diagnostics",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "sample_id",
+        "sample_code"
+      ]
+    },
+    {
+      "canonical": "requestedTest",
+      "domain": "diagnostics",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "requested_test",
+        "test_requested"
+      ]
+    },
+    {
+      "canonical": "diagnosticResult",
+      "domain": "diagnostics",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "result",
+        "diagnostic_result"
+      ]
+    },
+    {
+      "canonical": "referenceNumber",
+      "domain": "diagnostics",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "reference_number",
+        "certificate_number"
+      ]
+    },
+    {
+      "canonical": "sourceFileName",
+      "domain": "provenance",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "source_file",
+        "filename"
+      ]
+    },
+    {
+      "canonical": "sourceAdapterId",
+      "domain": "provenance",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "adapter",
+        "source_adapter"
+      ]
+    },
+    {
+      "canonical": "mappingVersion",
+      "domain": "provenance",
+      "type": "string",
+      "required": false,
+      "aliases": [
+        "mapping_version"
+      ]
+    },
+    {
+      "canonical": "sourceRowNumber",
+      "domain": "provenance",
+      "type": "integer",
+      "required": false,
+      "aliases": [
+        "row",
+        "source_row"
+      ]
+    },
+    {
+      "canonical": "notes",
+      "domain": "narrative",
+      "type": "text",
+      "required": false,
+      "aliases": [
+        "note",
+        "notes",
+        "additional_comments",
+        "notable_conditions",
+        "surveillance_notes"
+      ]
+    }
+  ]
+}

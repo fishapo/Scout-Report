@@ -1,0 +1,6 @@
+source_id,source_name,format,scope,fields_observed,repeatable_stops,media,workflow_status,inventory_status,owner_decision
+legacy_scout_report_v1,Current Scout Report flat exchange,CSV/XLSX,Current platform report,9,no,no,Informational,COMPLETE,Use as backward-compatible baseline
+uw_extension_field_scouting,UW-style repeated field scouting,CSV/XLSX,Field scouting stops,15,yes,no,Not trusted,COMPLETE,Adopt repeated-stop pattern
+digital_crop_scouting,Digital crop scouting pattern,CSV/XLSX/Web form,Plant health and environment,9,optional,yes,Not trusted,COMPLETE,Adopt structured health/evidence concepts
+kenya_ipm_surveillance,Kenya IPM surveillance pattern,CSV/XLSX,IPM surveillance,10,yes,optional,Not trusted,COMPLETE,Adopt population/incidence/control concepts
+generic_wide_legacy,Unknown legacy spreadsheet,CSV/XLSX,Arbitrary headers,variable,unknown,unknown,Unknown,CONTROLLED,Require explicit mapping review
