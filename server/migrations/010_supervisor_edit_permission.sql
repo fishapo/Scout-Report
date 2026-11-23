@@ -1,0 +1,2 @@
+ALTER TABLE scout_reports
+  ADD COLUMN IF NOT EXISTS supervisor_edit_allowed BOOLEAN NOT NULL DEFAULT FALSE;

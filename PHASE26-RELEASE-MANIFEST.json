@@ -1,0 +1,13 @@
+{
+  "phase": 26,
+  "date": "2026-08-13",
+  "title": "Excel Import and Live Analytics",
+  "source_workbook": "docs/phase26-import/source/Combined-Scout-Report-Master-ver_24-2026.xlsx",
+  "source_headings": 38,
+  "crop_types": 130,
+  "varieties": 3475,
+  "source_rows_including_header": 31930,
+  "verification": "npm run verify:phase26",
+  "verification_status": "PASS",
+  "full_npm_test_status": "Requires target environment dependencies"
+}

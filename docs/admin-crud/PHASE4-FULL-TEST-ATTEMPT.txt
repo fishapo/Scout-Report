@@ -1,0 +1,12 @@
+Phase 4 full-suite attempt
+==========================
+Command: npm test
+
+Tests discovered: 50
+Passed: 36
+Failed: 14
+
+The 14 failures are environment/dependency failures because node_modules is absent in the execution environment. Representative failures are MODULE_NOT_FOUND for project runtime dependencies such as pg.
+
+Result: NOT GREEN — environment blocked full runtime suite.
+Phase 4 focused tests remain 5/5 PASS.

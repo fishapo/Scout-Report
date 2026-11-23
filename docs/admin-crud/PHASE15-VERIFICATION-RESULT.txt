@@ -1,0 +1,56 @@
+PASS | exists: .github/workflows/ci.yml
+PASS | exists: .github/workflows/release.yml
+PASS | exists: .github/dependabot.yml
+PASS | exists: scripts/verify-phase14.js
+PASS | exists: scripts/verify-phase15.js
+PASS | exists: scripts/staging-smoke.sh
+PASS | exists: scripts/backup-postgres.sh
+PASS | exists: scripts/restore-postgres.sh
+PASS | exists: scripts/build-release-artifact.sh
+PASS | exists: ops/slo-baseline.md
+PASS | exists: ops/deployment-checklist.md
+PASS | exists: ops/rollback-runbook.md
+PASS | exists: docs/operations/PHASE14-LIVE-EVIDENCE.md
+PASS | exists: docs/operations/PHASE15-LIVE-EVIDENCE.md
+PASS | exists: docs/admin-crud/45-PHASE15-START-PACK.md
+PASS | exists: docs/admin-crud/46-PHASE15-COMPLETION-REPORT.md
+PASS | exists: docs/admin-crud/47-PHASE16-START-PACK.md
+PASS | phase15 npm script present
+PASS | release check points to phase15
+PASS | CI provisions PostgreSQL 16
+PASS | CI uses clean install
+PASS | CI runs phase gates through 15
+PASS | CI runs full test suite
+PASS | CI runs DB integration
+PASS | CI builds release artifact
+PASS | release workflow has protected environment
+PASS | release workflow runs phase15 gate
+PASS | release workflow has approval boundary
+PASS | release workflow can run staging smoke
+PASS | release workflow captures live evidence
+PASS | SLO baseline defines availability
+PASS | deployment checklist requires health verification
+PASS | deployment checklist requires reference regression
+PASS | rollback runbook requires smoke test
+PASS | live evidence defines production gates
+PASS | live evidence has SLO evidence
+PASS | live evidence has DR evidence
+PASS | public reference route remains mounted
+PASS | admin metrics remains protected
+PASS | release artifact excludes .env
+PASS | release artifact creates checksum
+PASS | syntax: scripts/verify-phase15.js
+PASS | syntax: scripts/verify-phase14.js
+PASS | syntax: server/app.js
+PASS | syntax: server/routes/index.js
+PASS | syntax: server/routes/metrics.routes.js
+PASS | syntax: server/metrics.js
+PASS | syntax: server/integration.runtime.test.js
+PASS | shell syntax: scripts/staging-smoke.sh
+PASS | shell syntax: scripts/backup-postgres.sh
+PASS | shell syntax: scripts/restore-postgres.sh
+PASS | shell syntax: scripts/build-release-artifact.sh
+
+Checks: 52
+Passed: 52
+Failed: 0

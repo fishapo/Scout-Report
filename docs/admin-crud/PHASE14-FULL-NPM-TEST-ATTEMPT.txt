@@ -1,0 +1,20 @@
+PHASE 14 FULL TEST ATTEMPT
+==========================
+
+Command:
+npm test
+
+Result in isolated environment:
+66 tests discovered
+51 passed
+14 failed
+1 skipped
+
+Known environment/dependency issue:
+The available node_modules tree is incomplete/stale and produces MODULE_NOT_FOUND errors including dotenv through server/db.js and server/store.js.
+
+Interpretation:
+The local test run is not a clean-install runtime certification. CI is configured to run npm ci and PostgreSQL 16 before the full suite.
+
+Required live gate:
+Run the CI workflow or a clean environment with npm ci and PostgreSQL, then archive the resulting test output.

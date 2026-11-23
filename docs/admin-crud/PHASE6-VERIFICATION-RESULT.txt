@@ -1,0 +1,22 @@
+Scout Report — Phase 6 Disease CRUD Verification
+Checks: 29
+Passed: 29
+Failed: 0
+
+Focused Phase 6 tests:
+Tests: 5
+Passed: 5
+Failed: 0
+
+Regression:
+Phase 1: 29/29
+Phase 2: 28/28
+Phase 3: 22/22
+Phase 4: 28/28
+Phase 5: 29/29
+
+Full npm test:
+Tests: 60
+Passed: 46
+Failed: 14
+Reason: missing runtime dependencies in execution environment; MODULE_NOT_FOUND failures.

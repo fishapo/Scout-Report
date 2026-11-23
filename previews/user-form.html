@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scout Report — Master Spreadsheet Form</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f6f4;color:#24332a;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.container{max-width:1050px;margin:auto}.header{position:sticky;top:0;z-index:10;background:#245c3b;color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}.header .action{flex:0 0 auto;width:auto;min-width:92px}.logout-action{min-width:92px!important;white-space:nowrap}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.toolbar .action{flex:0 0 auto}.toolbar a.action{color:#245c3b;text-decoration:none;text-align:center}.reference-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.reference-strip .status{margin-top:0}@media(max-width:700px){.reference-strip{grid-template-columns:1fr}}h1{margin:0;font-size:24px}.content{padding:18px}.section{background:#fff;border:1px solid #d8e2dc;border-radius:10px;padding:18px;margin-bottom:14px}.section-title{font-size:19px;font-weight:700;margin-bottom:13px;color:#245c3b}.section-note{font-size:12px;color:#68756e;margin:-7px 0 12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}label{font-size:13px;font-weight:650;color:#435149;display:block}input,select,textarea{width:100%;margin-top:5px;border:1px solid #cbd8d0;border-radius:7px;padding:10px;background:#fbfdfc;font:inherit}textarea{min-height:80px;resize:vertical}.full{grid-column:1/-1}.switch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.switch button,.action{border:1px solid #b9cfc1;background:#f8fbf9;border-radius:8px;padding:11px;font-weight:700;cursor:pointer}.switch button.active,.action.primary{background:#245c3b;color:#fff;border-color:#245c3b}.location{background:#f7faf8;border:1px dashed #b9cfc1;border-radius:8px;padding:12px}.location button{margin-top:8px;width:100%}.actions{display:flex;gap:10px;position:sticky;bottom:0;background:#f3f6f4;padding:12px 0}.action{flex:1}.master-panel{display:none}.status{font-size:13px;padding:8px;border-radius:6px;margin-top:8px;background:#eef5f0}.required:after{content:' *';color:#c62828}@media(max-width:700px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.header{position:static}.switch{grid-template-columns:1fr}}@media print{body{background:#fff}.header{position:static}.toolbar,#master-import-panel,.actions{display:none!important}.section{break-inside:avoid;border-color:#bbb;box-shadow:none}}.workbook-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.workbook-group{margin:0;padding:10px;border:1px solid #d8e2dc;border-radius:7px;min-width:0;background:#f8fbf9;display:grid;grid-auto-flow:column;gap:8px}.workbook-group legend{padding:0 4px;color:#245c3b;font-weight:700}.report-additional>summary{padding:12px 0;cursor:pointer;color:#245c3b;font-weight:700}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}</style></head><body><div class="container"><header class="header"><div><h1>🌾 Scout Report</h1><div id="report-date"></div></div><div class="toolbar"><a class="action" href="/dashboard">Dashboard</a><a class="action" href="/dashboard.html">Analytics</a><button id="import-toolbar-btn" class="action" type="button" onclick="document.getElementById('master-workbook')?.click()" style="display:none">Import</button><button id="autofill-db-btn" class="action" type="button" onclick="autofillFromDb()">Autofill from DB</button><button class="action" type="button" onclick="exportMasterCsv()">Export CSV</button><button class="action" type="button" onclick="exportReportJson()">Export JSON</button><button class="action" type="button" onclick="window.print()">Print</button><button class="action logout-action" type="button" onclick="logout()">Log Out</button></div></header><main class="content"><section id="master-import-panel" class="section master-panel"><div class="section-title">Master Spreadsheet Import</div><div class="section-note">Admin/HOD only. Upload the workbook to validate and stage the Clean Data sheet.</div><input type="file" id="master-workbook" accept=".xlsx"><button id="stage-master-btn" class="action primary" type="button" onclick="stageMasterWorkbook()">Validate and stage workbook</button><div id="master-import-result" class="status" role="status"></div><label>Recent workbook batches<select id="master-import-batches" onchange="showMasterBatch(this.value)"><option value="">Select a batch</option></select></label><a id="master-import-analytics" href="/dashboard.html#workbookAnalytics" hidden>View this workbook in Analytics</a><ul id="master-import-issues"></ul></section>
+<section class="section"><div class="section-title">Combined Scout Report</div><div class="section-note">Enter one workbook row per report.</div><p id="workbook-prefill-status" class="status" role="status" hidden></p><div class="grid"><label class="required">WEEK<input id="impl-week" type="number" min="1" max="53"></label><label class="required">Farm<select id="farm-select"><option value="">Select Farm...</option></select></label><label>GH (Greenhouse No.)<input id="gh-value" value="" placeholder="Enter greenhouse number" autocomplete="off" inputmode="text"></label><label>Inpl. wk-year<input id="inpl-wk-year" placeholder="e.g. 40/25"></label><label class="required">Crop<select id="crop-select"><option value="">Select Crop...</option></select></label><label class="required">Variety<select id="variety-select"><option value="">Select Variety...</option></select></label><label class="required">Report Date<input id="report-date-input" type="date"></label></div><div class="switch"><button type="button" class="active" data-location="Field" onclick="setLocationType(this)">Field</button><button type="button" data-location="Greenhouse" onclick="setLocationType(this)">Greenhouse</button><button type="button" data-location="Shadenet" onclick="setLocationType(this)">Shadenet</button></div><div class="reference-strip"><label>Pest Type Reference<select id="pest-reference-select"><option value="">Loading pest types...</option></select></label><label>Disease / Symptom Reference<select id="disease-reference-select"><option value="">Loading disease/symptom types...</option></select></label><label>Other Condition / Stress Reference<select id="stress-reference-select"><option value="">Loading condition types...</option></select></label></div></section>
+<section class="section"><div class="section-title">Edit permission</div><label><input id="supervisor-edit-allowed" type="checkbox" style="width:auto;margin-right:8px">Allow the assigned supervisor to edit this report</label><div class="section-note" style="margin-top:8px">Leave unchecked to keep supervisor verification read-only.</div></section>
+<section class="section"><div class="section-title">Pests</div><div class="workbook-grid">
+    <fieldset class="workbook-group"><legend>Thrips — larvae</legend>
+      <label><span class="visually-hidden">Thrips — larvae</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="thrips_larvae"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Thrips — adult</legend>
+      <label><span class="visually-hidden">Thrips — adult</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="thrips_adults"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>LEAF MINER — feeding point</legend>
+      <label><span class="visually-hidden">LEAF MINER — feeding point</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="leaf_miner_feeding_point"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>LEAF MINER — complete mines</legend>
+      <label><span class="visually-hidden">LEAF MINER — complete mines</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="leaf_miner_complete_mines"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>White fly — eggs</legend>
+      <label><span class="visually-hidden">White fly — eggs</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="white_fly_eggs"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>White fly — adult</legend>
+      <label><span class="visually-hidden">White fly — adult</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="white_fly_adult"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Aphids — nymphs</legend>
+      <label><span class="visually-hidden">Aphids — nymphs</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="aphids_nymphs"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Aphids — adult</legend>
+      <label><span class="visually-hidden">Aphids — adult</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="aphids_adult"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Spider mite — eggs</legend>
+      <label><span class="visually-hidden">Spider mite — eggs</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="spider_mite_eggs"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Spider mite — adults</legend>
+      <label><span class="visually-hidden">Spider mite — adults</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="spider_mite_adults"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Beetles — counting</legend>
+      <label><span class="visually-hidden">Beetles — counting</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="beetles_counting"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Cater pillar — spots</legend>
+      <label><span class="visually-hidden">Cater pillar — spots</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="caterpillar_spots"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Butter-flies — counting</legend>
+      <label><span class="visually-hidden">Butter-flies — counting</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="butterflies_counting"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Sciara fly — spots</legend>
+      <label><span class="visually-hidden">Sciara fly — spots</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="sciara_fly_spots"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Cut worms — counting</legend>
+      <label><span class="visually-hidden">Cut worms — counting</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="cut_worms_counting"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Mealy bugs — spots</legend>
+      <label><span class="visually-hidden">Mealy bugs — spots</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="mealy_bugs_spots"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Slugs — counting</legend>
+      <label><span class="visually-hidden">Slugs — counting</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="slugs_counting"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Snails — counting</legend>
+      <label><span class="visually-hidden">Snails — counting</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="snails_counting"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Nema-todes — spots</legend>
+      <label><span class="visually-hidden">Nema-todes — spots</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="nematodes_spots"></label>
+    </fieldset>
+  </div></section>
+<section class="section"><div class="section-title">Diseases and symptoms</div><div class="workbook-grid">
+    <fieldset class="workbook-group"><legend>Chlorosis — spots / MP</legend>
+      <label><span class="visually-hidden">Chlorosis — spots / MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="chlorosis_spots_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Fusarium — MP</legend>
+      <label><span class="visually-hidden">Fusarium — MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="fusarium_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Rhizoctonia — MP</legend>
+      <label><span class="visually-hidden">Rhizoctonia — MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="rhizoctonia_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Powdery mildew — MP</legend>
+      <label><span class="visually-hidden">Powdery mildew — MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="powdery_mildew_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Botrytis — spots / MP</legend>
+      <label><span class="visually-hidden">Botrytis — spots / MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="botrytis_spots_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Leafspot — Black</legend>
+      <label><span class="visually-hidden">Leafspot — Black</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="leafspot_black"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Leafspot — Brown</legend>
+      <label><span class="visually-hidden">Leafspot — Brown</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="leafspot_brown"></label>
+    </fieldset>
+  </div></section>
+<section class="section"><div class="section-title">Other observations</div><div class="workbook-grid">
+    <fieldset class="workbook-group"><legend>Flower buds — Cuttings</legend>
+      <label><span class="visually-hidden">Flower buds — Cuttings</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="flower_buds_cuttings"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Chem. damage — MP</legend>
+      <label><span class="visually-hidden">Chem. damage — MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="chemical_damage_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Virus doubt — MP</legend>
+      <label><span class="visually-hidden">Virus doubt — MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="virus_doubt_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Mix — MP</legend>
+      <label><span class="visually-hidden">Mix — MP</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="mix_mp"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Dry spots — Bags / spots</legend>
+      <label><span class="visually-hidden">Dry spots — Bags / spots</span><span aria-hidden="true">Observation</span><input type="number" min="0" step="any" data-master="dry_spots_bags_spots"></label>
+    </fieldset>
+    <fieldset class="workbook-group"><legend>Others</legend>
+      <label><span class="visually-hidden">Others</span><span aria-hidden="true">Observation</span><input type="text" data-master="others"></label>
+    </fieldset>
+  </div></section>
+<details class="report-additional"><summary>Additional visit and management details</summary>
+<section class="section"><div class="section-title">Visit, Environmental Conditions & Location</div><div class="grid"><label>Grower Name<input id="grower-name"></label><label>Scout Name<input id="scout-name"></label><label>Field / Block<input id="field-name"></label><label>Growth Stage<input id="growth-stage"></label><label>Planting Date<input id="planting-date" type="date"></label><label>Expected Harvest Date<input id="harvest-date" type="date"></label><label>Field Area<input id="field-area" type="number" min="0" step="any"></label><label>Area Unit<input id="field-area-unit"></label><label>Visit Purpose<input id="visit-purpose"></label><label>Scouting Pattern<input id="scouting-pattern"></label><label>Weather<select id="weather-select"><option>Sunny</option><option>Cloudy</option><option>Rainy</option><option>Foggy</option><option>Other</option></select></label><label>Temperature (°C)<input id="temperature" type="number" step="0.1"></label><label>Humidity (%)<input id="humidity" type="number" min="0" max="100"></label><label>Wind Speed<input id="wind-speed" type="number" min="0" step="0.1"></label><label>Wind Direction<input id="wind-direction"></label><label>Cloud Cover<input id="cloud-cover"></label><label>Rainfall (mm)<input id="rainfall-mm" type="number" min="0" step="0.1"></label><label>Leaf Wetness<input id="leaf-wetness"></label><label>Soil Moisture Status<input id="soil-moisture-status"></label><label>Soil Moisture (%)<input id="soil-moisture-percent" type="number" min="0" max="100"></label><label>Soil pH<input id="soil-ph" type="number" min="0" max="14" step="0.01"></label><label>Soil EC<input id="soil-ec" type="number" min="0" step="0.001"></label><label>Soil Texture<input id="soil-texture"></label><label>Drainage<input id="drainage"></label><label>Soil Temperature<input id="soil-temperature" type="number" step="0.1"></label><label>Irrigation Method<input id="irrigation-method"></label><label>Irrigation Status<input id="irrigation-status"></label><label>Water Stress<input id="water-stress"></label><div class="full location"><b>Location</b><div id="lat-display">Lat: —</div><div id="long-display">Long: —</div><div id="gps-display">Accuracy: —</div><button type="button" class="action primary" onclick="updateLocation()">📍 Update Location</button></div></div></section>
+<section class="section"><div class="section-title">Crop / Stand Information</div><div class="grid"><label>Plant Height<input id="plant-height" type="number" min="0" step="0.1"></label><label>Plant Population<input id="plant-population" type="number" min="0" step="0.1"></label><label>Row Width<input id="row-width" type="number" min="0" step="0.1"></label><label>Plant Spacing<input id="plant-spacing" type="number" min="0" step="0.1"></label><label>Vigour<select id="vigour"><option value="">Select...</option><option>Low</option><option>Medium</option><option>High</option></select></label><label>Overall Plant Health<input id="overall-health"></label><label>Health Issue<input id="health-issue"></label><label>Health Affected (%)<input id="health-affected" type="number" min="0" max="100"></label><label>Plant Part<input id="plant-part"></label><label>Suspected Cause<input id="suspected-cause"></label></div></section>
+<section class="section"><div class="section-title">Management, Recommendations & Evidence</div><div class="grid"><label>Management Action<input id="management-action"></label><label>Product Name<input id="product-name"></label><label>Active Ingredient<input id="active-ingredient"></label><label>Rate Value<input id="rate-value" type="number" step="any"></label><label>Rate Unit<input id="rate-unit"></label><label>Application Method<input id="application-method"></label><label>Recommendation Priority<input id="recommendation-priority"></label><label>Follow-up Date<input id="follow-up-date" type="date"></label><label>Sample Type<input id="sample-type"></label><label>Sample Code<input id="sample-code"></label><label>Requested Test<input id="requested-test"></label><label>Diagnostic Result<input id="diagnostic-result"></label><label>Reference Number<input id="reference-number"></label><label class="full">Notes<textarea id="general-notes"></textarea></label></div></section>
+</details><div class="actions"><button class="action" type="button" onclick="saveReportOnly()">Save Report</button><button class="action primary" type="button" id="submit-btn" onclick="submitReport()">✓ Save & Submit Report</button></div><div id="save-status" class="status"></div></main></div><script src="/assets/auth.js"></script><script src="/js/reference-mapping.js"></script><script>
+const REFERENCE_API='/api/reference';let cropTypes=[];let referencePests=[];let referenceDiseases=[];let currentLocation=null;let locationType='Field';const FARM_CHOICES=['FARM 1','FARM 2','FARM 3','FARM 4','FARM 5','FARM 6','FARM 7','FARM 8','FARM 9','FARM 10','FARM 11','FARM 12A','FARM 12B'];const $=id=>document.getElementById(id);const val=id=>$(id)?.value||'';const num=id=>val(id)===''?null:Number(val(id));
+document.addEventListener('DOMContentLoaded',async()=>{const d=new Date();$('report-date').textContent='Date: '+d.toLocaleDateString();$('report-date-input').value=d.toISOString().slice(0,10);$('impl-week').value=getIsoWeek(d);try{await browserAuth.init({redirectTo:'/login'});const u=browserAuth.getUser();if(u&&['admin','head_of_department'].includes(u.role)){ $('master-import-panel').style.display='block';loadMasterBatches(); $('import-toolbar-btn').style.display='inline-flex'; }const [fr,cr,pr,dr,sr]=await Promise.all([browserAuth.fetchWithAuth(REFERENCE_API+'/farms'),browserAuth.fetchWithAuth(REFERENCE_API+'/master-crops'),browserAuth.fetchWithAuth(REFERENCE_API+'/pests'),browserAuth.fetchWithAuth(REFERENCE_API+'/diseases'),browserAuth.fetchWithAuth(REFERENCE_API+'/stress-references')]);if(!fr.ok)throw new Error('Farm reference request failed ('+fr.status+')');if(!cr.ok)throw new Error('Spreadsheet crop reference request failed ('+cr.status+')');if(!pr.ok)throw new Error('Pest reference request failed ('+pr.status+')');if(!dr.ok)throw new Error('Disease reference request failed ('+dr.status+')');if(!sr.ok)throw new Error('Stress reference request failed ('+sr.status+')');const farms=await fr.json();const crops=await cr.json();const pests=await pr.json();const diseases=await dr.json();const stresses=await sr.json();referencePests=Array.isArray(pests)?pests:[];referenceDiseases=Array.isArray(diseases)?diseases:[];populateFarms(Array.isArray(farms)?farms:[]);cropTypes=Array.isArray(crops)?crops:[];populateMasterCrops();populate($('pest-reference-select'),referencePests,'name','name');populate($('disease-reference-select'),referenceDiseases,'name','name');populate($('stress-reference-select'),Array.isArray(stresses)?stresses:[],'name','name');resetVarietySelect('Select a crop first');$('save-status').textContent='Spreadsheet references loaded: '+cropTypes.length+' crop types, '+(Array.isArray(pests)?pests.length:0)+' pest types, '+(Array.isArray(diseases)?diseases.length:0)+' disease types, '+(Array.isArray(stresses)?stresses.length:0)+' other conditions.';if(u?.role==='scout')await applyAssignedWorkbook(u)}catch(e){$('save-status').textContent='Reference data could not be loaded: '+e.message}});document.getElementById('master-workbook')?.addEventListener('change',()=>{if(document.getElementById('master-workbook').files?.length)stageMasterWorkbook()});setLocationType(document.querySelector('.switch button.active'));function resetVarietySelect(message='Select Variety...'){const s=$('variety-select');s.innerHTML='';const o=document.createElement('option');o.value='';o.textContent=message;s.appendChild(o);s.disabled=true}
+function populateMasterCrops(){const s=$('crop-select');s.innerHTML='<option value="">Select Crop...</option>';cropTypes.forEach((crop,i)=>{const o=document.createElement('option');o.value='MASTER:'+i;o.textContent=crop.codes?.length?crop.name+' ('+crop.codes.join('/')+')':crop.name;o.dataset.name=crop.name;o.dataset.codes=(crop.codes||[]).join(',');o.dataset.code=(crop.codes||[])[0]||'';s.appendChild(o)})}
+function loadMasterVarieties(crop){resetVarietySelect('Loading varieties...');const s=$('variety-select');const varieties=Array.isArray(crop?.varieties)?crop.varieties:[];if(!varieties.length){resetVarietySelect('No varieties registered for this crop');return}s.innerHTML='<option value="">Select Variety...</option>';varieties.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name;o.dataset.cropCode=v.code;s.appendChild(o)});s.disabled=false}
+function loadVarietiesForCrop(crop){loadMasterVarieties(crop)}
+function populateFarms(farms){const supplied=Array.isArray(farms)?farms:[];$('farm-select').innerHTML='<option value="">Select Farm...</option>';FARM_CHOICES.forEach(name=>{const f=supplied.find(x=>String(x.name||'').trim().toUpperCase()===name);const o=document.createElement('option');o.value=f?.id||'';o.textContent=name;o.dataset.name=name;o.dataset.referenceOnly=f?'false':'true';$('farm-select').appendChild(o)})}
+function populate(s,a,l,v){s.innerHTML='<option value="">Select...</option>';a.forEach(x=>{const o=document.createElement('option');o.value=x[v];o.textContent=x[l];s.appendChild(o)})}
+$('crop-select').addEventListener('change',()=>{const idx=String($('crop-select').value).startsWith('MASTER:')?Number($('crop-select').value.slice(7)):NaN;if(!Number.isInteger(idx)||!cropTypes[idx]){resetVarietySelect('Select a crop first');return}const crop=cropTypes[idx];loadVarietiesForCrop(crop)});
+async function autofillFromDb(){const b=$('autofill-db-btn');b.disabled=true;$('save-status').textContent='Loading latest saved report from PostgreSQL...';try{const r=await browserAuth.fetchWithAuth('/api/reports?limit=1');const d=await r.json();if(!r.ok)throw new Error(d.error||'Could not load the latest report');if(!Array.isArray(d)||!d.length)throw new Error('No saved report is available for the logged-in user.');const report=d[0];const farm=$('farm-select');const farmOption=Array.from(farm.options).find(o=>o.value===String(report.farmId));if(farmOption){farm.value=farmOption.value}else{throw new Error('The saved report farm is not present in the current PostgreSQL reference data.')}const crop= cropTypes.find(c=>String(c.name).trim().toLowerCase()===String(report.cropType||'').trim().toLowerCase());if(!crop)throw new Error('The saved report crop is not present in the current reference catalog.');const cropOption=Array.from($('crop-select').options).find(o=>String(o.dataset.name||'').trim().toLowerCase()===String(crop.name).trim().toLowerCase());if(!cropOption)throw new Error('The saved report crop could not be selected.');$('crop-select').value=cropOption.value;await loadVarietiesForCrop(crop);const varietyOption=Array.from($('variety-select').options).find(o=>String(o.value).trim().toLowerCase()===String(report.variety||'').trim().toLowerCase());if(varietyOption)$('variety-select').value=varietyOption.value;const set=(id,v)=>{if($(id)&&v!==undefined&&v!==null)$(id).value=v};set('impl-week',report.implementationWeek);set('gh-value',report.isGreenhouse?'':(report.gh||''));set('report-date-input',report.reportDate||'');set('grower-name',report.growerName);set('scout-name',report.scoutName);set('field-name',report.fieldName);set('growth-stage',report.growthStage);set('planting-date',report.plantingDate||'');set('harvest-date',report.expectedHarvestDate||'');set('field-area',report.fieldArea);set('field-area-unit',report.fieldAreaUnit);set('visit-purpose',report.visitPurpose);set('scouting-pattern',report.scoutingPattern);set('temperature',report.temperature);set('humidity',report.humidity);set('weather-select',report.weather);set('general-notes',report.notes);if(report.location){currentLocation=report.location;$('lat-display').textContent='Lat: '+Number(report.location.latitude).toFixed(6);$('long-display').textContent='Long: '+Number(report.location.longitude).toFixed(6);$('gps-display').textContent='Accuracy: '+Math.round(Number(report.location.gpsAccuracyM||report.location.accuracy||0))+' m'}const master=report.masterObservations||{};document.querySelectorAll('[data-master]').forEach(e=>{const v=master[e.dataset.master];e.value=v===undefined||v===null?'':v});set('inpl-wk-year',master.inplanting_week_year||'');set('gh-value',master.gh||report.gh||'');const locationButtons=Array.from(document.querySelectorAll('.switch button'));const desired=report.locationMode||((report.isGreenhouse)?'Greenhouse':'Field');const locationButton=locationButtons.find(x=>x.dataset.location===desired);if(locationButton)setLocationType(locationButton);$('save-status').textContent='Loaded report '+report.id+' from PostgreSQL. Values remain editable; review and modify before submitting.'}catch(e){$('save-status').textContent='Autofill failed: '+e.message;alert(e.message)}finally{b.disabled=false}}function setLocationType(b,focus=true){document.querySelectorAll('.switch button').forEach(x=>x.classList.remove('active'));b.classList.add('active');locationType=b.dataset.location;const gh=$('gh-value');gh.disabled=false;gh.setAttribute('aria-label',locationType==='Greenhouse'?'Greenhouse number (required for Greenhouse mode)':'Greenhouse number (only used for Greenhouse mode)');if(focus&&locationType==='Greenhouse')gh.focus()}function updateLocation(){if(!navigator.geolocation)return alert('Geolocation is not supported.');navigator.geolocation.getCurrentPosition(p=>{currentLocation={latitude:p.coords.latitude,longitude:p.coords.longitude,gpsAccuracyM:p.coords.accuracy};$('lat-display').textContent='Lat: '+p.coords.latitude.toFixed(6);$('long-display').textContent='Long: '+p.coords.longitude.toFixed(6);$('gps-display').textContent='Accuracy: '+Math.round(p.coords.accuracy)+' m'},()=>alert('Unable to retrieve location. Check permissions.'))}function getIsoWeek(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=x.getUTCDay()||7;x.setUTCDate(x.getUTCDate()+4-day);const y=new Date(Date.UTC(x.getUTCFullYear(),0,1));return Math.ceil((((x-y)/86400000)+1)/7)}function masterObservations(){const o={};document.querySelectorAll('[data-master]').forEach(e=>{if(e.value!=='')o[e.dataset.master]=e.dataset.master==='others'?e.value.trim():Number(e.value)});o.week=num('impl-week');o.farm=$('farm-select').selectedOptions[0]?.dataset.name||'';o.gh=val('gh-value');o.inplanting_week_year=val('inpl-wk-year');o.crop=$('crop-select').selectedOptions[0]?.dataset.code||'';o.variety=val('variety-select');return o}function pestObservations(){const map=[['thrips_larvae','Thrips'],['thrips_adults','Thrips'],['leaf_miner_feeding_point','Leaf Miner'],['leaf_miner_complete_mines','Leaf Miner'],['white_fly_eggs','White Fly'],['white_fly_adult','White Fly'],['aphids_nymphs','Aphids'],['aphids_adult','Aphids'],['spider_mite_eggs','Spider Mite'],['spider_mite_adults','Spider Mite'],['beetles_counting','Beetles'],['caterpillar_spots','Caterpillar'],['butterflies_counting','Butterflies'],['sciara_fly_spots','Sciara Fly'],['cut_worms_counting','Cut Worms'],['mealy_bugs_spots','Mealy Bugs'],['slugs_counting','Slugs'],['snails_counting','Snails'],['nematodes_spots','Nematodes']];const aliases={'caterpillar_spots':['Cater Pillar'],'butterflies_counting':['Butter Flies'],'nematodes_spots':['Nema Todes']};return map.map(x=>({k:x[0],t:x[1],v:numMaster(x[0])})).filter(x=>x.v!==null).map(x=>{const pestType=scoutReferenceMapping.resolveObservationReference(x.k,x.t,referencePests,aliases);if(!pestType)throw new Error('Pest reference is not configured for master column "'+x.k+'" ('+x.t+').');return{pestType,count:x.v,severity:x.v>50?'High':'Low',affectedPercent:Math.min(100,x.v),locationOnPlant:'',notes:'Source column: '+x.k}})}function diseaseObservations(){const map=[['chlorosis_spots_mp','Chlorosis'],['fusarium_mp','Fusarium'],['rhizoctonia_mp','Rhizoctonia'],['powdery_mildew_mp','Powdery mildew'],['botrytis_spots_mp','Botrytis'],['leafspot_black','Leafspot Black'],['leafspot_brown','Leafspot Brown']];const aliases={'chlorosis_spots_mp':['Chlo Rosis Spots/Mp'],'rhizoctonia_mp':['Rhyzoc Tonia'],'botrytis_spots_mp':['Botrytis Spots/Mp']};return map.map(x=>({k:x[0],t:x[1],v:numMaster(x[0])})).filter(x=>x.v!==null).map(x=>{const diseaseType=scoutReferenceMapping.resolveObservationReference(x.k,x.t,referenceDiseases,aliases);if(!diseaseType)throw new Error('Disease reference is not configured for master column "'+x.k+'" ('+x.t+').');return{diseaseType,severity:x.v>50?'High':'Low',affectedPercent:Math.min(100,x.v),spotCount:x.v,spotColor:x.t.includes('Black')?'black':x.t.includes('Brown')?'brown':'',notes:'Source column: '+x.k}})}function numMaster(k){const e=document.querySelector('[data-master="'+k+'"]');return !e||e.value===''?null:Number(e.value)}function payload(){const f=$('farm-select').selectedOptions[0],c=$('crop-select').selectedOptions[0];const farmId=f?.dataset.referenceOnly==='true'?'':(f?.value||'');const cropName=c?.dataset.name||'';return{farmId,farmName:f?.dataset.name,gh:val('gh-value'),cropType:cropName,variety:val('variety-select'),isGreenhouse:locationType==='Greenhouse',locationMode:locationType,reportDate:val('report-date-input'),implementationWeek:Number(val('impl-week')),implementationYear:new Date(val('report-date-input')).getFullYear(),weather:val('weather-select'),temperature:num('temperature'),humidity:num('humidity'),location:currentLocation,growerName:val('grower-name'),scoutName:val('scout-name'),fieldName:val('field-name'),fieldArea:num('field-area'),fieldAreaUnit:val('field-area-unit'),growthStage:val('growth-stage'),plantingDate:val('planting-date')||null,expectedHarvestDate:val('harvest-date')||null,visitPurpose:val('visit-purpose'),scoutingPattern:val('scouting-pattern'),masterObservations:masterObservations(),pestObservations:pestObservations(),diseaseObservations:diseaseObservations(),notes:val('general-notes')}}async function submitReport(){const p=payload();if(!p.farmId)return alert('Farm is required.');if(!p.cropType)return alert('Select a valid Crop type from the spreadsheet reference list.');if(!p.variety)return alert('Select a Variety for the selected Crop.');if(!p.reportDate)return alert('Report Date is required.');if(p.isGreenhouse&&!p.gh.trim())return alert('Greenhouse mode requires the GH (Greenhouse No.) field.');$('submit-btn').disabled=true;try{const r=await browserAuth.fetchWithAuth('/api/reports',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Save failed');await saveCanonicalExtensions(d.id,p);$('save-status').textContent='Saved report '+d.id+' with the 38-column master structure and canonical fields.';window.scrollTo({top:0,behavior:'smooth'})}catch(e){$('save-status').textContent='Save failed: '+e.message;alert(e.message)}finally{$('submit-btn').disabled=false}}async function saveReportOnly(){await submitReport()}async function saveCanonicalExtensions(id,p){const calls=[];const crop={growth_stage:p.growthStage,plant_height:num('plant-height'),plant_population:num('plant-population'),row_width:num('row-width'),plant_spacing:num('plant-spacing'),vigour:val('vigour'),notes:''};if(Object.values(crop).some(v=>v!==null&&v!==''))calls.push(['cropObservations',crop]);const weather={observed_at:p.reportDate+'T12:00:00',temperature_c:p.temperature,humidity_percent:p.humidity,wind_speed:num('wind-speed'),wind_direction:val('wind-direction'),cloud_cover:val('cloud-cover'),rainfall_mm:num('rainfall-mm'),leaf_wetness:val('leaf-wetness'),source:'Scout Report Form'};if(Object.entries(weather).some(([k,v])=>k!=='observed_at'&&k!=='source'&&v!==null&&v!==''))calls.push(['weatherObservations',weather]);const soil={moisture_status:val('soil-moisture-status'),moisture_percent:num('soil-moisture-percent'),ph:num('soil-ph'),ec:num('soil-ec'),texture:val('soil-texture'),drainage:val('drainage'),soil_temperature:num('soil-temperature'),notes:''};if(Object.values(soil).some(v=>v!==null&&v!==''))calls.push(['soilObservations',soil]);const irr={irrigation_method:val('irrigation-method'),irrigation_status:val('irrigation-status'),water_stress:val('water-stress'),notes:''};if(Object.values(irr).some(v=>v!==''))calls.push(['irrigationObservations',irr]);if(currentLocation)calls.push(['stops',{sequence_no:1,latitude:currentLocation.latitude,longitude:currentLocation.longitude,gps_accuracy_m:currentLocation.gpsAccuracyM,location_label:val('field-name'),sampling_method:'GPS',notes:''}]);for(const [domain,body] of calls){const r=await browserAuth.fetchWithAuth('/api/canonical-observations/'+id+'/'+domain,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const text=await r.text();throw new Error('Canonical '+domain+' save failed ('+r.status+'): '+text)}}}async function applyAssignedWorkbook(user) {
+  const status = $('workbook-prefill-status');
+  try {
+    const { prefill } = await masterImportRequest('/assigned-prefill');
+    if (!prefill) return;
+
+    const row = prefill.masterObservations;
+    const normalize = (value) => String(value ?? '').trim().toUpperCase();
+    const sourceFarm = normalize(row.farm);
+    const farmOption = [...$('farm-select').options].find(option =>
+      option.value && [normalize(option.value), normalize(option.dataset.name)].some(name =>
+        name === sourceFarm || name === 'FARM ' + sourceFarm));
+    const cropIndex = cropTypes.findIndex(crop =>
+      [crop.name, ...(crop.codes || [])].some(value => normalize(value) === normalize(row.crop)));
+    const crop = cropTypes[cropIndex];
+    const variety = crop?.varieties?.find(item => normalize(item.name) === normalize(row.variety));
+    if (!farmOption || !crop || !variety) {
+      throw new Error('The assigned row needs a matching farm, crop and variety in the form references.');
+    }
+
+    $('farm-select').value = farmOption.value;
+    $('crop-select').value = 'MASTER:' + cropIndex;
+    loadMasterVarieties(crop);
+    $('variety-select').value = variety.name;
+    $('impl-week').value = row.week ?? '';
+    $('inpl-wk-year').value = row.inplanting_week_year ?? '';
+    $('scout-name').value = user.name || '';
+    $('report-date-input').value = '';
+    document.querySelectorAll('[data-master]').forEach(input => {
+      input.value = row[input.dataset.master] ?? '';
+    });
+
+    const greenhouse = String(row.gh ?? '').trim();
+    const mode = /^(?:shade\s*net|shadenet|sn)$/i.test(greenhouse) ? 'Shadenet'
+      : !greenhouse || /^(?:field|open\s*field|no)$/i.test(greenhouse) ? 'Field' : 'Greenhouse';
+    setLocationType(document.querySelector('.switch button[data-location="' + mode + '"]'), false);
+    $('gh-value').value = greenhouse;
+
+    status.hidden = false;
+    status.textContent = 'Filled from workbook row ' + prefill.sourceRowNumber +
+      '. Review the values and enter the report date before saving.';
+  } catch (error) {
+    status.hidden = false;
+    status.textContent = 'Workbook autofill failed: ' + error.message;
+  }
+}
+
+async function masterImportRequest(path, options) {
+  const response = await browserAuth.fetchWithAuth('/api/reports/master-import' + path, options);
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.error || 'Workbook request failed');
+  return result;
+}
+
+async function loadMasterBatches(selectedId) {
+  const select = $('master-import-batches');
+  try {
+    const { batches } = await masterImportRequest('');
+    select.replaceChildren(new Option('Select a batch', ''));
+    for (const batch of batches) select.add(new Option(batch.source_name, batch.id));
+    if (selectedId) select.value = selectedId;
+    if (select.value || batches.length) {
+      if (!select.value) select.value = batches[0].id;
+      await showMasterBatch(select.value);
+    }
+  } catch (error) { $('master-import-result').textContent = error.message; }
+}
+
+async function showMasterBatch(id) {
+  const status = $('master-import-result');
+  const issues = $('master-import-issues');
+  const analytics = $('master-import-analytics');
+  analytics.hidden = true;
+  issues.replaceChildren();
+  if (!id) { status.textContent = ''; return; }
+  try {
+    const { batch } = await masterImportRequest('/' + encodeURIComponent(id));
+    if ($('master-import-batches').value !== id) return;
+    analytics.href = '/dashboard.html?batch=' + encodeURIComponent(batch.id) + '#workbookAnalytics';
+    analytics.hidden = false;
+    status.textContent = batch.total_rows + ' rows staged ? ' + batch.accepted_rows +
+      ' passed validation ? ' + batch.rejected_rows + ' need review ? ' +
+      (batch.committed_rows || 0) + ' committed';
+    for (const issue of batch.validationExamples) {
+      const item = document.createElement('li');
+      item.textContent = 'Row ' + issue.source_row_number + ' ? ' + issue.validation_errors.join(', ');
+      issues.append(item);
+    }
+  } catch (error) { status.textContent = error.message; }
+}
+
+async function stageMasterWorkbook() {
+  const file = $('master-workbook').files?.[0];
+  const button = $('stage-master-btn');
+  const status = $('master-import-result');
+  if (!file) { status.textContent = 'Select the master .xlsx workbook first.'; return; }
+  button.disabled = true;
+  status.textContent = 'Validating and staging workbook?';
+  try {
+    const result = await masterImportRequest('/stage?sourceName=' + encodeURIComponent(file.name), {
+      method: 'POST', headers: { 'Content-Type': 'application/octet-stream' }, body: file,
+    });
+    await loadMasterBatches(result.batchId);
+  } catch (error) { status.textContent = error.message; }
+  finally { button.disabled = false; }
+}
+function csvEscape(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}function buildMasterExport(){const o=masterObservations();return{WEEK:o.week,Farm:o.farm,GH:o.gh,'Inpl. wk-year':o.inplanting_week_year,Crop:o.crop,Variety:o.variety,Thrips_Larvae:o.thrips_larvae??'',Thrips_adults:o.thrips_adults??'','LEAF MINER_feeding point':o.leaf_miner_feeding_point??'','LEAF MINER_complete mines':o.leaf_miner_complete_mines??'','White fly_eggs':o.white_fly_eggs??'','White fly_adult':o.white_fly_adult??'','Aphids_nymphs':o.aphids_nymphs??'','Aphids_adult':o.aphids_adult??'','Spider mite_eggs':o.spider_mite_eggs??'','Spider mite_adults':o.spider_mite_adults??'','Beetles_countimg':o.beetles_counting??'','Cater pillar_spots':o.caterpillar_spots??'','Butter-flies_counting':o.butterflies_counting??'','Sciara fly_spots':o.sciara_fly_spots??'','Cut worms_counting':o.cut_worms_counting??'','Mealy bugs_spots':o.mealy_bugs_spots??'','Slugs_counting':o.slugs_counting??'','Snails_counting':o.snails_counting??'','Nema- todes_spots':o.nematodes_spots??'','Chlo- rosis_spots/MP':o.chlorosis_spots_mp??'',Fusarium_MP:o.fusarium_mp??'','Rhyzoc tonia_MP':o.rhizoctonia_mp??'','Powdery mildew_MP':o.powdery_mildew_mp??'','Botrytis_spots/MP':o.botrytis_spots_mp??'',Leafspot_Black:o.leafspot_black??'',Leafspot_Brown:o.leafspot_brown??'','Flower buds_Cuttings':o.flower_buds_cuttings??'','Chem. Damage_MP':o.chemical_damage_mp??'','Virus doubt_MP':o.virus_doubt_mp??'',Mix_MP:o.mix_mp??'','Dry spots_Bags/spots':o.dry_spots_bags_spots??'',Others:o.others??''}}function downloadBlob(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}function exportMasterCsv(){const row=buildMasterExport();const headers=Object.keys(row);downloadBlob('scout-report-master-row.csv','text/csv;charset=utf-8','\uFEFF'+headers.map(csvEscape).join(',')+'\n'+headers.map(h=>csvEscape(row[h])).join(','))}function exportReportJson(){downloadBlob('scout-report.json','application/json;charset=utf-8',JSON.stringify({report:payload(),masterRow:buildMasterExport()},null,2))}async function logout(){try{await browserAuth.logout()}catch(e){browserAuth.clear();location.href='/login'}}
+const basePayload=payload;payload=function(){return{...basePayload(),supervisorEditAllowed:Boolean($('supervisor-edit-allowed')?.checked)}};
+</script><div id="offline-status" class="status" role="status" hidden></div><script src="/assets/offline-extensions.js"></script><script src="/assets/offline.js"></script></body></html>

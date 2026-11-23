@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "principle": "map external layouts into canonical fields; never trust source status as workflow approval",
+  "adapters": [
+    {
+      "id": "legacy_scout_report_v1",
+      "description": "Current platform flat XLSX export/template",
+      "required": [
+        "farmId",
+        "farmName",
+        "cropType",
+        "reportDate"
+      ]
+    },
+    {
+      "id": "uw_extension_field_scouting",
+      "description": "Repeated survey-stop field scouting layout",
+      "aliases": {
+        "grower": "growerName",
+        "farm": "farmName",
+        "scout": "scoutName",
+        "field": "fieldName",
+        "crop": "cropType",
+        "crop_stage": "growthStage",
+        "crop_height": "plantHeight",
+        "plants_per_acre": "plantPopulation",
+        "weed_pressure": "weed.pressure",
+        "insect_damage": "pest.affectedPercent",
+        "disease_infection": "disease.affectedPercent",
+        "notable_conditions": "notes"
+      },
+      "signature": [
+        "grower",
+        "scout",
+        "crop_stage",
+        "crop_height",
+        "plants_per_acre"
+      ]
+    },
+    {
+      "id": "digital_crop_scouting",
+      "description": "Digital scouting form pattern with health, soil moisture, weather, photos",
+      "aliases": {
+        "field_name": "fieldName",
+        "date_of_observation": "reportDate",
+        "crop_growth_stage": "growthStage",
+        "overall_plant_health": "overallPlantHealth",
+        "soil_moisture_status": "soilMoistureStatus",
+        "weed_pressure_level": "weed.pressure",
+        "pest_or_disease_presence": "presenceFlag",
+        "additional_comments": "notes",
+        "photo": "media"
+      },
+      "signature": [
+        "field_name",
+        "date_of_observation",
+        "crop_growth_stage",
+        "overall_plant_health",
+        "soil_moisture_status"
+      ]
+    },
+    {
+      "id": "kenya_ipm_surveillance",
+      "description": "Kenya-oriented scouting/surveillance structure",
+      "aliases": {
+        "scouting_pattern": "scoutingPattern",
+        "pest_population": "pest.count",
+        "disease_incidence": "disease.affectedPercent",
+        "weed_presence": "weed.pressure",
+        "control_measure": "managementAction",
+        "surveillance_notes": "notes",
+        "notes": "notes"
+      },
+      "signature": [
+        "scouting_pattern",
+        "pest_population",
+        "disease_incidence",
+        "control_measure"
+      ]
+    },
+    {
+      "id": "generic_wide_legacy",
+      "description": "Legacy spreadsheet with arbitrary header names",
+      "header_normalization": "lowercase_trim_spaces_replace_punctuation_with_underscore"
+    }
+  ],
+  "normalization_rules": [
+    "date -> ISO YYYY-MM-DD",
+    "yes/no/true/false/1/0 -> boolean",
+    "percent -> decimal 0..100",
+    "empty strings -> null",
+    "status from source -> informational only; imported workflow stage is draft",
+    "farm/crop/variety/pest/disease values are resolved against reference data where possible",
+    "unresolved reference values are row errors unless an explicit controlled-create policy is enabled",
+    "duplicate detection uses source row identity plus canonical business keys",
+    "every import stores source file hash, adapter id, mapping version and row-level payload"
+  ]
+}

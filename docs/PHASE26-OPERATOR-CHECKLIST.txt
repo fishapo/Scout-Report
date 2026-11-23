@@ -1,0 +1,48 @@
+SCOUT REPORT — PHASE 26 OPERATOR CHECKLIST
+==========================================
+
+1. Install dependencies
+   npm ci
+
+2. Apply/update database schema and reference data
+   npm run migrate
+
+3. Start application
+   npm run start
+
+4. Open Scout Report Dashboard
+   http://localhost:3000/dashboard
+   (Use the actual port printed by the server if 3000 is busy.)
+
+5. Click Import Excel.
+
+6. Select:
+   Combined Scout Report Master ver_24-2026.xlsx
+
+7. Confirm the result shows:
+   - Master import mode
+   - total rows
+   - validated rows
+   - imported/committed rows
+   - rejected rows, if any
+
+8. Check Dashboard:
+   - Reports
+   - Farms
+   - Reports by Crop
+   - Reports by Farm
+   - Latest Import
+   - Reference Data: Farms / Crop Types / Varieties / Pests / Diseases
+
+9. Wait 15 seconds or click Refresh. Analytics must reflect the database state.
+
+10. Review rejected rows before attempting any business-data correction.
+
+11. Run final verification:
+   npm test
+   npm run verify:phase26
+
+NOTE:
+The master workbook does not contain farmId/farmName/cropType/reportDate.
+Those fields belong to the canonical export contract. The master importer
+maps Farm/Crop/Variety/GH instead of rejecting the source workbook.

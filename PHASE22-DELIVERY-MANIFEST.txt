@@ -1,0 +1,34 @@
+SCOUT REPORT — PHASE 22 DELIVERY MANIFEST
+
+Baseline:
+Scout-Report-Phase21-Auth-Fix-Dashboard-Role-Test-Fixed-2026-08-12
+
+Phase 22 deliverables:
+- Canonical repeatable observation API
+- Full canonical report endpoint
+- Visit metadata patch endpoint
+- Verification checklist persistence/API
+- Checklist-enforced workflow approval
+- Expanded form configuration
+- Phase 22 source verifier
+- Phase 22 contract tests
+- Implementation/API/verification documentation
+
+Roles retained:
+scout
+inter_farm_supervisor
+head_of_department
+admin
+
+Approval chain retained:
+Scout -> Inter-Farm Supervisor -> Head of Department -> Admin -> Approved
+
+Verification status:
+Source gate: 10/10 PASS
+Contract tests: 5/5 PASS
+JS syntax: PASS
+Full npm test in packaging environment: blocked by missing dependencies
+PostgreSQL runtime migration/integration: pending operator environment
+
+Next measure:
+Phase 23 — controlled multi-source Excel import, provenance, duplicate detection, dry-run reconciliation and commit workflow.

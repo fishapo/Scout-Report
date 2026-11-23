@@ -1,0 +1,68 @@
+
+> scout-report@2.0.0 verify:phase1
+> node scripts/verify-phase1.js
+
+Scout Report — Phase 1 Schema & Dependency Verification
+=========================================================
+PASS  table: farms
+      reference/report table exists in init.sql
+PASS  table: crop_types
+      reference/report table exists in init.sql
+PASS  table: crop_varieties
+      reference/report table exists in init.sql
+PASS  table: pests
+      reference/report table exists in init.sql
+PASS  table: diseases
+      reference/report table exists in init.sql
+PASS  table: scout_reports
+      reference/report table exists in init.sql
+PASS  table: pest_observations
+      reference/report table exists in init.sql
+PASS  table: disease_observations
+      reference/report table exists in init.sql
+PASS  farm name uniqueness
+      farms.name has a database UNIQUE constraint
+PASS  crop type name uniqueness
+      crop_types.name is unique
+PASS  variety parent foreign key
+      crop_varieties.parent -> crop_types with cascade
+PASS  variety scoped uniqueness
+      variety names are unique within crop type
+PASS  pest name uniqueness
+      pests.name is unique
+PASS  disease name uniqueness
+      diseases.name is unique
+PASS  farm report cascade risk
+      scout_reports.farm_id cascades on farm delete; admin delete must be guarded
+PASS  pest observations use names
+      pest observations currently store pest_type text
+PASS  disease observations use names
+      disease observations currently store disease_type text
+PASS  stable reference route: GET /farms
+      existing scout-facing route remains present
+PASS  stable reference route: GET /crop-types
+      existing scout-facing route remains present
+PASS  stable reference route: GET /crop-types/:id/varieties
+      existing scout-facing route remains present
+PASS  stable reference route: GET /pests
+      existing scout-facing route remains present
+PASS  stable reference route: GET /diseases
+      existing scout-facing route remains present
+PASS  reference router remains mounted
+      canonical /api/reference mount remains intact
+PASS  reference controller uses active store
+      reference reads remain backed by server/store.js
+PASS  reference response contract remains raw
+      controller returns arrays/objects directly
+PASS  admin role exists
+      admin/scout role model exists
+PASS  admin authorization middleware exists
+      existing authorizeRoles middleware can secure new admin routes
+PASS  active store reads all reference domains
+      store.js contains current reference reads
+PASS  admin CRUD remains isolated
+      admin CRUD may be added without replacing the scout-facing reference router
+---------------------------------------------------------
+Checks: 29
+Passed: 29
+Failed: 0

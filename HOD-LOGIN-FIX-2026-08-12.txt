@@ -1,0 +1,35 @@
+SCOUT REPORT — HOD ROUTE AND LOGIN REMEDIATION
+
+CONFIRMED
+- head_of_department role exists
+- /head-of-department-dashboard exists and is role protected
+- /api/dashboard allows all four roles
+- workflow order is scout -> inter_farm_supervisor -> head_of_department -> admin
+- elevated roles are assigned by administrators
+
+REPORTED ISSUE
+lathyflora69@gmail.com -> Invalid email or password
+
+FIX
+Administrator user management now includes Reset Password.
+PATCH /api/admin/users/:id/password
+- admin only
+- minimum 8 characters
+- preserves the user's role
+- revokes existing sessions
+- uses the existing PBKDF2-SHA256 password hashing path
+
+OPERATIONS
+1. Admin logs in.
+2. Open /admin-users.
+3. Locate lathyflora69@gmail.com.
+4. Confirm role = Head of Department.
+5. Reset the password.
+6. HOD logs in with the new password.
+7. /dashboard routes the HOD to /head-of-department-dashboard.
+
+TESTS
+HOD verification: PASS
+Admin password reset tests: 2/2 PASS
+Phase 22 contract tests: 5/5 PASS
+Full npm test: environment dependency gate in packaging container; run npm ci then npm test in the target environment.

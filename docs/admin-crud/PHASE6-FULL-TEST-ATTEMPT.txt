@@ -1,0 +1,7 @@
+Command: npm test
+
+Result: 60 tests discovered; 46 passed; 14 failed.
+
+The failures are environment/dependency failures. The supplied execution environment lacks installed runtime dependencies; representative stack traces originate in server/db.js and report MODULE_NOT_FOUND.
+
+This is explicitly not treated as a green full-suite result.

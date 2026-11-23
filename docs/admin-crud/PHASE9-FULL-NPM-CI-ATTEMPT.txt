@@ -1,0 +1,17 @@
+Phase 9 npm ci attempt
+=======================
+Command:
+npm ci --ignore-scripts --no-audit --no-fund
+
+Result: BLOCKED in supplied execution environment.
+
+Observed:
+- NPM_CONFIG_REGISTRY is injected by the execution environment.
+- The injected internal mirror returns HTTP 404 for xtend@4.0.2.
+- Project .npmrc explicitly requests https://registry.npmjs.org/ but environment-level registry configuration overrides it.
+
+Interpretation:
+This is an execution-environment registry restriction. package.json/package-lock.json parity passes in verify:phase9.
+
+Required final acceptance:
+Run npm ci on a normal developer/CI machine without the failing registry override.

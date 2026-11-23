@@ -1,0 +1,19 @@
+Scout Report Phase 21 — CANONICAL POSTGRESQL DATA MODEL
+
+Collect -> Inventory -> Map -> Approve -> Code
+
+STATUS: CODE-COMPLETE / STATIC VERIFIED
+DATE: 2026-08-11
+
+Canonical fields: 93
+New child tables: 14
+Header extensions: 13
+Legacy compatibility: PASS
+Import provenance: PASS
+Workflow references: PASS
+Static verifier: PASS
+
+Live PostgreSQL migration: PENDING CONFIGURED DB ENVIRONMENT
+Full npm test suite: BLOCKED BY MISSING DEPENDENCIES IN BUILD ENVIRONMENT
+
+Next measure: Phase 22 — API/services and dynamic comprehensive Scout Report form backed by the canonical model.

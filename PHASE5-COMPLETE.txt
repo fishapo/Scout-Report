@@ -1,0 +1,20 @@
+SCOUT REPORT — PHASE 5 COMPLETE
+
+Admin Pest CRUD is implemented, focused-tested and statically verified.
+
+Endpoints:
+GET/POST/GET-by-id/PATCH/DELETE /api/admin/reference/pests
+
+Verification:
+Phase 5 static: 29/29 PASS
+Phase 1 regression: 29/29 PASS
+Phase 2 regression: 28/28 PASS
+Phase 3 regression: 22/22 PASS
+Phase 4 regression: 28/28 PASS
+Focused CRUD suite: 23/23 PASS
+
+Full npm test: 55 discovered, 41 pass, 14 dependency/environment failures (express/dotenv missing).
+
+Corrective hardening: admin route module export moved to the end of the route file and explicitly verified.
+
+NEXT: Phase 6 — Disease CRUD.

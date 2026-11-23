@@ -1,0 +1,62 @@
+Scout Report — Phase 2 Admin Reference CRUD Foundation Verification
+=================================================================
+PASS  admin router exists
+      new isolated admin reference router exists
+PASS  admin router mounted
+      canonical /api router mounts admin reference CRUD
+PASS  admin authentication middleware
+      admin routes require authentication
+PASS  admin role middleware
+      admin routes require admin role
+PASS  farm GET route
+      farm GET endpoint is defined
+PASS  farm POST route
+      farm POST endpoint is defined
+PASS  farm PATCH route
+      farm PATCH endpoint is defined
+PASS  farm DELETE route
+      farm DELETE endpoint is defined
+PASS  farm list controller
+      list operation delegates to store
+PASS  farm create controller
+      create operation delegates to store
+PASS  farm update controller
+      update operation delegates to store
+PASS  farm delete controller
+      delete operation delegates to store
+PASS  farm delete conflict
+      referenced farms return 409
+PASS  farm delete not-found
+      missing farms return 404
+PASS  farm successful delete
+      successful deletion returns 204
+PASS  server-generated farm ids
+      farm IDs are generated server-side
+PASS  farm delete row lock
+      farm deletion locks the parent row before dependency check
+PASS  farm dependency check
+      farm deletion checks report dependencies
+PASS  farm create uniqueness
+      database uniqueness conflicts are mapped to 409 by store error handling
+PASS  public reference router unchanged
+      scout-facing reference route file remains byte-for-byte unchanged from Phase 1
+PASS  public reference mount remains
+      existing /api/reference mount remains
+PASS  farm store tests exist
+      farm CRUD store regression tests exist
+PASS  admin controller tests exist
+      admin controller tests exist
+PASS  syntax: server/store.js
+      node --check passed
+PASS  syntax: server/controllers/admin/reference.controller.js
+      node --check passed
+PASS  syntax: server/routes/admin/reference.routes.js
+      node --check passed
+PASS  syntax: server/routes/index.js
+      node --check passed
+PASS  syntax: scripts/verify-phase2.js
+      node --check passed
+-----------------------------------------------------------------
+Checks: 28
+Passed: 28
+Failed: 0

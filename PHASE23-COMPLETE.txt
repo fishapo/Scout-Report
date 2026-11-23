@@ -1,0 +1,26 @@
+SCOUT REPORT — PHASE 23
+=======================
+
+Spreadsheet → canonical report → PostgreSQL commit path implemented.
+
+Source workbook: Combined Scout Report Master ver_21-2026.xlsx
+Clean Data columns: 38
+Canonical dictionary: 93 fields
+Farm choices: FARM 1–11, FARM 12A, FARM 12B, GREENHOUSE
+Production modes: Field, Greenhouse, Shadenet
+
+Implemented:
+- saveReport canonical_payload persistence
+- Phase 23 provenance migration
+- master import commit endpoint
+- source-row/source-workbook audit preservation
+- canonical 93-field XLSX export/import
+- 93-field round-trip tests
+- exact 38-column source-heading verification
+- Phase 23 verifier and documentation
+
+Artifact evidence:
+- verify:phase23 PASS
+- targeted Phase 23/form/saveReport tests: 15/15 PASS
+
+Live PostgreSQL migration and full RUN_DB_INTEGRATION=1 npm test remain operator-environment gates because this release artifact does not contain database credentials, PostgreSQL, or npm registry packages.

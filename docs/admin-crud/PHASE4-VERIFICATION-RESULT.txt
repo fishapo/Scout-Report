@@ -1,0 +1,34 @@
+Scout Report — Phase 4 Crop Variety CRUD Verification
+============================================================
+PASS  variety admin get route — get nested route exists
+PASS  variety admin post route — post nested route exists
+PASS  variety admin patch route — patch nested route exists
+PASS  variety admin delete route — delete nested route exists
+PASS  admin authentication middleware — authentication required
+PASS  admin role middleware — admin role required
+PASS  controller listCropVarieties — listCropVarieties exists
+PASS  controller getCropVariety — getCropVariety exists
+PASS  controller createCropVariety — createCropVariety exists
+PASS  controller updateCropVariety — updateCropVariety exists
+PASS  controller deleteCropVariety — deleteCropVariety exists
+PASS  store getCropVarietiesAdmin — getCropVarietiesAdmin exists
+PASS  store findCropVariety — findCropVariety exists
+PASS  store createCropVariety — createCropVariety exists
+PASS  store updateCropVariety — updateCropVariety exists
+PASS  store deleteCropVariety — deleteCropVariety exists
+PASS  nested parent context — varieties are parent-scoped
+PASS  parent validation — parent existence is validated
+PASS  variety length validation — 255-char limit
+PASS  duplicate database protection — composite unique constraint preserved
+PASS  parent move blocked — nested parent is immutable
+PASS  public reference unchanged — scout reference router unchanged
+PASS  syntax server/store.js — node --check passed
+PASS  syntax server/controllers/admin/reference.controller.js — node --check passed
+PASS  syntax server/routes/admin/reference.routes.js — node --check passed
+PASS  syntax server/crop-variety.store.test.js — node --check passed
+PASS  syntax server/admin-crop-variety.controller.test.js — node --check passed
+PASS  syntax scripts/verify-phase4.js — node --check passed
+------------------------------------------------------------
+Checks: 28
+Passed: 28
+Failed: 0

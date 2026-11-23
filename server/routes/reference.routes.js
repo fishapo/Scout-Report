@@ -1,0 +1,16 @@
+"use strict";
+const express = require("express");
+const router = express.Router();
+const referenceController = require("../controllers/reference.controller");
+const auth = require("../auth");
+const authenticatedRole = auth.authorizeRoles("admin", "scout", "inter_farm_supervisor", "head_of_department");
+const protectedReference = [auth.authenticate, authenticatedRole];
+router.get("/", protectedReference, referenceController.getReference);
+router.get("/farms", protectedReference, referenceController.getFarms);
+router.get("/master-crops", protectedReference, referenceController.getMasterCrops);
+router.get("/stress-references", protectedReference, referenceController.getStressReferences);
+router.get("/crop-types", protectedReference, referenceController.getCropTypes);
+router.get("/crop-types/:id/varieties", protectedReference, referenceController.getCropVarieties);
+router.get("/pests", protectedReference, referenceController.getPests);
+router.get("/diseases", protectedReference, referenceController.getDiseases);
+module.exports = router;

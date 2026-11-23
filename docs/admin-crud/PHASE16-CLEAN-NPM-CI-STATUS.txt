@@ -1,0 +1,7 @@
+PHASE 16 CLEAN INSTALL STATUS
+
+Clean npm ci remains environment-gated.
+The current execution environment uses an npm registry mirror that previously returned HTTP 404 for xtend@4.0.2.
+The repository .npmrc requests the public npm registry, but environment-level npm configuration overrides it.
+
+Do not interpret this as a production CI failure until the real GitHub Actions runner executes npm ci.

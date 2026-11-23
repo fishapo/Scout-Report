@@ -1,0 +1,18 @@
+"use strict";
+const crypto=require("crypto");
+const schema=require("../../docs/phase22-master-import/master-import-schema.json");
+const {normalizeHeader}=require("./normalize");
+const bySource=new Map(schema.columns.map(c=>[c.source_heading,c]));
+const byNormalized=new Map(schema.columns.map(c=>[normalizeHeader(c.source_heading),c]));
+const NUMERIC_OBSERVATIONS=new Set(schema.columns.filter(c=>c.domain==="observation").map(c=>c.database_key).filter(k=>k!=="others"));
+const PEST_FIELDS=new Set(["thrips_larvae","thrips_adults","white_fly_eggs","white_fly_adult","aphids_nymphs","aphids_adult","spider_mite_eggs","spider_mite_adults","beetles_counting","caterpillar_spots","butterflies_counting","sciara_fly_spots","cut_worms_counting","mealy_bugs_spots","slugs_counting","snails_counting","nematodes_spots"]);
+const DISEASE_FIELDS=new Set(["chlorosis_spots_mp","fusarium_mp","rhizoctonia_mp","powdery_mildew_mp","botrytis_spots_mp","leafspot_black","leafspot_brown"]);
+const STRESS_FIELDS=new Set(["flower_buds_cuttings","chemical_damage_mp","virus_doubt_mp","mix_mp","dry_spots_bags_spots","others"]);
+function createBatchId(){return `IMP-${crypto.randomUUID()}`} function createRowId(){return `IMPR-${crypto.randomUUID()}`}
+function parseNumeric(v,key){if(v==null||String(v).trim()==="")return null;const n=Number(String(v).replace(/,/g,"").trim());if(!Number.isFinite(n))throw new Error(`${key} must be numeric`);if(n<0)throw new Error(`${key} cannot be negative`);return n}
+function normalizeSourceRow(row){const normalized={},unknown=[];for(const [source,value] of Object.entries(row||{})){const field=bySource.get(source)||byNormalized.get(normalizeHeader(source));if(!field){if(String(value??"").trim()!=="")unknown.push(source);continue}normalized[field.database_key]=value===""?null:value}if(normalized.inplanting_week_year!=null)normalized.inplanting_week_year=String(normalized.inplanting_week_year).trim();if(normalized.week!=null&&normalized.week!==""){const w=parseNumeric(normalized.week,"week");if(!Number.isInteger(w)||w<1||w>53)throw new Error("week must be an integer 1..53");normalized.week=w}for(const k of NUMERIC_OBSERVATIONS)normalized[k]=parseNumeric(normalized[k],k);return {normalized,unknown}}
+function validateSourceRow(row){const {normalized,unknown}=normalizeSourceRow(row);const errors=[];if(unknown.length)errors.push(`Unknown columns: ${unknown.join(", ")}`);if(normalized.farm==null||String(normalized.farm).trim()==="")errors.push("farm is required");if(normalized.variety==null||String(normalized.variety).trim()==="")errors.push("variety is required");return {normalized,errors}}
+function classifyObservations(n){const out={pests:[],diseases:[],stress:[]};for(const [k,v] of Object.entries(n)){if(v==null||v==="")continue;if(PEST_FIELDS.has(k))out.pests.push({sourceKey:k,count:Number(v)});else if(DISEASE_FIELDS.has(k))out.diseases.push({sourceKey:k,affectedPercent:Number(v)});else if(STRESS_FIELDS.has(k))out.stress.push({sourceKey:k,value:v})}return out}
+function toCanonicalHeader(n){return {sourceFarm:n.farm==null?null:String(n.farm).trim(),sourceGreenhouse:n.gh==null?null:String(n.gh).trim(),inplantingWeekYear:n.inplanting_week_year||null,crop:n.crop==null?null:String(n.crop).trim(),variety:n.variety==null?null:String(n.variety).trim(),implementationWeek:n.week==null?null:Number(n.week),implementationYear:null,reportDate:null,isGreenhouse:n.gh!=null,observations:classifyObservations(n)}}
+function schemaHash(){return crypto.createHash("sha256").update(JSON.stringify(schema)).digest("hex")}
+module.exports={schema,createBatchId,createRowId,normalizeSourceRow,validateSourceRow,classifyObservations,toCanonicalHeader,schemaHash};

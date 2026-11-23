@@ -1,0 +1,21 @@
+PHASE 25 OPERATOR CHECKLIST
+
+npm ci
+npm run verify:phase25
+npm test
+npm run migrate
+npm test
+npm run start
+
+Browser checks:
+- 13 farm choices: FARM 1..FARM 11, FARM 12A, FARM 12B
+- GREENHOUSE is not a farm choice
+- GH field is empty and editable immediately
+- Greenhouse mode requires GH before save
+- Crop dropdown is spreadsheet-derived (130 crop types)
+- Variety dropdown is restricted to selected crop and source-linked
+- Pest reference shows 14 categories
+- Disease/Symptom and Other Condition/Stress references are separate
+- Export CSV, Export JSON and Print work
+- Admin/HOD Import / Validate Master Workbook works
+- Logout is compact and functional

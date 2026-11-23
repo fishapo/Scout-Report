@@ -1,0 +1,78 @@
+./.env
+./.env.example
+./.gitignore
+./.verify-output.txt
+./DELIVERED-FILES.txt
+./PHASE2-ROUTING-AUDIT.md
+./PROJECT_DOCUMENTATION.md
+./README.md
+./START-HERE.txt
+./Scout-Report-Project-Documentation.docx
+./docker-compose.yml
+./files.txt
+./jsconfig.json
+./package-lock.json
+./package.json
+./path-audit-report.md
+./previews/README.md
+./previews/admin-dashboard.html
+./previews/auth.js
+./previews/browser-auth.test.js
+./previews/index.html
+./previews/login.html
+./previews/scout-dashboard.html
+./previews/user-form.html
+./project-tree.txt
+./scripts/build_project_documentation.py
+./scripts/kill-port.js
+./server/app.js
+./server/app.test.js
+./server/auth.js
+./server/auth.test.js
+./server/config/env.js
+./server/controllers/auth.controller.js
+./server/controllers/reference.controller.js
+./server/controllers/report.controller.js
+./server/data/reference.json
+./server/data/reports.json
+./server/db-store.js
+./server/db.js
+./server/index.js
+./server/middleware/errorHandler.js
+./server/middleware/logger.js
+./server/middleware/rateLimit.js
+./server/middleware/requirePageAuth.js
+./server/middleware/requireSiteAuth.js
+./server/middleware/securityHeaders.js
+./server/migrations/favicon.ico/favicon.ico
+./server/migrations/init.sql
+./server/routes/auth.routes.js
+./server/routes/health.routes.js
+./server/routes/index.js
+./server/routes/reference.routes.js
+./server/routes/report.routes.js
+./server/scripts/migrate.js
+./server/scripts/verify.js
+./server/store.crud.test.js
+./server/store.js
+./server/store.test.js
+./test-output.txt
+
+
+CURRENT REFACTOR DELIVERY — 2026-08-08
+- Admin dashboard reference-data section added.
+- Broken /admin-reference.html navigation removed.
+- Reference data loads from existing /api/reference/* endpoints.
+- Crop varieties render from the existing cropTypes[].varieties payload.
+- HTML escaping added before rendering database values.
+- npm run dev now starts with node server/index.js; npm run dev:watch preserves the optional watcher.
+- NEXT-DEV-STEP.md documents the next recommended CRUD milestone.
+- scripts/verify-admin-dashboard.js adds a deterministic UI milestone check.
+- .env is excluded from the delivery archive; use .env.example.
+
+PHASE 27 DELIVERY — 2026-08-13
+- PHASE27-REFERENCE-SUBMISSION-FIX.md
+- PHASE27-COMPLETE.txt
+- previews/user-form.html (crop name payload + farm ID fallback fix)
+- server/master-form-alignment.test.js (updated regression contract)
+- Focused tests: 13/13 passed

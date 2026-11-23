@@ -1,0 +1,18 @@
+PHASE 14 CLEAN INSTALL ATTEMPT
+==============================
+
+Command:
+npm ci --ignore-scripts --no-audit --no-fund
+
+Result:
+FAILED — environment package registry restriction.
+
+Observed:
+npm error E404
+404 Not Found - GET https://packages.applied-caas-gateway1.internal.api.openai.org/artifactory/api/npm/npm-public/xtend/-/xtend-4.0.2.tgz
+
+Interpretation:
+The execution environment routes npm through an internal registry mirror that does not provide xtend@4.0.2. This is not a package.json/package-lock parity failure discovered in Phase 14. The project .npmrc requests the public registry, but the environment-level npm registry configuration overrides it.
+
+Required live gate:
+Run npm ci in the normal developer/CI environment with access to the configured npm registry.

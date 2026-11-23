@@ -1,0 +1,5 @@
+
+> scout-report@2.0.0 verify:ui
+> node scripts/verify-admin-dashboard.js
+
+✓ Admin dashboard reference-data UI verification passed.

@@ -1,0 +1,593 @@
+
+> scout-report@2.0.0 test
+> node --test server/**/*.test.js previews/**/*.test.js
+
+TAP version 13
+# Subtest: browser auth login stores token and user state in sessionStorage
+ok 1 - browser auth login stores token and user state in sessionStorage
+  ---
+  duration_ms: 1.820531
+  type: 'test'
+  ...
+# Subtest: fetchWithAuth attaches bearer token and clears state on 401
+ok 2 - fetchWithAuth attaches bearer token and clears state on 401
+  ---
+  duration_ms: 1.334779
+  type: 'test'
+  ...
+# Subtest: logout clears stored auth state and redirects to login
+ok 3 - logout clears stored auth state and redirects to login
+  ---
+  duration_ms: 1.424433
+  type: 'test'
+  ...
+# Subtest: init loads authenticated user from saved token via /auth/me
+ok 4 - init loads authenticated user from saved token via /auth/me
+  ---
+  duration_ms: 0.707198
+  type: 'test'
+  ...
+# Subtest: init restores an authenticated browser session from the HttpOnly cookie
+ok 5 - init restores an authenticated browser session from the HttpOnly cookie
+  ---
+  duration_ms: 0.933355
+  type: 'test'
+  ...
+# Subtest: admin crop controller handles list/create/get/update
+ok 6 - admin crop controller handles list/create/get/update
+  ---
+  duration_ms: 1.488968
+  type: 'test'
+  ...
+# Subtest: admin crop controller maps not-found and dependency conflict
+ok 7 - admin crop controller maps not-found and dependency conflict
+  ---
+  duration_ms: 0.726868
+  type: 'test'
+  ...
+# Subtest: admin crop controller returns 204 for successful delete
+ok 8 - admin crop controller returns 204 for successful delete
+  ---
+  duration_ms: 0.351381
+  type: 'test'
+  ...
+# Subtest: admin variety controller handles list/create/get/update/delete
+ok 9 - admin variety controller handles list/create/get/update/delete
+  ---
+  duration_ms: 1.594234
+  type: 'test'
+  ...
+# Subtest: admin variety controller maps missing parent and variety
+ok 10 - admin variety controller maps missing parent and variety
+  ---
+  duration_ms: 0.66702
+  type: 'test'
+  ...
+# Subtest: admin reference controller returns wrapped farm list/create/update responses
+ok 11 - admin reference controller returns wrapped farm list/create/update responses
+  ---
+  duration_ms: 1.498733
+  type: 'test'
+  ...
+# Subtest: admin reference controller maps missing farm to 404
+ok 12 - admin reference controller maps missing farm to 404
+  ---
+  duration_ms: 0.43808
+  type: 'test'
+  ...
+# Subtest: admin reference controller maps in-use farm delete to 409
+ok 13 - admin reference controller maps in-use farm delete to 409
+  ---
+  duration_ms: 0.443808
+  type: 'test'
+  ...
+# Subtest: admin reference controller returns 204 for successful farm deletion
+ok 14 - admin reference controller returns 204 for successful farm deletion
+  ---
+  duration_ms: 0.373123
+  type: 'test'
+  ...
+# Subtest: health endpoint reports healthy and degraded database states
+not ok 15 - health endpoint reports healthy and degraded database states
+  ---
+  duration_ms: 2.694506
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:213:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: web client is served from the application root
+not ok 16 - web client is served from the application root
+  ---
+  duration_ms: 0.455635
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:225:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: browser routing sends scouts to scout dashboard and protects scout pages
+not ok 17 - browser routing sends scouts to scout dashboard and protects scout pages
+  ---
+  duration_ms: 0.466541
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:232:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: browser routing sends admins to admin dashboard and blocks admin page for scouts
+not ok 18 - browser routing sends admins to admin dashboard and blocks admin page for scouts
+  ---
+  duration_ms: 0.385411
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:252:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: production middleware emits security headers and redirects forwarded HTTP
+not ok 19 - production middleware emits security headers and redirects forwarded HTTP
+  ---
+  duration_ms: 0.698115
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:267:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: auth endpoints cover register login me and logout
+not ok 20 - auth endpoints cover register login me and logout
+  ---
+  duration_ms: 0.730694
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:298:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: authentication attempts are throttled after repeated failures
+not ok 21 - authentication attempts are throttled after repeated failures
+  ---
+  duration_ms: 1.157867
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:322:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: reference endpoints return data and variety misses return 404
+not ok 22 - reference endpoints return data and variety misses return 404
+  ---
+  duration_ms: 0.764224
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:338:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: protected report routes require authentication and pass filters to store
+not ok 23 - protected report routes require authentication and pass filters to store
+  ---
+  duration_ms: 0.840687
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:357:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: role-based routes allow admins and reject scouts
+not ok 24 - role-based routes allow admins and reject scouts
+  ---
+  duration_ms: 0.461975
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:375:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: report controller endpoints cover create update observations delete and not-found edges
+not ok 25 - report controller endpoints cover create update observations delete and not-found edges
+  ---
+  duration_ms: 0.385843
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:389:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: scouts only access reports they own while admins retain full access
+not ok 26 - scouts only access reports they own while admins retain full access
+  ---
+  duration_ms: 0.33033
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:424:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: controller errors return safe client responses
+not ok 27 - controller errors return safe client responses
+  ---
+  duration_ms: 0.34363
+  type: 'test'
+  location: '/mnt/data/phase4work/server/app.test.js:466:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/phase4work/server/app.js
+    - /mnt/data/phase4work/server/app.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    Object.<anonymous> (/mnt/data/phase4work/server/app.js:3:17)
+    Module._compile (node:internal/modules/cjs/loader:1730:14)
+  ...
+# Subtest: hashPassword stores a non plaintext hash and verifyPassword validates it
+ok 28 - hashPassword stores a non plaintext hash and verifyPassword validates it
+  ---
+  duration_ms: 192.356247
+  type: 'test'
+  ...
+# Subtest: registerUser creates first user as admin and rejects weak passwords
+ok 29 - registerUser creates first user as admin and rejects weak passwords
+  ---
+  duration_ms: 99.875264
+  type: 'test'
+  ...
+# Subtest: loginUser issues JWT session and logout revokes it
+ok 30 - loginUser issues JWT session and logout revokes it
+  ---
+  duration_ms: 186.989327
+  type: 'test'
+  ...
+# Subtest: authorizeRoles rejects authenticated users without required role
+ok 31 - authorizeRoles rejects authenticated users without required role
+  ---
+  duration_ms: 0.742641
+  type: 'test'
+  ...
+# Subtest: crop type CRUD creates, lists, updates and rejects duplicate names
+ok 32 - crop type CRUD creates, lists, updates and rejects duplicate names
+  ---
+  duration_ms: 10.678978
+  type: 'test'
+  ...
+# Subtest: crop type update validates input and missing records
+ok 33 - crop type update validates input and missing records
+  ---
+  duration_ms: 0.632678
+  type: 'test'
+  ...
+# Subtest: crop type delete blocks varieties and deletes unused types
+ok 34 - crop type delete blocks varieties and deletes unused types
+  ---
+  duration_ms: 1.130486
+  type: 'test'
+  ...
+# Subtest: crop variety CRUD uses nested parent context and protects parent moves
+ok 35 - crop variety CRUD uses nested parent context and protects parent moves
+  ---
+  duration_ms: 0.337821
+  type: 'test'
+  ...
+# Subtest: variety list and create validate parent and preserve nested context
+ok 36 - variety list and create validate parent and preserve nested context
+  ---
+  duration_ms: 4.974247
+  type: 'test'
+  ...
+# Subtest: variety duplicate and validation are rejected
+ok 37 - variety duplicate and validation are rejected
+  ---
+  duration_ms: 0.925392
+  type: 'test'
+  ...
+# Subtest: variety update and delete are parent-scoped
+ok 38 - variety update and delete are parent-scoped
+  ---
+  duration_ms: 1.014104
+  type: 'test'
+  ...
+# Subtest: farm CRUD store creates and lists farms with server-generated IDs
+ok 39 - farm CRUD store creates and lists farms with server-generated IDs
+  ---
+  duration_ms: 10.067282
+  type: 'test'
+  ...
+# Subtest: farm create validates required fields and maps duplicates to 409
+ok 40 - farm create validates required fields and maps duplicates to 409
+  ---
+  duration_ms: 1.163836
+  type: 'test'
+  ...
+# Subtest: farm update supports partial fields and rejects an empty patch
+ok 41 - farm update supports partial fields and rejects an empty patch
+  ---
+  duration_ms: 0.803532
+  type: 'test'
+  ...
+# Subtest: farm delete blocks farms referenced by scout reports
+ok 42 - farm delete blocks farms referenced by scout reports
+  ---
+  duration_ms: 0.597196
+  type: 'test'
+  ...
+# Subtest: farm delete removes an unused farm and reports missing farms
+ok 43 - farm delete removes an unused farm and reports missing farms
+  ---
+  duration_ms: 1.646082
+  type: 'test'
+  ...
+# Subtest: saveReport creates a report and observations transactionally
+ok 44 - saveReport creates a report and observations transactionally
+  ---
+  duration_ms: 5.666283
+  type: 'test'
+  ...
+# Subtest: saveReport validates crop variety and maps duplicate ids to conflict errors
+ok 45 - saveReport validates crop variety and maps duplicate ids to conflict errors
+  ---
+  duration_ms: 1.264926
+  type: 'test'
+  ...
+# Subtest: findReport returns null for missing reports
+ok 46 - findReport returns null for missing reports
+  ---
+  duration_ms: 0.389077
+  type: 'test'
+  ...
+# Subtest: updateReport validates fields and returns the updated report
+ok 47 - updateReport validates fields and returns the updated report
+  ---
+  duration_ms: 1.627273
+  type: 'test'
+  ...
+# Subtest: addPestObservation returns null for missing reports and refreshes status when found
+ok 48 - addPestObservation returns null for missing reports and refreshes status when found
+  ---
+  duration_ms: 0.962488
+  type: 'test'
+  ...
+# Subtest: deleteReport removes existing reports and reports misses
+ok 49 - deleteReport removes existing reports and reports misses
+  ---
+  duration_ms: 2.022594
+  type: 'test'
+  ...
+# node:internal/modules/cjs/loader:1404
+#   throw err;
+#   ^
+# Error: Cannot find module 'dotenv'
+# Require stack:
+# - /mnt/data/phase4work/server/db.js
+# - /mnt/data/phase4work/server/store.js
+# - /mnt/data/phase4work/server/store.test.js
+#     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+#     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+#     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+#     at Function._load (node:internal/modules/cjs/loader:1211:37)
+#     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+#     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+#     at Module.require (node:internal/modules/cjs/loader:1487:12)
+#     at require (node:internal/modules/helpers:135:16)
+#     at Object.<anonymous> (/mnt/data/phase4work/server/db.js:11:16)
+#     at Module._compile (node:internal/modules/cjs/loader:1730:14) {
+#   code: 'MODULE_NOT_FOUND',
+#   requireStack: [
+#     '/mnt/data/phase4work/server/db.js',
+#     '/mnt/data/phase4work/server/store.js',
+#     '/mnt/data/phase4work/server/store.test.js'
+#   ]
+# }
+# Node.js v22.16.0
+# Subtest: server/store.test.js
+not ok 11 - server/store.test.js
+  ---
+  duration_ms: 32.42097
+  type: 'test'
+  location: '/mnt/data/phase4work/server/store.test.js:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..50
+# tests 50
+# suites 0
+# pass 36
+# fail 14
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 932.495731

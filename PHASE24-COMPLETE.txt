@@ -1,0 +1,30 @@
+PHASE 24 COMPLETE — FORM OPERATIONS & REFERENCE ALIGNMENT
+
+Completed:
+- Removed GREENHOUSE from the farm selection list.
+- Preserved Field / Greenhouse / Shadenet location modes.
+- GH starts empty and accepts the greenhouse number only in Greenhouse mode.
+- Crop -> Variety now explicitly uses the dependent reference API.
+- Added spreadsheet-derived pest and disease reference controls.
+- Added Import, Export CSV, Export JSON and Print controls.
+- Fixed stretched Log Out button in the form header.
+- Added Greenhouse-number save validation.
+- Updated Phase 23 verification scripts to the 13-farm contract.
+
+Verification:
+- 38 source columns PASS
+- 38 headings exact PASS
+- 38 unique application keys PASS
+- 93 canonical fields PASS
+- 13 farm choices PASS
+- GREENHOUSE excluded from farm list PASS
+- 3 location modes PASS
+- Crop -> Variety API PASS
+- Pest/Disease references PASS
+- Import/Export/Print PASS
+- 130 crop types / 3466 varieties / 14 pests / 12 diseases PASS
+
+Next gate:
+collect -> inventory -> map -> approve -> code -> verify -> release
+
+Full npm/database integration remains an operator-environment gate because the Windows Z: drive previously produced EBUSY node_modules locks and prevented npm ci from completing.

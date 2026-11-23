@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: admin crop controller handles list/create/get/update
+ok 1 - admin crop controller handles list/create/get/update
+  ---
+  duration_ms: 1.667503
+  type: 'test'
+  ...
+# Subtest: admin crop controller maps not-found and dependency conflict
+ok 2 - admin crop controller maps not-found and dependency conflict
+  ---
+  duration_ms: 0.750063
+  type: 'test'
+  ...
+# Subtest: admin crop controller returns 204 for successful delete
+ok 3 - admin crop controller returns 204 for successful delete
+  ---
+  duration_ms: 0.3568
+  type: 'test'
+  ...
+# Subtest: crop type CRUD creates, lists, updates and rejects duplicate names
+ok 4 - crop type CRUD creates, lists, updates and rejects duplicate names
+  ---
+  duration_ms: 11.510672
+  type: 'test'
+  ...
+# Subtest: crop type update validates input and missing records
+ok 5 - crop type update validates input and missing records
+  ---
+  duration_ms: 0.691336
+  type: 'test'
+  ...
+# Subtest: crop type delete blocks varieties and deletes unused types
+ok 6 - crop type delete blocks varieties and deletes unused types
+  ---
+  duration_ms: 1.30831
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 94.051827

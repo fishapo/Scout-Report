@@ -1,0 +1,60 @@
+SCOUT REPORT ROUTE AUDIT
+Date: 2026-08-08
+
+Browser flow
+/	Unauthenticated -> /login; authenticated -> /dashboard
+/login	Public login/register page
+/signup	Redirects to /login#register
+/dashboard	Authenticated; scout -> /scout-dashboard; admin -> /admin-dashboard.html
+/scout-dashboard	Scout only
+/scout-form	Scout/admin
+/user-form.html	Legacy redirect -> /scout-form
+/admin-dashboard.html	Admin only
+
+Authentication
+/auth/register	POST
+/auth/login	POST
+/auth/logout	POST
+/auth/me	GET
+/auth/verify	GET
+
+Canonical API
+/api	GET
+/api/health	GET
+/api/reference	GET
+/api/reference/farms	GET
+/api/reference/crop-types	GET
+/api/reference/crop-types/:id/varieties	GET
+/api/reference/pests	GET
+/api/reference/diseases	GET
+/api/reports	GET/POST
+/api/reports/stats	GET (admin)
+/api/reports/:id	GET/PATCH
+/api/reports/:id/pest-observations	POST
+/api/reports/:id/disease-observations	POST
+/api/reports/:id	DELETE (admin)
+
+Legacy compatibility
+/farms	GET
+/crop-types	GET
+/crop-types/:id/varieties	GET
+/pests	GET
+/diseases	GET
+/scout-reports	GET/POST
+/scout-reports/stats	GET
+/scout-reports/:id	GET/PATCH
+/scout-reports/:id/pest-observations	POST
+/scout-reports/:id/disease-observations	POST
+/scout-reports/:id	DELETE
+
+Verified from uploaded archive
+- npm test: 31 tests, 30 passed, 1 skipped, 0 failed.
+- Reference route implementation uses /api/reference/*.
+- Scout form uses /api/reference/* and /scout-reports compatibility endpoint.
+- Scout dashboard uses /api/reports and /api/reference.
+- Page authentication is role-aware and redirects unauthorized users.
+- PostgreSQL configuration is loaded from .env by server/db.js.
+
+Packaging
+- node_modules excluded; run npm install after extraction.
+- .env excluded for security; copy .env.example to .env and configure credentials.

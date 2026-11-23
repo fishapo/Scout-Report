@@ -1,0 +1,11 @@
+Phase 4 focused tests
+=====================
+Command:
+node --test server/crop-variety.store.test.js server/admin-crop-variety.controller.test.js
+
+Tests: 5
+Passed: 5
+Failed: 0
+Skipped: 0
+
+Result: PASS

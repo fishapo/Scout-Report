@@ -1,0 +1,45 @@
+source,source_field,canonical_field,status,transform,notes
+legacy_scout_report_v1,farmId,farmId,mapped,reference,Existing platform identifier
+legacy_scout_report_v1,farmName,farmName,mapped,text,Existing platform field
+legacy_scout_report_v1,cropType,cropType,mapped,reference,text
+legacy_scout_report_v1,variety,variety,mapped,reference,text
+legacy_scout_report_v1,reportDate,reportDate,mapped,date,ISO date
+legacy_scout_report_v1,weather,weather,mapped,text,Preserve source value
+legacy_scout_report_v1,temperature,temperature,mapped,decimal,Celsius expected by canonical model
+legacy_scout_report_v1,humidity,humidity,mapped,percent,0..100
+uw_extension_field_scouting,Grower,growerName,mapped,text,Alias
+uw_extension_field_scouting,Farm,farmName,mapped,text,Alias
+uw_extension_field_scouting,Scout,scoutName,mapped,text,Alias
+uw_extension_field_scouting,Field,fieldName,mapped,text,Alias
+uw_extension_field_scouting,Date,reportDate,mapped,date,ISO date
+uw_extension_field_scouting,Crop,cropType,mapped,reference,Alias
+uw_extension_field_scouting,Crop Stage,growthStage,mapped,text,Alias
+uw_extension_field_scouting,Crop Height,plantHeight,mapped,decimal,Source unit must be confirmed
+uw_extension_field_scouting,Plants per Acre,plantPopulation,mapped,decimal,Source unit preserved
+uw_extension_field_scouting,Weed Pressure,weedPressure,mapped,enum,Controlled vocabulary to be approved
+uw_extension_field_scouting,Average Weed Height,weedAverageHeight,mapped,decimal,Source unit must be confirmed
+uw_extension_field_scouting,Max Weed Height,weedMaxHeight,mapped,decimal,Source unit must be confirmed
+uw_extension_field_scouting,Insect Damage %,pestAffectedPercent,mapped,percent,0..100
+uw_extension_field_scouting,Disease Infection %,diseaseAffectedPercent,mapped,percent,0..100
+uw_extension_field_scouting,Notable Conditions,notes,mapped,text,Retained as narrative during Phase 20
+digital_crop_scouting,field_name,fieldName,mapped,text,Alias
+digital_crop_scouting,date_of_observation,reportDate,mapped,date,ISO date
+digital_crop_scouting,crop_type,cropType,mapped,reference,Alias
+digital_crop_scouting,crop_growth_stage,growthStage,mapped,text,Alias
+digital_crop_scouting,overall_plant_health,overallPlantHealth,mapped,enum,Controlled vocabulary to be approved
+digital_crop_scouting,soil_moisture_status,soilMoistureStatus,mapped,enum,Controlled vocabulary to be approved
+digital_crop_scouting,weed_pressure_level,weedPressure,mapped,enum,Controlled vocabulary to be approved
+digital_crop_scouting,pest_or_disease_presence,presenceFlag,mapped,boolean,Phase 22 will split pest/disease child observations
+digital_crop_scouting,additional_comments,notes,mapped,text,Narrative retained
+digital_crop_scouting,photo,media,mapped,attachment,External storage contract required Phase 25
+kenya_ipm_surveillance,farm,farmName,mapped,text,Reference resolution later
+kenya_ipm_surveillance,field,fieldName,mapped,text,Alias
+kenya_ipm_surveillance,crop,cropType,mapped,reference,Alias
+kenya_ipm_surveillance,variety,variety,mapped,reference,Alias
+kenya_ipm_surveillance,scouting_pattern,scoutingPattern,mapped,enum,Controlled vocabulary to be approved
+kenya_ipm_surveillance,pest_population,pestCount,mapped,decimal,Sampling unit required for analytical use
+kenya_ipm_surveillance,disease_incidence,diseaseAffectedPercent,mapped,percent,0..100
+kenya_ipm_surveillance,weed_presence,weedPressure,mapped,enum,Controlled vocabulary to be approved
+kenya_ipm_surveillance,control_measure,managementAction,mapped,text,Action text retained
+kenya_ipm_surveillance,notes,notes,mapped,text,Narrative retained
+generic_wide_legacy,unknown_header,canonical_alias,conditional,header_normalization,Unmatched headers require review

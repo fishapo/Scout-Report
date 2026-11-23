@@ -1,0 +1,24 @@
+PHASE 9 COMPLETE
+=================
+
+Production hardening and environment-reproducibility controls established.
+
+Added:
+- .npmrc with explicit npmjs registry
+- packageManager pin: npm@10.9.2
+- npm run verify:phase9
+- npm run release:check
+- lockfile/package parity checks
+- production security/reproducibility checks
+- release runbook
+- Phase 10 final runtime acceptance start pack
+
+Verification:
+- Source/static hardening checks: PASS
+- Critical runtime-file syntax checks: PASS
+
+Remaining environment gate:
+- Clean npm install must be completed on a normal developer/CI registry path.
+- PostgreSQL must be available for full runtime integration tests.
+
+Do not mark the final release candidate until Phase 10 acceptance is green.

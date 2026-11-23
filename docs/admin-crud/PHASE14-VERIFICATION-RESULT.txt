@@ -1,0 +1,54 @@
+PASS | exists: .github/workflows/ci.yml
+PASS | exists: .github/workflows/release.yml
+PASS | exists: .github/dependabot.yml
+PASS | exists: scripts/verify-phase14.js
+PASS | exists: scripts/staging-smoke.sh
+PASS | exists: scripts/backup-postgres.sh
+PASS | exists: scripts/restore-postgres.sh
+PASS | exists: scripts/build-release-artifact.sh
+PASS | exists: ops/observability/config.yml
+PASS | exists: ops/slo-baseline.md
+PASS | exists: ops/deployment-checklist.md
+PASS | exists: ops/rollback-runbook.md
+PASS | exists: docs/operations/PHASE14-LIVE-EVIDENCE.md
+PASS | exists: docs/admin-crud/43-PHASE14-START-PACK.md
+PASS | exists: docs/admin-crud/44-PHASE14-COMPLETION-REPORT.md
+PASS | exists: docs/admin-crud/45-PHASE15-START-PACK.md
+PASS | phase14 npm script present
+PASS | release check points to phase14
+PASS | CI provisions PostgreSQL 16
+PASS | CI uses clean install
+PASS | CI runs phase gates through 14
+PASS | CI runs full test suite
+PASS | CI runs DB integration
+PASS | CI builds release artifact
+PASS | release workflow has protected environment
+PASS | release workflow runs phase14 gate
+PASS | release workflow has approval boundary
+PASS | release workflow runs staging smoke when token supplied
+PASS | SLO baseline defines availability
+PASS | SLO baseline defines latency
+PASS | SLO baseline defines error rate
+PASS | deployment checklist requires health verification
+PASS | deployment checklist requires reference API regression
+PASS | rollback runbook requires smoke test
+PASS | live evidence explicitly distinguishes environment gates
+PASS | public reference contract preserved
+PASS | admin metrics remains protected
+PASS | release artifact excludes .env
+PASS | release artifact creates checksum
+PASS | syntax: scripts/verify-phase14.js
+PASS | syntax: server/app.js
+PASS | syntax: server/routes/index.js
+PASS | syntax: server/routes/metrics.routes.js
+PASS | syntax: server/metrics.js
+PASS | syntax: server/integration.runtime.test.js
+PASS | syntax: scripts/verify-phase13.js
+PASS | shell syntax: scripts/staging-smoke.sh
+PASS | shell syntax: scripts/backup-postgres.sh
+PASS | shell syntax: scripts/restore-postgres.sh
+PASS | shell syntax: scripts/build-release-artifact.sh
+
+Checks: 50
+Passed: 50
+Failed: 0

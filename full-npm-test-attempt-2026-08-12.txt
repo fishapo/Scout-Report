@@ -1,0 +1,6 @@
+
+> scout-report@2.2.1 pretest
+> node scripts/verify-dependencies.js
+
+ERROR | Missing npm dependencies: express, dotenv, pg, cookie-parser, cors
+Run: npm ci --registry=https://registry.npmjs.org/

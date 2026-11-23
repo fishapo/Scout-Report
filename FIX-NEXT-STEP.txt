@@ -1,0 +1,19 @@
+SCOUT REPORT — FIXED DASHBOARD ROLE REGRESSION
+Date: 2026-08-12
+
+Root cause:
+server/routes/dashboard.routes.js remained cached between mocked app instances in server/app.test.js.
+The first mock's authentication context (scout) was therefore reused when testing the other roles.
+
+Code fix:
+Explicitly clear ./routes/dashboard.routes from require.cache in loadAppWithMocks().
+
+This is a test-isolation fix; no production authorization rule was weakened or removed.
+
+Run:
+  npm ci
+  npm run verify:auth-fix
+  npm test
+
+Phase 22 gate:
+Only proceed after npm test reports 0 failures.

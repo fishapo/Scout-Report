@@ -1,0 +1,21 @@
+MASTER FORM / SPREADSHEET INTEGRATION — COMPLETE
+Date: 2026-08-12
+
+PASS: 13 requested farms seeded
+PASS: Field / Greenhouse / Shadenet controls implemented
+PASS: 130 workbook-derived crop types mapped
+PASS: 3,466 workbook-derived crop-variety pairs mapped
+PASS: 14 pest observation domains mapped
+PASS: 12 disease/condition domains mapped
+PASS: Environmental conditions retained
+PASS: Location capture retained
+PASS: Master workbook import retained
+PASS: Targeted verification scripts PASS
+
+NEXT OPERATOR MEASURE:
+npm ci
+npm run verify:master-form
+npm run verify:master-import
+npm run verify:phase22
+npm test
+npm run migrate

@@ -1,0 +1,14 @@
+PHASE 15 CLEAN npm ci ATTEMPT
+
+Command:
+npm ci --ignore-scripts --no-audit --no-fund
+
+Result: ENVIRONMENT-GATED / FAILED IN EXECUTION ENVIRONMENT
+
+Observed:
+npm ERR! 404 Not Found
+xtend@4.0.2
+
+The environment-level npm registry is an internal mirror. The project .npmrc requests the public npm registry, but the execution environment overrides npm registry configuration.
+
+This is not treated as an application regression. Repeat npm ci in the real repository/CI runner.

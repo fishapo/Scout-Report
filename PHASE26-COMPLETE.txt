@@ -1,0 +1,28 @@
+SCOUT REPORT PHASE 26 — COMPLETE
+================================
+Date: 2026-08-13
+
+Implemented:
+- Master Excel import auto-detection and import pipeline.
+- Removed false canonical-required-column rejection for master workbook.
+- Farm/crop/variety reference resolution and controlled inference.
+- GH/greenhouse import handling.
+- Live dashboard analytics and reference-data counts.
+- Automatic dashboard refresh after import and every 15 seconds.
+- Latest v24 master workbook retained for traceability.
+- Phase 26 verification script and operator checklist.
+
+Verification:
+npm run verify:phase26
+PASS | source headings: 38
+PASS | crop types: 130
+PASS | varieties: 3475
+PASS | source rows including header: 31930
+
+Full npm test requires npm dependencies to be installed in the target environment.
+Previous verified Windows baseline: 114 passing, 0 failing.
+
+
+PHASE 26 HOTFIX — CROP TYPE SUBMISSION
+2026-08-13
+Fixed Scout Report form submission so cropType is taken from the selected crop option source code (for example ACO), not from the selected variety option. The previous implementation could send an empty cropType and produce "Valid crop type is required" from PostgreSQL-backed report validation. Added client-side validation and regression coverage.

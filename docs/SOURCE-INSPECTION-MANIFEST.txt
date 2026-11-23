@@ -1,0 +1,33 @@
+Scout Report Admin CRUD Plan — Source Inspection Manifest
+Generated: 2026-08-08
+
+Uploaded source analyzed:
+- Scout-Report-next-dev(1).zip
+
+Project snapshot inventory:
+- 62 archive entries
+- 34 source/config/documentation files inspected in detail
+- PostgreSQL migration inspected
+- active reference routes/controller/store inspected
+- authentication/authorization inspected
+- report routes/store inspected
+- admin dashboard inspected
+- scout form inspected
+- application/store/auth/browser tests inspected
+- package/startup/verification configuration inspected
+
+Critical findings:
+1. Existing read API returns raw arrays/objects and must remain stable.
+2. server/store.js is the active reference source of truth.
+3. auth.authenticate + auth.authorizeRoles("admin") already exists.
+4. admin-dashboard.html is already page-protected for admin.
+5. scout form consumes farms/crops/varieties/pests/diseases.
+6. scout_reports.farm_id has ON DELETE CASCADE to farms.
+7. crop_varieties.crop_type_id has ON DELETE CASCADE to crop_types.
+8. pest/disease observations store reference names rather than IDs.
+9. Existing tests already establish 401/403 role behavior for protected report routes.
+10. Reference reads execute concurrently in server/store.js.
+11. package.json uses node server/index.js for dev/start.
+12. The current project has existing documentation and route-audit artifacts.
+
+No production credentials were added to this package.

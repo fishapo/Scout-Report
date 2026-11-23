@@ -1,0 +1,38 @@
+A1: WEEK
+B1: Farm
+C1: GH
+D1: Inpl. wk-year
+E1: Crop
+F1: Variety
+G1: Thrips_Larvae
+H1: Thrips_adults
+I1: LEAF MINER_feeding point
+J1: LEAF MINER_complete mines
+K1: White fly_eggs
+L1: White fly_adult
+M1: Aphids_nymphs
+N1: Aphids_adult
+O1: Spider mite_eggs
+P1: Spider mite_adults
+Q1: Beetles_countimg
+R1: Cater pillar_spots
+S1: Butter-flies_counting
+T1: Sciara fly_spots
+U1: Cut worms_counting
+V1: Mealy bugs_spots
+W1: Slugs_counting
+X1: Snails_counting
+Y1: Nema- todes_spots
+Z1: Chlo- rosis_spots/MP
+AA1: Fusarium_MP
+AB1: Rhyzoc tonia_MP
+AC1: Powdery mildew_MP
+AD1: Botrytis_spots/MP
+AE1: Leafspot_Black
+AF1: Leafspot_Brown
+AG1: Flower buds_Cuttings
+AH1: Chem. Damage_MP
+AI1: Virus doubt_MP
+AJ1: Mix_MP
+AK1: Dry spots_Bags/spots
+AL1: Others

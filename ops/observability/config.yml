@@ -1,0 +1,28 @@
+service: scout-report-api
+metrics:
+  endpoint: /api/admin/metrics
+  authentication: admin-role
+  counters:
+    - requests
+    - errors
+    - status_codes
+    - route_requests
+  latency:
+    - average_duration_ms
+alerts:
+  api_5xx_rate:
+    threshold: 0.05
+    window: 5m
+  health_failure:
+    threshold: 1
+    window: 2m
+  auth_rate_limit:
+    threshold: 20
+    window: 5m
+  backup_age_hours:
+    threshold: 24
+    window: 1h
+logging:
+  format: json
+  request_id_header: x-request-id
+  retention_days: 30

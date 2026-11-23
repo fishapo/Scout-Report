@@ -1,0 +1,3 @@
+PHASE 27 COMPLETE
+Reference selection/submission contract fix applied 2026-08-13.
+See PHASE27-REFERENCE-SUBMISSION-FIX.md.

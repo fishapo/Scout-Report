@@ -1,0 +1,66 @@
+{
+  "review_date": "2026-08-14",
+  "baseline": "Scout-Report-Phase27-MIGRATION-FIX-2026-08-13.zip",
+  "focused_tests": {
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "full_npm_test": "BLOCKED_BY_DEPENDENCY_ENVIRONMENT",
+  "requirements": [
+    {
+      "id": "FORM-ALL-FIELDS",
+      "status": "PASS_SOURCE",
+      "next": "browser_e2e"
+    },
+    {
+      "id": "SAVE",
+      "status": "REVIEW",
+      "issue": "saveReportOnly delegates to submitReport"
+    },
+    {
+      "id": "SAVE-SUBMIT",
+      "status": "PASS_SOURCE",
+      "next": "workflow_e2e"
+    },
+    {
+      "id": "CSV-EXPORT",
+      "status": "PASS_FORM"
+    },
+    {
+      "id": "JSON-EXPORT",
+      "status": "PASS_FORM"
+    },
+    {
+      "id": "XLSX-IMPORT",
+      "status": "PASS_SOURCE",
+      "next": "runtime_e2e"
+    },
+    {
+      "id": "XLSX-EXPORT",
+      "status": "PASS_SOURCE",
+      "next": "runtime_e2e"
+    },
+    {
+      "id": "PRINT",
+      "status": "PASS_SOURCE",
+      "next": "browser_e2e"
+    },
+    {
+      "id": "WORKFLOW",
+      "status": "PASS_SOURCE",
+      "next": "four_role_e2e"
+    },
+    {
+      "id": "ANALYTICS",
+      "status": "PASS_SOURCE",
+      "next": "known_dataset_reconciliation"
+    },
+    {
+      "id": "PRODUCTION-GATES",
+      "status": "PENDING",
+      "next": "CI_STAGING_DR_ROLLBACK_PRODUCTION"
+    }
+  ]
+}

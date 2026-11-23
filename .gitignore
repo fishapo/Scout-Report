@@ -1,0 +1,17 @@
+node_modules/
+.npm-cache
+.env
+.env.*
+!.env.example
+*.log
+backups/
+*.dump
+*.sql.gz
+.vs/
+*.bak
+*.bak.*
+
+# Local reviewed copy and generated workspace inventories
+Scout-Report-Reviewed-2026-08-14/
+files.txt
+project-tree.txt

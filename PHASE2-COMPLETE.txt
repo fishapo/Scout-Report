@@ -1,0 +1,42 @@
+SCOUT REPORT — PHASE 2 COMPLETE
+================================
+
+Milestone: Admin Reference CRUD API Foundation
+Entity completed: Farms
+Date: 2026-08-08
+
+IMPLEMENTED
+-----------
+- /api/admin/reference router established.
+- Admin authentication and role authorization applied.
+- Farms GET/POST/GET-by-id/PATCH/DELETE implemented.
+- Farm IDs generated server-side using FARM-### convention.
+- Duplicate database conflicts map to HTTP 409.
+- Missing farms map to HTTP 404.
+- Successful farm deletion returns HTTP 204.
+- Farm deletion locks the farm row and checks scout_reports dependencies.
+- Referenced farms are blocked with HTTP 409 / REFERENCE_IN_USE.
+- Existing /api/reference/* remains separate and stable.
+
+VERIFICATION
+------------
+Phase 1: 29/29 passed.
+Phase 2: 28/28 passed.
+Focused Phase 2 tests: 9/9 passed.
+Admin dashboard static verification: passed.
+Phase 2 source syntax: passed.
+Scout-facing reference.routes.js: unchanged from Phase 1 baseline.
+
+FULL SUITE
+----------
+npm test was attempted. The environment has no installed npm dependencies, so the
+full suite reported 38 discovered tests, 24 passing and 14 failing, with failures
+including MODULE_NOT_FOUND for express. This is recorded as an environment limitation,
+not a clean full-suite pass.
+
+NEXT MEASURE
+------------
+Phase 3 — Crop Type CRUD.
+Implement crop-type CRUD under /api/admin/reference/crop-types while preserving
+/api/reference/crop-types. Treat crop varieties as a deletion dependency because
+crop_varieties.crop_type_id uses ON DELETE CASCADE.

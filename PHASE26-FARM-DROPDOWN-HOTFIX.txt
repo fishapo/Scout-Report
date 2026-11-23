@@ -1,0 +1,19 @@
+PHASE 26 FARM DROPDOWN HOTFIX
+
+Problem fixed:
+FARM 3 through FARM 12B were greyed out because the form disabled any farm option missing from the current database response.
+
+Current behavior:
+- FARM 1 through FARM 12B are all active/selectable.
+- Live database IDs are preferred.
+- Canonical spreadsheet IDs are used as fallback references.
+- GREENHOUSE remains a location mode, not a farm.
+- GH number remains an active text field.
+
+After extraction:
+  npm ci
+  npm run migrate
+  npm test
+  npm run start
+
+Verify the database contains all 13 spreadsheet farms before submitting reports for newly added farms.

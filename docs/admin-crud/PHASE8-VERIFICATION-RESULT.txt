@@ -1,0 +1,36 @@
+
+> scout-report@2.0.0 verify:phase8
+> node scripts/verify-phase8.js
+
+PASS  public reference router hash — 4c20b4ed7d05575a0efbd91b79cdf259f3f07523ae9250cb94d96bb357dcd46a
+PASS  canonical public reference mount
+PASS  admin reference isolated mount
+PASS  admin authentication middleware
+PASS  admin role middleware
+PASS  all five CRUD domains mounted
+PASS  farm delete conflict
+PASS  crop type delete conflict
+PASS  crop variety parent scoping
+PASS  pest delete is non-cascading
+PASS  disease delete is non-cascading
+PASS  farm dependency guard in store
+PASS  crop type dependency guard in store
+PASS  variety parent validation in store
+PASS  admin dashboard page protected
+PASS  scout dashboard role protected
+PASS  page auth redirects unauthenticated
+PASS  page auth redirects unauthorized roles
+PASS  security nosniff
+PASS  security frame protection
+PASS  security referrer policy
+PASS  admin client exists
+PASS  admin dashboard loads client
+PASS  admin dashboard dependency feedback
+PASS  admin dashboard variety immutability messaging
+PASS  browser focused tests exist
+PASS  phase8 verification script registered
+PASS  phase8 start pack exists
+------------------------------------------------------------
+Checks: 28
+Passed: 28
+Failed: 0

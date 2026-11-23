@@ -1,0 +1,27 @@
+﻿domain,source_heading,reference_label
+pest,Thrips_Larvae,Thrips
+pest,Thrips_adults,Leaf Miner
+pest,LEAF MINER_feeding point,White Fly
+pest,LEAF MINER_complete mines,Aphids
+pest,White fly_eggs,Spider Mite
+pest,White fly_adult,Beetles
+pest,Aphids_nymphs,Cater Pillar
+pest,Aphids_adult,Butter Flies
+pest,Spider mite_eggs,Sciara Fly
+pest,Spider mite_adults,Cut Worms
+pest,Beetles_countimg,Mealy Bugs
+pest,Cater pillar_spots,Slugs
+pest,Butter-flies_counting,Snails
+pest,Sciara fly_spots,Nema Todes
+disease,Chlo- rosis_spots/MP,Chlo Rosis Spots/Mp
+disease,Fusarium_MP,Fusarium
+disease,Rhyzoc tonia_MP,Rhyzoc Tonia
+disease,Powdery mildew_MP,Powdery Mildew
+disease,Botrytis_spots/MP,Botrytis Spots/Mp
+disease,Leafspot_Black,Leafspot Black
+disease,Leafspot_Brown,Leafspot Brown
+disease,Chem. Damage_MP,Chem. Damage
+disease,Virus doubt_MP,Virus Doubt
+disease,Mix_MP,Mix
+disease,Dry spots_Bags/spots,Dry Spots
+disease,Others,Others
