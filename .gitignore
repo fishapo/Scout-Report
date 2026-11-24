@@ -10,6 +10,11 @@ backups/
 .vs/
 *.bak
 *.bak.*
+.~lock.*#
+
+# Raw operational workbooks must not be committed to the public repository.
+*Combined Scout Report*.xlsx
+*Combined-Scout-Report-Master*.xlsx
 
 # Local reviewed copy and generated workspace inventories
 Scout-Report-Reviewed-2026-08-14/

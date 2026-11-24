@@ -2,18 +2,18 @@
 const fs = require("fs");
 const path = require("path");
 const assert = require("assert");
-const { readWorkbook } = require("../server/xlsx-lite");
+const { readWorkbook, createWorkbook } = require("../server/xlsx-lite");
 const mapper = require("../server/import/master-import");
 
 const root = process.cwd();
-const source = path.join(root, "docs/phase26-import/source/Combined-Scout-Report-Master-ver_24-2026.xlsx");
 const dashboard = fs.readFileSync(path.join(root, "previews/dashboard.html"), "utf8");
 const controller = fs.readFileSync(path.join(root, "server/controllers/report.controller.js"), "utf8");
 const migration = fs.readFileSync(path.join(root, "server/migrations/007_master_reference_data.sql"), "utf8");
 const catalog = require(path.join(root, "server/data/master-crop-catalog.json"));
 
-assert.ok(fs.existsSync(source), "v24 master workbook is missing");
-const rows = readWorkbook(fs.readFileSync(source));
+const expectedHeaders = mapper.schema.columns.map(c => c.source_heading);
+const sample = mapper.schema.columns.map(c => c.database_key === "farm" ? "FARM 1" : c.database_key === "crop" ? "Tomato" : c.database_key === "variety" ? "Cherry" : 1);
+const rows = readWorkbook(createWorkbook([expectedHeaders, sample], "Clean Data"));
 const headers = (rows[0] || []).map(v => String(v ?? "").trim());
 assert.strictEqual(headers.length, 38, "master workbook must contain 38 headings");
 assert.deepStrictEqual(headers, mapper.schema.columns.map(c => c.source_heading), "master headings must match mapping schema");
@@ -40,5 +40,5 @@ console.log("PASS | Phase 26 master import and live analytics verification");
 console.log(`PASS | source headings: ${headers.length}`);
 console.log(`PASS | crop types: ${catalog.crops.length}`);
 console.log(`PASS | varieties: ${catalog.crops.reduce((n, c) => n + (c.varieties || []).length, 0)}`);
-console.log(`PASS | source rows including header: ${rows.length}`);
-console.log(`INFO | source data rows checked: ${checkedRows}; source validation rejects: ${rejectedRows}`);
+console.log(`PASS | sanitized fixture rows including header: ${rows.length}`);
+console.log(`INFO | sanitized rows checked: ${checkedRows}; validation rejects: ${rejectedRows}`);

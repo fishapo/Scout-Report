@@ -9,13 +9,13 @@ Phase 23 closes the data path:
 
 **Collect → Inventory → Map → Approve → Code → Import → Form → Save → Review → Export**
 
-The implementation is based on the actual `Combined-Scout-Report-Master-ver_21-2026.xlsx` included in the release tree.
+The implementation was derived from the approved source workbook. The raw workbook is no longer included in the public release tree.
 
 ## 2. Source workbook verification
 
 The application copy is:
 
-`docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx`
+Raw source artifact removed; use the generated sanitized schema fixture in `server/phase23.roundtrip.test.js`.
 
 The workbook parser reports **31,890 rows** and **38 columns** on the `Clean Data` worksheet.
 

@@ -1,7 +1,8 @@
 {
   "phase": 24,
   "title": "Scout Report Form Operations and Reference Alignment",
-  "source_workbook": "docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx",
+  "source_workbook": null,
+  "source_artifact_removed": true,
   "master_columns": 38,
   "farm_choices": 13,
   "location_modes": ["Field", "Greenhouse", "Shadenet"],

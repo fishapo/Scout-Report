@@ -4,7 +4,7 @@
 
 This phase continues directly from the Phase 23 spreadsheet/form alignment build. The approved source workbook remains:
 
-`docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx`
+Raw source workbook removed from the public repository; the approved schema remains under `docs/phase22-master-import/`.
 
 The `Clean Data` worksheet was inspected directly. It contains 38 columns. The source inventory contains 130 crop types, 3,466 varieties, 14 pest categories and 12 disease/symptom categories.
 

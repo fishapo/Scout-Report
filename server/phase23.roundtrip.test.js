@@ -1,22 +1,20 @@
 "use strict";
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const path = require("node:path");
 const { readWorkbook, createWorkbook } = require("./xlsx-lite");
 const mapper = require("./import/master-import");
 const { canonicalHeaders, canonicalRow, canonicalRecordFromRow, canonicalFromReport } = require("./canonical-report");
 
-const root = path.join(__dirname, "..");
-const source = path.join(root, "docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx");
 const schema = require("../docs/phase22-master-import/master-import-schema.json");
 const dictionary = require("../docs/next-phases/data-model/field-dictionary.json");
 
-test("actual Combined Scout Report Master workbook has the exact 38 source headings", () => {
-  const rows = readWorkbook(fs.readFileSync(source));
+test("sanitized master workbook fixture has the exact 38 source headings", () => {
+  const headers = schema.columns.map(c => c.source_heading);
+  const sample = schema.columns.map(c => c.database_key === "farm" ? "FARM 1" : c.database_key === "crop" ? "Tomato" : c.database_key === "variety" ? "Cherry" : 1);
+  const rows = readWorkbook(createWorkbook([headers, sample], "Clean Data"));
   assert.equal(rows[0].length, 38);
-  assert.deepEqual(rows[0], schema.columns.map(c => c.source_heading));
-  assert.equal(rows.length > 1, true);
+  assert.deepEqual(rows[0], headers);
+  assert.equal(rows.length, 2);
 });
 
 test("all 38 source columns map to recognized application database keys", () => {

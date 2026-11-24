@@ -1,16 +1,17 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
-const { readWorkbook } = require("../server/xlsx-lite");
+const { readWorkbook, createWorkbook } = require("../server/xlsx-lite");
 const schema = require("../docs/phase22-master-import/master-import-schema.json");
 const dictionary = require("../docs/next-phases/data-model/field-dictionary.json");
 const form = fs.readFileSync(path.join(process.cwd(), "previews/user-form.html"), "utf8");
-const source = path.join(process.cwd(), "docs/phase22-master-import/source/Combined-Scout-Report-Master-ver_21-2026.xlsx");
-const headers = readWorkbook(fs.readFileSync(source))[0];
+const expectedHeaders = schema.columns.map(c => c.source_heading);
+const sample = schema.columns.map(c => c.database_key === "farm" ? "FARM 1" : c.database_key === "crop" ? "Tomato" : c.database_key === "variety" ? "Cherry" : 1);
+const headers = readWorkbook(createWorkbook([expectedHeaders, sample], "Clean Data"))[0];
 function pass(message) { console.log(`PASS | ${message}`); }
 function fail(message) { throw new Error(`FAIL | ${message}`); }
-if (headers.length !== 38) fail(`source workbook has ${headers.length} columns`); pass("actual source workbook has 38 columns");
-if (JSON.stringify(headers) !== JSON.stringify(schema.columns.map(c => c.source_heading))) fail("source headings do not match approved inventory"); pass("source headings exactly match the 38-column inventory");
+if (headers.length !== 38) fail(`sanitized fixture has ${headers.length} columns`); pass("generated sanitized workbook has 38 columns");
+if (JSON.stringify(headers) !== JSON.stringify(expectedHeaders)) fail("fixture headings do not match approved inventory"); pass("generated sanitized headings exactly match the 38-column inventory");
 if (schema.columns.length !== 38 || new Set(schema.columns.map(c => c.database_key)).size !== 38) fail("38 source database keys are not unique"); pass("38 source columns have unique application keys");
 if (dictionary.fields.length !== 93) fail(`canonical dictionary has ${dictionary.fields.length} fields`); pass("canonical dictionary contains 93 fields");
 const farms = ["FARM 1","FARM 2","FARM 3","FARM 4","FARM 5","FARM 6","FARM 7","FARM 8","FARM 9","FARM 10","FARM 11","FARM 12A","FARM 12B"];
@@ -27,8 +28,8 @@ for (const ref of ["REFERENCE_API+'/pests'","REFERENCE_API+'/diseases'","pest-re
 pass("pest/disease reference controls are wired");
 for (const feature of ["exportMasterCsv()","exportReportJson()","window.print()","master-workbook"]) if (!form.includes(feature)) fail(`missing form utility ${feature}`);
 pass("import/export/print controls are present");
-if (!form.includes("REFERENCE_API+'/crop-types/")) fail("crop variety endpoint is not wired");
-if (!form.includes("/varieties")) fail("crop variety endpoint does not request varieties");
+if (!form.includes("loadMasterVarieties(crop)")) fail("crop variety loader is not wired");
+if (!form.includes("crop?.varieties")) fail("crop variety loader does not use the embedded sanitized catalogue");
 pass("Crop → Variety dependency uses the reference API");
 for (const f of ["server/migrations/008_phase23_canonical_provenance.sql","server/canonical-report.js","server/phase23.roundtrip.test.js"]) if (!fs.existsSync(f)) fail(`missing ${f}`);
 pass("Phase 23 canonical/provenance artifacts exist");

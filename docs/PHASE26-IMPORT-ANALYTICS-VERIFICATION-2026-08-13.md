@@ -27,7 +27,7 @@ The master workbook does not contain those four canonical headings. Its identity
 7. Dashboard analytics now expose live reference counts for Farms, Crop Types, Varieties, Pests and Diseases.
 8. Dashboard shows the latest import batch and automatically refreshes every 15 seconds, plus on browser focus.
 9. Import completion refreshes dashboard analytics immediately.
-10. The latest `Combined Scout Report Master ver_24-2026.xlsx` is included under `docs/phase26-import/source/` for traceability.
+10. The raw source workbook was removed from the public repository. Verification now generates a sanitized workbook from the approved 38-column schema.
 
 ## Source verification
 
