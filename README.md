@@ -17,6 +17,8 @@ Browser authentication uses an HttpOnly session cookie. Browser code does not st
 
 The scout form supports offline capture after the application has first been loaded online. Pending reports synchronize when connectivity returns. See [Offline operation](#offline-operation) for current limitations.
 
+The authoritative system, workflow, workbook, security, deployment, and operations reference is [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md). The compiled Word edition is [docs/Scout-Report-Master-Documentation.docx](docs/Scout-Report-Master-Documentation.docx).
+
 Combined scout reports for @LathyFlora — pest and disease monitoring for agricultural farms.
 
 ## Quick Start
