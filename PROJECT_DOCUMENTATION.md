@@ -1,366 +1,465 @@
-# Scout Report: Project Documentation
+# Scout Report Master Documentation
 
-**Version audited:** 2.0.0  
-**Audit date:** 6 August 2026  
-**Technology:** Node.js 18+, Express 4, PostgreSQL, static HTML/CSS/JavaScript browser client
+**Release:** 2.3.1  
+**Repository:** `fishapo/Scout-Report`  
+**Verified revision:** `f28f5bf`  
+**Documentation date:** 24 November 2026  
+**Status:** Authoritative operational and technical reference
 
-## 1. Purpose
+> This master document reconciles the implemented application, database migrations, tests, deployment configuration, and operational records. Phase reports under `docs/` remain historical evidence; where they conflict with this document or the current source code, the current code and this master take precedence.
 
-Scout Report is an agricultural scouting application for recording pest and disease observations at farms. It gives scouts a structured way to submit field reports and gives administrators a browser dashboard for viewing, filtering, reviewing, and managing reports.
+## 1. Executive summary
 
-The application is a single Node.js service. It serves both the JSON API and the browser pages, and persists operational data in PostgreSQL.
+Scout Report is a Node.js and PostgreSQL application for recording agricultural scouting visits, capturing pest and disease observations, routing reports through organizational verification, and publishing approved data to administrator analytics. It supports online and offline field capture, Excel workbook integration, role-based dashboards, reference-data administration, immutable workflow events, and database-backed release verification.
 
-## 2. Current capability at a glance
+The production workflow is:
 
-| Area | Current status | What is available |
-| --- | --- | --- |
-| Browser access | Present | Login, registration, session persistence, logout, route protection in the UI |
-| Scout reporting | Present | Farm/crop selection, environmental data, GPS coordinates, pest and disease observations, validation and submission |
-| Administration | Present | Dashboard metrics, filters, paginated report list, detail view and deletion |
-| Report API | Present | Authenticated read/create/update/delete operations and observation endpoints |
-| Reference data | Present | Farms, crop types, varieties, pests and diseases from PostgreSQL |
-| Authentication | Present | PBKDF2 password hashes, signed JWTs, server-side revocable sessions, role checks and login throttling |
-| PostgreSQL schema | Present | Tables, constraints, indexes and seed reference data |
-| Docker and CI | Present | PostgreSQL Compose service and GitHub Actions Azure deployment workflow |
-| Report ownership/workflow | Present | Scout → Inter-Farm Supervisor → Head of Department → Administrator verification workflow with audit events |
-| Import/export | Present | XLSX import/export paths with canonical report mapping and validation |
+1. A scout records and submits a report.
+2. The scout shares it with an assigned Inter-Farm Supervisor.
+3. The supervisor verifies or rejects it.
+4. An approved supervisor report is shared with the Head of Department.
+5. The HOD verifies or rejects it, then shares an approved report with an administrator.
+6. The administrator performs final verification and makes the report available to global analytics.
 
-## 3. User roles and journeys
+The application preserves scout ownership. A supervisor can edit a report only when assigned to it and explicitly allowed by the scout. HOD review is read-only. Workflow state and agricultural severity are stored separately.
 
-### Admin
+## 2. Current release baseline
 
-The first account registered becomes an `admin`. Admins can:
+| Item | Current baseline |
+|---|---|
+| Application version | 2.3.1 |
+| Runtime | Node.js 22 in CI; Node.js 18 or later supported |
+| Web framework | Express 4 |
+| Database | PostgreSQL 16 |
+| Package manager | npm 10 |
+| Browser authentication | HttpOnly cookie session |
+| Roles | Scout, Inter-Farm Supervisor, Head of Department, Admin |
+| Offline cache | Service worker cache `scout-report-offline-v3` |
+| Offline queue | IndexedDB, scoped to the authenticated user |
+| Database upgrade set | `init.sql` plus migrations 002 through 011 |
+| CI gate | Audit, migrations, serial unit/contract/integration tests |
+| Verified test result | 142 of 142 tests passed with live PostgreSQL |
+| Dependency audit | 0 known npm vulnerabilities at release verification |
+| Static deployment | GitHub Pages environment healthy |
+| Backend deployment | Requires Node.js and PostgreSQL; GitHub Pages alone cannot host the API |
 
-- Sign in and retain the authenticated browser session for the current browser session.
-- View the dashboard and its aggregate metrics.
-- Read and filter all reports.
-- Create reports.
-- Partially update report weather, temperature, humidity, notes, or status.
-- Delete reports.
-- Add pest and disease observations.
+## 3. Product scope
 
-### Scout
+### 3.1 Field reporting
 
-Subsequent self-registered accounts default to `scout`. Scouts can:
+- Create a scouting report for a valid farm, date, implementation week and crop context.
+- Record production area as Field, Greenhouse, or Shade Net while preserving legacy greenhouse compatibility.
+- Capture pest, disease, crop, weather, soil, irrigation, GPS, notes, and visit timing data.
+- Save a report offline after the user has signed in online at least once.
+- Automatically synchronize queued reports and canonical extensions when connectivity returns.
+- Print or export reports for operational use.
 
-- Sign in, log out and access the report form.
-- Load farms, crops, varieties, pests and diseases.
-- Create reports and add observations.
-- Call the authenticated report list/detail endpoints.
+### 3.2 Verification and governance
 
-> Important: the API currently allows every authenticated user to list and fetch every report. A report has no `owner_id`, so the system does not yet enforce scout-only visibility or ownership.
+- Assign every hand-off to a real user in the next authorized role.
+- Require a stage-specific verification checklist.
+- Approve or reject at supervisor, HOD, and administrator stages.
+- Record immutable workflow events with actor, role, action, source stage, destination stage, recipient, comment, and timestamp.
+- Keep report severity (`Pending`, `Completed`, or `Critical`) independent from verification state.
 
-### Registration rules
+### 3.3 Administration and analytics
 
-- Registration and login are public routes.
-- The first registered user receives the `admin` role.
-- Later public registrations receive `scout` unless an authenticated admin explicitly supplies a valid role.
-- Passwords must meet the server-side complexity rules (at least eight characters, with letters and numbers).
-- Authentication attempts are limited to 10 per IP address and route over 15 minutes.
+- Administer users, passwords, and roles.
+- Maintain farms, crop types, varieties, pests, and diseases.
+- Stage and commit master workbooks with provenance.
+- View global analytics only as an administrator.
+- Keep non-admin dashboards focused on assigned workflow work rather than unrestricted analytics.
 
-## 4. Browser application
+## 4. Roles and permissions
 
-The Express application serves the contents of `previews/` from the site root.
+| Capability | Scout | Inter-Farm Supervisor | Head of Department | Admin |
+|---|---:|---:|---:|---:|
+| Create own field report | Yes | No | No | Administrative access only |
+| Work offline | Yes | No | No | No |
+| Share to next stage | To supervisor | To HOD after approval | To admin after approval | No |
+| Verify assigned stage | No | Supervisor stage | HOD stage | Final stage |
+| Reject to prior stage | No | To scout | To supervisor | To HOD |
+| Edit report content | Owner | Only with scout consent and assignment | No | Governed administration only |
+| View workflow inbox | Own/returned work | Assigned work | Assigned work | Awaiting final review |
+| View global analytics | No | No | No | Yes |
+| Manage users and roles | No | No | No | Yes |
+| Manage reference data | No | No | No | Yes |
+| Stage master workbook | No | No | Yes | Yes |
 
-| Page | Purpose | Access behavior |
-| --- | --- | --- |
-| `index.html` | Preview/navigation hub | Public, but it is a showcase rather than an authenticated application home |
-| `login.html` | Login and registration | Public; routes admins to the dashboard and scouts to the form |
-| `user-form.html` | Scout report submission | Calls `/auth/me` on load and redirects unauthenticated users to login |
-| `admin-dashboard.html` | Report management dashboard | Calls `/auth/me`; the API independently limits dashboard metrics and destructive actions to admins |
+Authorization is enforced by the server. Hiding controls in the browser is not a security boundary.
 
-### Authentication in the browser
+## 5. Report lifecycle
 
-`previews/auth.js` is the shared browser authentication helper. It:
+### 5.1 Normal path
 
-- Stores the token and basic user data in `sessionStorage` under `scout-report-auth`.
-- Restores that state when the page reloads.
-- Validates a restored token through `GET /auth/me`.
-- Adds `Authorization: Bearer <token>` through `fetchWithAuth`.
-- Clears state and redirects to `login.html` after a `401` response.
-- Calls server logout before clearing local state where possible.
+| Stage | Holder | Permitted action | Successful destination |
+|---|---|---|---|
+| Draft or scout correction | Scout | Edit and share | Awaiting supervisor |
+| Awaiting supervisor | Assigned supervisor | Review and verify | Supervisor verified |
+| Supervisor verified | Supervisor | Share | Awaiting HOD |
+| Awaiting HOD | Assigned HOD | Read and verify | HOD verified |
+| HOD verified | HOD | Share | Awaiting admin |
+| Awaiting admin | Assigned admin | Final verify | Approved |
 
-Session storage keeps a user signed in only until the browser session ends. It is not a long-lived "remember me" implementation.
+### 5.2 Rejection path
 
-### Scout report form
+Rejection returns the report to the immediately previous operational stage. The reviewer must supply the applicable decision and comments. A rejected report is not silently moved forward, and every return is recorded as a workflow event.
 
-The form loads reference data from the API and supports:
+### 5.3 Ownership and editing rules
 
-- Farm selection and the Field/Greenhouse flag.
-- Crop type selection and dynamically loaded varieties.
-- Report date and implementation week/year.
-- Weather, temperature and humidity.
-- Optional latitude/longitude location.
-- Any number of pest observations: pest type, count, severity, affected percentage, plant location and notes.
-- Any number of disease observations: disease type, severity, affected percentage, spot count, colour and notes.
-- Notes and client-side feedback on submission errors.
+1. The scout remains the report owner.
+2. Supervisor access requires assignment to the report.
+3. Supervisor editing additionally requires `supervisor_edit_allowed` to be enabled by the scout.
+4. HOD verification is read-only.
+5. The current holder cannot bypass content authorization merely because the workflow is assigned to them.
+6. Canonical observations and visit details use the same edit policy as the main report.
 
-The server remains authoritative: it validates that the farm, crop variety, pest and disease actually exist in the reference tables.
+## 6. Browser application
 
-### Admin dashboard
+| Route | Purpose | Access |
+|---|---|---|
+| `/login` | Sign in and registration | Public |
+| `/dashboard` | Role-aware dashboard routing | Authenticated |
+| `/scout-form` | Field report capture and editing | Authorized report users |
+| `/workflow` | Assigned review inbox and report workflow | Workflow roles |
+| `/dashboard.html` | Global analytics and administration | Admin only |
+| `/health` | Application health response | Public operational probe |
 
-The dashboard loads:
+The browser does not store bearer tokens in local or session storage. Login establishes an HttpOnly cookie, logout clears it, and legacy browser tokens are removed when the authentication client loads.
 
-- Summary metrics: total reports, critical issues, active farms and response rate.
-- A report list filtered by farm, status and date range.
-- Individual report details, including observations.
-- Admin-only deletion.
+## 7. API overview
 
-The dashboard applies pagination using `limit` and `offset`. The backend defaults to 100 reports and accepts at most 500 per request.
+### 7.1 Authentication and session
 
-## 5. Report lifecycle and status rules
+- Register and login establish the browser cookie session.
+- Logout clears the active session.
+- The authenticated-user endpoint provides role-aware routing context.
+- Explicit bearer authentication remains supported for approved API clients.
 
-Reports contain farm, crop, environment, location, notes, observations, status, and timestamps.
+### 7.2 Reports and observations
 
-The service derives the report status when observations are created:
+- Report routes create, list, retrieve, update, import, export, print, and delete reports subject to role and ownership policy.
+- Canonical observation routes read a complete report model or work with a specific domain.
+- Visit details and canonical child records use stable identifiers and transaction-safe writes.
+- `clientSubmissionId` provides per-owner idempotency for offline replay.
 
-| Observation severity | Derived report status |
-| --- | --- |
-| Any `Critical` observation | `Critical` |
-| Any `High` observation, with no critical observation | `Pending` |
-| Only Low/Medium observations | `Pending` |
-| No observations | `Completed` |
+### 7.3 Workflow
 
-An admin can also explicitly set `status` to `Pending`, `Completed`, or `Critical` through the partial-update endpoint.
+- `GET /api/workflow/inbox` returns work assigned to the signed-in role.
+- `GET /api/workflow/:id` returns workflow state and history.
+- `POST /api/workflow/:id/share` hands a report to a valid next-stage recipient.
+- `POST /api/workflow/:id/verify` records an approval or rejection.
+- Checklist routes retrieve and update the stage verification checklist.
 
-## 6. API contract
+### 7.4 Reference data and administration
 
-All routes below are mounted at the application root. The API does **not** use `/api` as a universal prefix. The two API-prefixed informational endpoints are `/api` and `/api/health`.
+- Protected reference routes supply farms, crops, varieties, pests, diseases, master crops, and stress references.
+- Admin reference routes provide create, read, update, and delete operations for governed reference records.
+- Admin user routes create users, set passwords, change roles, list users, and delete eligible users.
+- Admin dashboard and metrics endpoints are inaccessible to non-admin roles.
 
-### Public and health routes
+### 7.5 Master workbook import
 
-| Method | Route | Result |
-| --- | --- | --- |
-| `GET` | `/` | Static preview hub |
-| `GET` | `/health` | Basic service heartbeat without a database check |
-| `GET` | `/api` | API identity/version response |
-| `GET` | `/api/health` | PostgreSQL-aware health response; returns 503 when the database is unavailable |
-| `POST` | `/auth/register` | Register and immediately receive a session token |
-| `POST` | `/auth/login` | Authenticate and receive a session token |
-| `GET` | `/farms` | Farms |
-| `GET` | `/crop-types` | Crop types with varieties |
-| `GET` | `/crop-types/:id/varieties` | Varieties for a crop type |
-| `GET` | `/pests` | Pest reference data |
-| `GET` | `/diseases` | Disease reference data |
+- Stage a binary workbook with `POST /api/master-import/stage`.
+- Inspect staged batches and validation results before committing.
+- Commit an accepted batch with `POST /api/master-import/:id/commit`.
+- Export the original staged source for provenance.
+- A scout can request the assigned workbook prefill through the protected prefill endpoint.
 
-### Authenticated routes
+## 8. Workbook and form integration
 
-Send a token with `Authorization: Bearer <token>`.
+The application maps the supplied master scouting workbook into a canonical report structure rather than treating the workbook as an opaque attachment. The current mapping includes 38 source columns and a 93-field canonical model across the report and child domains.
 
-| Method | Route | Required role | Result |
-| --- | --- | --- | --- |
-| `POST` | `/auth/logout` | Signed-in user | Revokes the current server-side session |
-| `GET` | `/auth/me` | Signed-in user | Current user and session expiry |
-| `GET` | `/scout-reports` | Signed-in user | Filtered and paginated report collection |
-| `GET` | `/scout-reports/:id` | Signed-in user | One report and its observations |
-| `POST` | `/scout-reports` | Admin or scout | Create a report with optional observations |
-| `POST` | `/scout-reports/:id/pest-observations` | Admin or scout | Add one pest observation and refresh derived status |
-| `POST` | `/scout-reports/:id/disease-observations` | Admin or scout | Add one disease observation and refresh derived status |
-| `GET` | `/scout-reports/stats` | Admin | Dashboard metrics |
-| `PATCH` | `/scout-reports/:id` | Admin | Update selected report fields |
-| `DELETE` | `/scout-reports/:id` | Admin | Delete a report and cascading observations |
+### 8.1 Import principles
 
-### List filters
+1. Parse workbooks with bounded input size and bounded expanded content.
+2. Validate headers, types, farm references, dates, and required values before commit.
+3. Stage first, then commit; do not partially import an invalid workbook.
+4. Preserve original-source metadata and import provenance.
+5. Ignore file-supplied ownership and workflow audit fields; the authenticated user and workflow rules control them.
+6. Start newly imported reports within the normal verification process.
 
-`GET /scout-reports` and `GET /scout-reports/stats` accept these optional parameters:
+### 8.2 Form alignment
 
-- `farm`: farm ID or name; `all` means no farm filter.
-- `status`: `Pending`, `Completed`, `Critical`, or `all`.
-- `dateFrom` and `dateTo`: ISO dates.
-- `limit`: 1 to 500 (list route only).
-- `offset`: 0 or greater (list route only).
+The form submits canonical farm identifiers and names, report date, crop and production-area context, observations, notes, and visit metadata. Workbook-prefill data populates the assigned scout form without weakening validation. Stable observation identifiers prevent duplicate child records during offline replay.
 
-### Response and error behavior
+### 8.3 Export
 
-Successful report/reference handlers generally return raw arrays or objects, not a common `{ data: ... }` wrapper. Expected validation, authentication and not-found errors return `{ "error": "..." }`; unexpected errors are returned as HTTP 500 with the safe message `Internal server error`.
+Excel and structured exports are intended for operational exchange and backup. Exported values reflect the viewer's authorized report set. An export does not grant permission to alter ownership or workflow state on re-import.
 
-## 7. Data model
+## 9. Offline capability
 
-PostgreSQL is the source of truth. The schema in `server/migrations/init.sql` creates:
+### 9.1 Capture
 
-| Table | Responsibility |
-| --- | --- |
-| `farms` | Farm ID, name and location |
-| `crop_types` | Crop catalogue |
-| `crop_varieties` | Varieties belonging to a crop type |
-| `pests` | Pest catalogue |
-| `diseases` | Disease catalogue |
-| `users` | User identity, password hash, role and active flag |
-| `user_sessions` | Revocable JWT-backed sessions |
-| `scout_reports` | Main report record |
-| `pest_observations` | Pest observations for a report |
-| `disease_observations` | Disease observations for a report |
+After one successful online sign-in, a scout can open the cached form, enter a report, and submit while disconnected. The application stores the report and its canonical extensions in IndexedDB with:
 
-The schema provides foreign keys, range/enum-like check constraints, indexes for common report queries, and seed reference data for three farms, four crop types, five pests, and five diseases.
+- an offline identifier;
+- the owner user ID;
+- a client submission ID;
+- the main report payload; and
+- canonical extension payloads.
 
-Report creation and observation addition run inside database transactions. Deleting a report cascades to its observations.
+### 9.2 Synchronization
 
-## 8. Architecture
+When the browser returns online, queued records for the current user are synchronized automatically. The main report is created first, then canonical extensions are written. The queue item is removed only after the full operation succeeds.
+
+### 9.3 Safety boundaries
+
+- A queue belonging to another or legacy account is blocked rather than submitted under the wrong user.
+- Server idempotency prevents duplicate reports when a request is retried.
+- Stable child observation identifiers make extension writes replay-safe.
+- Offline mode is data capture, not a substitute for authentication or authorization.
+- Users should keep the browser profile and device secure because queued field data is stored locally until synchronized.
+
+## 10. Data architecture
+
+### 10.1 Core entities
+
+| Domain | Main responsibility |
+|---|---|
+| Users | Identity, password hash, active role |
+| Scout reports | Owner, farm, dates, crop context, status, notes, workflow-compatible metadata |
+| Report workflow | Current stage and current holder |
+| Workflow events | Immutable transition audit trail |
+| Verification checklists | Stage-specific review evidence |
+| Canonical observations | Pest, disease, crop, weather, soil, irrigation, GPS, and related details |
+| Reference data | Farms, crops, varieties, pests, diseases, stress references |
+| Master import batches | Staged workbook, validation, provenance, and commit status |
+
+### 10.2 Migration sequence
+
+| Migration | Purpose |
+|---|---|
+| `init.sql` | Base users, references, reports, and foundational schema |
+| `002_report_workflow.sql` | Multi-stage workflow and event model |
+| `003_analytics_indexes.sql` | Analytics and query indexes |
+| `004_expanded_scouting_model.sql` | Expanded canonical scouting domains |
+| `005_phase22_verification_checklists.sql` | Stage checklist persistence |
+| `006_phase22_master_import_staging.sql` | Staged workbook import |
+| `007_master_reference_data.sql` | Canonical workbook reference data |
+| `008_phase23_canonical_provenance.sql` | Provenance for mapped data |
+| `009_scout_workbook_prefills.sql` | Scout assignment and prefill storage |
+| `010_supervisor_edit_permission.sql` | Explicit scout-controlled supervisor edit permission |
+| `011_offline_submission_idempotency.sql` | Per-owner offline submission idempotency |
+
+The migration runner loads environment configuration, applies the base schema safely, and then applies numbered upgrades in order. Migrations must be run before starting a new release against an existing database.
+
+## 11. Security model
+
+### 11.1 Implemented controls
+
+- Passwords are hashed; plaintext passwords are not stored.
+- Browser sessions use HttpOnly cookies and production cookies use the secure flag.
+- Browser write requests require a matching origin; bearer API clients remain supported.
+- Role, ownership, assignment, workflow state, and explicit edit consent are checked server-side.
+- Global analytics and administrative APIs require the admin role.
+- Proxy headers are ignored unless `TRUST_PROXY_HOPS` is explicitly configured.
+- Authentication throttling keys include normalized account identity.
+- Express signature disclosure is disabled.
+- Content Security Policy, frame protection, content-type protection, and Permissions Policy headers are applied.
+- PostgreSQL Docker exposure is restricted to `127.0.0.1:5433` for local operation.
+- Workbook parsing is bounded to reduce decompression and memory-exhaustion risk.
+- Audit events preserve workflow accountability.
+
+### 11.2 Production requirements
+
+- Use a unique, high-entropy `JWT_SECRET`; the development fallback is not acceptable in production.
+- Store database and session secrets outside source control.
+- Terminate TLS before the application and configure `TRUST_PROXY_HOPS` to the exact proxy count.
+- Restrict database network access to application hosts and operators.
+- Back up PostgreSQL and test restores on a schedule.
+- Review user access and privileged audit events regularly.
+
+## 12. Configuration
+
+| Variable | Purpose | Typical value |
+|---|---|---|
+| `NODE_ENV` | Runtime security mode | `production` |
+| `HOST` | Application bind address | `0.0.0.0` or `127.0.0.1` |
+| `PORT` | HTTP port | `3000` |
+| `JWT_SECRET` | Session signing secret | Secret, at least 32 characters |
+| `JWT_TTL_SECONDS` | Session duration | `28800` |
+| `TRUST_PROXY_HOPS` | Exact trusted reverse-proxy hops | `0` locally |
+| `DB_HOST` | PostgreSQL host | `127.0.0.1` |
+| `DB_PORT` | PostgreSQL port | `5433` locally with Docker |
+| `DB_NAME` | Database name | `scout_report` |
+| `DB_USER` | Database user | `scout_user` |
+| `DB_PASSWORD` | Database password | Secret |
+| `DB_SSL` | Enable PostgreSQL TLS | `true` when required |
+| `DB_SSL_REJECT_UNAUTHORIZED` | Verify database certificate | `true` preferred |
+| `RUN_DB_TESTS` | Enable database tests | `1` in full verification |
+| `RUN_DB_INTEGRATION` | Enable runtime integration tests | `1` in CI |
+
+## 13. Local installation and operation
+
+1. Install Node.js 22, npm, Docker Desktop, and Git.
+2. Copy the environment example to `.env` and set secrets.
+3. Install dependencies with `npm.cmd ci` on Windows PowerShell.
+4. Start PostgreSQL with `docker compose up -d postgres`.
+5. Confirm the container is healthy and port 5433 is bound only to localhost.
+6. Apply schema upgrades with `npm.cmd run migrate`.
+7. Start the application with `npm.cmd start`.
+8. Open `http://localhost:3000` and sign in.
+9. Confirm `/health`, role routing, workflow inboxes, report submission, and analytics authorization.
+
+Do not expose the local Docker database port on all network interfaces. Do not commit `.env` or copied production data.
+
+## 14. Testing and release gates
+
+### 14.1 Required checks
 
 ```text
-Browser pages (previews/)
-  -> browser auth helper (sessionStorage + bearer token)
-  -> Express application (server/app.js)
-       -> routes -> controllers -> store -> PostgreSQL
-       -> security headers, structured request logging, error handler
-       -> static delivery of browser pages
-```
-
-Key modules:
-
-- `server/index.js`: startup, production environment checks, port fallback, graceful shutdown.
-- `server/app.js`: Express configuration, static client delivery, middleware and route mounting.
-- `server/auth.js`: password hashing, JWT signing/verification, session checks and RBAC.
-- `server/store.js`: validated PostgreSQL read/write operations and report-status derivation.
-- `server/db.js`: connection pool, transactions and health check.
-- `server/migrations/init.sql`: initial schema and seed data.
-
-## 9. Security and operational behavior
-
-### Present controls
-
-- Passwords use PBKDF2-SHA256 with a per-password salt and 310,000 iterations.
-- Access tokens are HS256-signed JWTs and are validated against a live, non-revoked session record.
-- Logout revokes the current session in PostgreSQL.
-- Protected routes use authentication middleware and role checks.
-- Login/register attempts have an in-memory rate limiter.
-- Request logs are structured JSON and include a request ID.
-- Security headers include `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`; production adds HSTS and redirects forwarded HTTP requests to HTTPS.
-- Request JSON and form payloads are limited to 1 MB.
-- Production startup rejects a missing database configuration or the development JWT secret.
-
-### Environment variables
-
-| Variable | Purpose |
-| --- | --- |
-| `NODE_ENV` | Set to `production` for deployment safeguards |
-| `PORT` | Service port; defaults to 3000 |
-| `HOST` | Bind address; defaults to `0.0.0.0` in the entry point |
-| `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | PostgreSQL connection settings |
-| `DB_SSL` | Set `true` to enable TLS for PostgreSQL |
-| `DB_SSL_REJECT_UNAUTHORIZED` | Set `false` only when the deployment requires it |
-| `JWT_SECRET` | Required production signing secret |
-| `JWT_TTL_SECONDS` | Session/token lifetime; defaults to 8 hours |
-
-### Local startup
-
-```powershell
-npm.cmd install
-docker compose up -d postgres
+npm.cmd ci
+npm.cmd audit --omit=dev --audit-level=moderate
 npm.cmd run migrate
-npm.cmd start
+npm.cmd run test:ci
 ```
 
-With the current Compose configuration, PostgreSQL is exposed on host port `5433` and container port `5432`. Configure the application accordingly, for example `DB_HOST=localhost` and `DB_PORT=5433`.
+The CI workflow runs PostgreSQL 16 as a service, installs from the lockfile, audits production dependencies, applies migrations, and runs tests serially to avoid database race conditions.
 
-## 10. Quality checks
+### 14.2 Current verified result
 
-The repository provides the following scripts:
+| Gate | Result |
+|---|---|
+| GitHub workflow checks | 4 of 4 passed |
+| Live PostgreSQL suite | 142 of 142 passed |
+| Standard verification | 140 passed, 2 intentional database skips when DB flags are absent |
+| npm audit | 0 known vulnerabilities |
+| Local database | Healthy on `127.0.0.1:5433` |
 
-| Command | Purpose |
-| --- | --- |
-| `npm.cmd start` | Start the application |
-| `npm.cmd run dev` | Start Node in watch mode |
-| `npm.cmd test` | Run server and browser-auth tests |
-| `npm.cmd run verify` | Run tests plus JavaScript syntax checks |
-| `npm.cmd run migrate` | Run `server/migrations/init.sql` |
+### 14.3 Acceptance coverage
 
-### Audit result
+- authentication, logout, cookie behavior, origin protection, and role routing;
+- scout ownership and supervisor edit-consent matrix;
+- HOD read-only verification and admin-only analytics;
+- workflow transitions, rejection paths, checklists, and audit events;
+- workbook mapping, staging, prefill, canonical provenance, and bounded parsing;
+- offline caching, user-scoped queues, idempotent report creation, and replay-safe extensions;
+- database migrations, persistence, reference data, and analytics queries.
 
-On 6 August 2026, `npm.cmd test` completed with **26 passing tests, 0 failures, and 1 skipped database-availability test**. The test output logs deliberate authentication/authorization error cases while exercising the error handler; these log lines are not test failures.
+## 15. Deployment and operations
 
-Coverage includes browser session behavior, health endpoints, static client serving, security headers, authentication, throttling, reference data, route authorization, report controllers, password hashing, session revocation, CRUD/validation, and status derivation.
+### 15.1 Deployment model
 
-## 11. Delivery and deployment
+The full application requires a continuously running Node.js service and PostgreSQL. GitHub Pages can publish static project material or a preview, but it cannot execute Express routes or connect to PostgreSQL. A production deployment must provide:
 
-`docker-compose.yml` provisions a PostgreSQL 16 Alpine service with persistent storage and initializes a fresh database from `server/migrations/init.sql`.
+- Node.js application hosting;
+- a managed or securely operated PostgreSQL database;
+- TLS and a correctly configured reverse proxy;
+- protected environment secrets;
+- persistent logs and monitoring; and
+- backup and restore procedures.
 
-The GitHub Actions workflow:
+### 15.2 Release procedure
 
-1. Runs on pushes to `main` and manual dispatch.
-2. Installs dependencies with `npm ci`.
-3. Runs the verification script.
-4. Packages the application without tests, local report data, or `node_modules`.
-5. Deploys the artifact to Azure App Service.
-6. Calls `/api/health` after deployment.
+1. Review the change set and confirm the branch is current.
+2. Back up the target database.
+3. Run the audit and full verification gates.
+4. Deploy application code and dependencies.
+5. Apply database migrations once.
+6. Restart the service and verify health.
+7. Exercise one role-specific login for each role.
+8. Submit a test report through the complete verification chain.
+9. Confirm only the administrator can see the approved report in global analytics.
+10. Record the release revision and operational evidence.
 
-Deployment requires `AZURE_WEBAPP_PUBLISH_PROFILE` and an appropriate Azure App Service configuration. `AZURE_WEBAPP_NAME` is currently set to `scout-report` and must match the target App Service.
+### 15.3 Rollback
 
-## 12. Pending work and known gaps
+Prefer rolling back the application to the previous known-good revision while preserving forward-compatible schema. Restore a database backup only when a data migration cannot safely remain in place and the recovery decision has been approved. Always retain workflow audit evidence.
 
-These items are absent, incomplete, or inconsistent with the current implementation.
+## 16. Operator and user procedures
 
-### Highest priority before a production rollout
+### 16.1 Scout
 
-1. **Introduce report ownership and data scoping.** Add `owner_id` to reports, set it from the authenticated user instead of accepting user-supplied ownership, and restrict scouts to their own reports. The current API exposes all reports to any signed-in user.
-2. **Define the operational workflow.** The current two-role model has no supervisor review, HOD hand-off, report verification, audit trail, or explicit sharing state.
-3. **Use a versioned migration system.** `npm.cmd run migrate` only executes the initial schema file. It is suitable for a blank database but is not a safe, tracked upgrade path for a database that already exists.
-4. **Correct and consolidate documentation.** `README.md` still contains stale route/deployment language, including a mixture of root and `/api` route assumptions. This document reflects the code; the README should be aligned to it.
-5. **Perform deployment smoke tests against PostgreSQL.** The test suite has one database-dependent test skipped locally, so a real database migration and end-to-end production-like test remain necessary.
+1. Sign in online before first offline use.
+2. Open the report form and confirm the assigned workbook prefill when present.
+3. Complete farm, report date, crop, production area, observations, and notes.
+4. Submit online or save to the offline queue.
+5. When online, wait for synchronization success before clearing browser data.
+6. Share the report with the correct supervisor.
+7. Address any returned correction and resubmit.
 
-### Functional gaps
+### 16.2 Inter-Farm Supervisor
 
-- JSON/CSV import and export are not implemented or tested.
-- There is no server-side image/file attachment capability for field evidence.
-- Reports do not capture recommendations, corrective actions, assignment, due dates, or resolution confirmation.
-- There are no notifications for critical reports or overdue actions.
-- The dashboard does not provide documented downloadable reports, charts by trend, maps, or scheduled reporting.
-- User management is limited: there is no admin UI to activate/deactivate users, reset passwords, assign roles, or revoke all sessions.
+1. Open the assigned workflow inbox.
+2. Review the report and checklist.
+3. Edit only when the scout explicitly allowed editing.
+4. Approve or reject with a useful comment.
+5. Share approved work with an HOD.
 
-### Technical and security gaps
+### 16.3 Head of Department
 
-- The rate limiter is process-local and resets on restart; it does not protect a multi-instance deployment. Use a shared backing store such as Redis.
-- Browser tokens are readable by JavaScript because they are stored in `sessionStorage`. Evaluate an HTTP-only secure-cookie session design and add a CSRF strategy if adopting cookies.
-- The app sets security headers directly but does not configure a Content Security Policy.
-- There is no explicit CORS policy in the current Express configuration, despite `cors` being listed as a dependency.
-- Error handling writes expected client errors to the server console, creating noisy logs.
-- The database connection config is read directly from `process.env`; `server/config/env.js` is not the runtime source used by the entry point, so configuration ownership is duplicated.
-- The static preview hub exposes showcase content without requiring a signed-in user. Decide whether it should remain public in production.
+1. Review the supervisor-approved report without modifying scout content.
+2. Complete the HOD checklist.
+3. Reject to the supervisor when correction is required.
+4. Approve and share accepted work with an administrator.
 
-## 13. Recommended roadmap
+### 16.4 Administrator
 
-### Phase 1: Trustworthy access and workflow
+1. Final-review reports awaiting admin action.
+2. Approve or return the report to the HOD.
+3. Use global analytics only for approved, authorized data.
+4. Administer users and reference data with least privilege.
+5. Monitor metrics, audit events, backups, and release evidence.
 
-- Add report ownership and row-level authorization tests.
-- Add roles for inter-farm supervisor and head of department only after the approval states and permissions are agreed.
-- Implement an explicit progression such as draft -> submitted -> supervisor verified -> HOD reviewed -> shared with admin, with timestamps and actor IDs.
-- Make scout permission to allow supervisor edits an explicit report-level choice.
-- Add immutable audit events for report changes, verification, sharing and deletion.
+## 17. Known limitations and recommended development
 
-### Phase 2: Operational reporting
+### 17.1 Operational hardening
 
-- Implement validated JSON import with a batch limit and a clear error report.
-- Implement CSV and JSON export using only reports visible to the current user.
-- Add attachments for photos, including object storage, virus/content checks, and signed download URLs.
-- Add actionable recommendations, assignees, due dates and resolution states.
-- Add notification rules for critical findings and overdue actions.
+- Replace in-process authentication throttling with a shared persistent limiter for multi-instance deployments.
+- Add centralized structured logs, alerting, dashboards, and retained security-event search.
+- Automate encrypted backups and recurring restore drills.
+- Introduce workflow notifications, reminders, escalation rules, and overdue-stage reporting.
+- Tighten Content Security Policy further by removing remaining inline-script allowances.
 
-### Phase 3: Decision support and scale
+### 17.2 Product development
 
-- Add dashboard trend charts, location maps, severity heatmaps and farm/crop comparison.
-- Add scheduled weekly/monthly summaries by email or collaboration channel.
-- Add a mobile/offline-first field experience with queued synchronization.
-- Add database backups, restore drills, observability, alerting, and retention policies.
-- Replace in-memory throttling with distributed rate limiting and add a CSP, security testing, and dependency scanning.
+- Expand the visible form UI to cover every canonical domain with the same depth as the database model.
+- Add governed media attachment capture, secure object storage, malware scanning, and offline upload retry.
+- Provide an offline queue management screen with retry details and safe discard controls.
+- Add analytics drill-down by farm, crop, pest, disease, time period, and workflow turnaround.
+- Add configurable workbook mapping profiles with preview and change approval.
+- Add signed, immutable report snapshots for regulatory or audit use.
 
-## 14. Definition of done for the next release
+### 17.3 Engineering quality
 
-The next release should not be considered complete until it has:
+- Add automated browser end-to-end tests for offline-to-online synchronization and the full four-role workflow.
+- Add performance baselines for large workbooks, analytics, and concurrent synchronization.
+- Add migration rollback documentation and compatibility checks for every future schema change.
+- Generate an API specification from the implemented routes and validate it in CI.
 
-- A reviewed role/ownership matrix and tests for every access rule.
-- A versioned migration that upgrades an existing database safely.
-- Browser and API end-to-end tests against PostgreSQL.
-- Updated README/API reference generated or maintained from the actual routes.
-- Successful CI verification and a deployment health check.
-- A short release note stating schema changes, role changes, and any user-facing workflow changes.
+## 18. Documentation governance
 
+This file is the editable master source. `docs/Scout-Report-Master-Documentation.docx` is the compiled distribution copy. Update both in the same change by running:
 
-## 2026-08-10 Workflow Rebase
+```text
+uv run --with python-docx python scripts/build_project_documentation.py
+```
 
-Scout Report now implements organizational verification as a separate workflow layer. Roles are `scout`, `inter_farm_supervisor`, `head_of_department`, and `admin`. A report moves Scout → Inter-Farm Supervisor → Head of Department → Administrator, with mandatory verification before each forward share. Every action is recorded in `report_workflow_events`; current assignment is stored in `report_workflows`.
+When behavior changes:
 
-See `docs/workflow/README.md`, `docs/workflow/OPERATIONS.md`, and `docs/workflow/REBASE-2026-08-10.md`.
+1. Update the relevant tests and implementation.
+2. Update this master source, not only a phase note.
+3. Rebuild and visually inspect the Word document.
+4. Record the verified revision and test result.
+5. Keep historical phase reports for evidence, but label new records with date and scope.
 
-## 2026-08-12 HOD Authentication Remediation
+## 19. Source map
 
-The `head_of_department` role, browser dashboard and workflow route are present. Administrators assign elevated roles. Admin user management now also supports password reset at `PATCH /api/admin/users/:id/password`, preserving the assigned role and revoking existing sessions. This resolves the operational path for an existing HOD account that reports `Invalid email or password`.
+| Area | Primary source |
+|---|---|
+| Application composition and page guards | `server/app.js` |
+| Authentication and authorization | `server/auth.js`, `server/controllers/auth.controller.js` |
+| Report persistence and policy | `server/store.js`, `server/routes/report.routes.js` |
+| Workflow | `server/workflow.store.js`, `server/routes/workflow.routes.js` |
+| Canonical observations | `server/routes/canonical-observations.routes.js` |
+| Workbook import | `server/routes/master-import.routes.js`, `server/master-import.store.js` |
+| Offline client | `previews/offline.js`, `previews/offline-extensions.js`, `previews/service-worker.js` |
+| Database schema | `server/migrations/` |
+| CI release gate | `.github/workflows/ci.yml` |
+| Local PostgreSQL | `docker-compose.yml` |
+| Detailed historical evidence | `docs/` |
+
+## 20. Release statement
+
+Release 2.3.1 is a verified workflow, workbook, analytics, security, and offline-capable baseline. The repository passes the live PostgreSQL test suite and dependency audit at revision `f28f5bf`. Production readiness still depends on the target operator supplying secure hosting, TLS, secrets, monitoring, backups, and access governance described in this master document.

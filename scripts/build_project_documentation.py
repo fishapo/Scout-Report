@@ -13,7 +13,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "PROJECT_DOCUMENTATION.md"
-OUTPUT = ROOT / "Scout-Report-Project-Documentation.docx"
+OUTPUT = ROOT / "docs" / "Scout-Report-Master-Documentation.docx"
 
 BLUE = "2E74B5"
 DARK_BLUE = "1F4D78"
@@ -96,6 +96,46 @@ def set_repeat_table_header(row):
     tr_pr.append(node)
 
 
+def set_row_cant_split(row):
+    tr_pr = row._tr.get_or_add_trPr()
+    node = OxmlElement("w:cantSplit")
+    tr_pr.append(node)
+
+
+def create_numbering_instance(doc):
+    numbering = doc.part.numbering_part.element
+    num_ids = [int(node.get(qn("w:numId"))) for node in numbering.findall(qn("w:num"))]
+    style_num_id = int(doc.styles["List Number"]._element.pPr.numPr.numId.val)
+    style_num = next(node for node in numbering.findall(qn("w:num")) if int(node.get(qn("w:numId"))) == style_num_id)
+    abstract_id = style_num.find(qn("w:abstractNumId")).get(qn("w:val"))
+    num_id = max(num_ids, default=0) + 1
+    num = OxmlElement("w:num")
+    num.set(qn("w:numId"), str(num_id))
+    abstract_ref = OxmlElement("w:abstractNumId")
+    abstract_ref.set(qn("w:val"), abstract_id)
+    num.append(abstract_ref)
+    override = OxmlElement("w:lvlOverride")
+    override.set(qn("w:ilvl"), "0")
+    start = OxmlElement("w:startOverride")
+    start.set(qn("w:val"), "1")
+    override.append(start)
+    num.append(override)
+    numbering.append(num)
+    return num_id
+
+
+def apply_numbering(paragraph, num_id):
+    p_pr = paragraph._p.get_or_add_pPr()
+    num_pr = OxmlElement("w:numPr")
+    ilvl = OxmlElement("w:ilvl")
+    ilvl.set(qn("w:val"), "0")
+    num = OxmlElement("w:numId")
+    num.set(qn("w:val"), str(num_id))
+    num_pr.append(ilvl)
+    num_pr.append(num)
+    p_pr.append(num_pr)
+
+
 def add_page_number(paragraph):
     paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     run = paragraph.add_run("Page ")
@@ -113,12 +153,12 @@ def set_styles(doc):
     normal._element.rPr.rFonts.set(qn("w:hAnsi"), "Calibri")
     normal.font.size = Pt(11)
     normal.paragraph_format.space_after = Pt(6)
-    normal.paragraph_format.line_spacing = 1.10
+    normal.paragraph_format.line_spacing = 1.25
 
     for name, size, color, before, after in (
-        ("Heading 1", 16, BLUE, 16, 8),
-        ("Heading 2", 13, BLUE, 12, 6),
-        ("Heading 3", 12, DARK_BLUE, 8, 4),
+        ("Heading 1", 16, BLUE, 18, 10),
+        ("Heading 2", 13, BLUE, 14, 7),
+        ("Heading 3", 12, DARK_BLUE, 10, 5),
     ):
         style = styles[name]
         style.font.name = "Calibri"
@@ -136,7 +176,9 @@ def set_styles(doc):
         style.font.name = "Calibri"
         style.font.size = Pt(11)
         style.paragraph_format.space_after = Pt(4)
-        style.paragraph_format.line_spacing = 1.167
+        style.paragraph_format.left_indent = Inches(0.375)
+        style.paragraph_format.first_line_indent = Inches(-0.188)
+        style.paragraph_format.line_spacing = 1.25
 
 
 def add_cover(doc):
@@ -145,7 +187,7 @@ def add_cover(doc):
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after = Pt(14)
-    run = p.add_run("PROJECT DOCUMENTATION")
+    run = p.add_run("MASTER DOCUMENTATION")
     set_font(run, size=12, bold=True, color=BLUE)
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -155,17 +197,17 @@ def add_cover(doc):
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after = Pt(30)
-    run = p.add_run("Agricultural pest and disease reporting platform")
+    run = p.add_run("System handbook, operating guide, and technical reference")
     set_font(run, size=15, color=DARK_BLUE)
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = p.add_run("Code-verified functionality, current gaps, and recommended roadmap")
+    run = p.add_run("Workflow, workbook integration, offline capture, security, analytics, and operations")
     set_font(run, size=11, italic=True, color=MUTED)
     for _ in range(10):
         doc.add_paragraph()
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = p.add_run("Version 2.0.0 | Audit date: 6 August 2026")
+    run = p.add_run("Release 2.3.1 | Verified revision f28f5bf | 24 November 2026")
     set_font(run, size=10, color=MUTED)
     doc.add_page_break()
 
@@ -218,8 +260,10 @@ def add_table(doc, headers, rows):
             run.bold = True
             run.font.color.rgb = RGBColor.from_string(NAVY)
     set_repeat_table_header(table.rows[0])
+    set_row_cant_split(table.rows[0])
     for row_values in rows:
         cells = table.add_row().cells
+        set_row_cant_split(table.rows[-1])
         for cell, value in zip(cells, row_values):
             p = cell.paragraphs[0]
             p.paragraph_format.space_after = Pt(0)
@@ -232,6 +276,7 @@ def add_markdown_body(doc, markdown):
     i = 0
     in_code = False
     code_lines = []
+    active_numbering_id = None
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
@@ -257,21 +302,25 @@ def add_markdown_body(doc, markdown):
             i += 1
             continue
         if stripped.startswith("|"):
+            active_numbering_id = None
             headers, rows, i = parse_table(lines, i)
             add_table(doc, headers, rows)
             continue
         if stripped.startswith("# "):
+            active_numbering_id = None
             # Source title belongs to the cover already.
             i += 1
             continue
         match = re.match(r"^(#{2,4})\s+(.*)$", stripped)
         if match:
+            active_numbering_id = None
             level = len(match.group(1)) - 1
             p = doc.add_paragraph(style=f"Heading {min(level, 3)}")
             add_inline_markdown(p, match.group(2))
             i += 1
             continue
         if stripped.startswith("> "):
+            active_numbering_id = None
             table = doc.add_table(rows=1, cols=1)
             table.style = "Table Grid"
             set_table_geometry(table, [CONTENT_WIDTH_DXA])
@@ -289,10 +338,18 @@ def add_markdown_body(doc, markdown):
         bullet = re.match(r"^-\s+(.*)$", stripped)
         numbered = re.match(r"^\d+\.\s+(.*)$", stripped)
         if bullet or numbered:
-            p = doc.add_paragraph(style="List Bullet" if bullet else "List Number")
+            if bullet:
+                active_numbering_id = None
+                p = doc.add_paragraph(style="List Bullet")
+            else:
+                if active_numbering_id is None:
+                    active_numbering_id = create_numbering_instance(doc)
+                p = doc.add_paragraph(style="List Number")
+                apply_numbering(p, active_numbering_id)
             add_inline_markdown(p, (bullet or numbered).group(1))
             i += 1
             continue
+        active_numbering_id = None
         p = doc.add_paragraph()
         add_inline_markdown(p, stripped)
         i += 1
@@ -311,17 +368,18 @@ def main():
 
     header = section.header.paragraphs[0]
     header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    run = header.add_run("Scout Report | Project Documentation")
+    run = header.add_run("Scout Report | Master Documentation")
     set_font(run, size=9, color=MUTED)
     footer = section.footer.paragraphs[0]
     add_page_number(footer)
 
     add_cover(doc)
     add_markdown_body(doc, SOURCE.read_text(encoding="utf-8"))
-    doc.core_properties.title = "Scout Report Project Documentation"
-    doc.core_properties.subject = "Functionality, pending work, and future roadmap"
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    doc.core_properties.title = "Scout Report Master Documentation"
+    doc.core_properties.subject = "System handbook, operating guide, and technical reference"
     doc.core_properties.author = "Scout Report Project"
-    doc.core_properties.comments = "Generated from the code-verified project documentation."
+    doc.core_properties.comments = "Generated from the authoritative code-verified master documentation."
     doc.save(OUTPUT)
     print(OUTPUT)
 
