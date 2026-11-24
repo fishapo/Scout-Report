@@ -52,7 +52,9 @@
       createdAt: new Date().toISOString(),
       report: { ...report, clientSubmissionId: offlineId },
       extensions: window.collectCanonicalExtensions?.(report, offlineId) || [],
+      media: window.collectPendingMedia?.() || [],
     });
+    window.clearPendingMedia?.();
     await updateStatus(`Report saved safely on this device. It will submit automatically when online.`);
     const saveStatus = document.getElementById("save-status");
     if (saveStatus) saveStatus.textContent = "Offline report saved locally. Keep this browser profile until synchronization completes.";
@@ -94,6 +96,10 @@
             const extensionBody = await extensionResponse.json().catch(() => ({}));
             throw new Error(extensionBody.error || `Canonical ${extension.domain} synchronization failed (${extensionResponse.status})`);
           }
+        }
+        if ((item.media || []).length) {
+          if (typeof window.uploadMediaItems !== "function") throw new Error("Media synchronization is not available.");
+          await window.uploadMediaItems(body.id, item.media);
         }
         await removePending(item.offlineId);
         completed += 1;

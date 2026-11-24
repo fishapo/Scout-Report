@@ -20,3 +20,6 @@ backups/
 Scout-Report-Reviewed-2026-08-14/
 files.txt
 project-tree.txt
+
+# Private report evidence is stored outside the public web root.
+var/report-media/

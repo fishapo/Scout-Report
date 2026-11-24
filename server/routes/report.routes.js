@@ -9,6 +9,7 @@ const router = express.Router();
 const reportController =
     require("../controllers/report.controller");
 const reportExtensionController = require("../controllers/report-extension.controller");
+const reportMediaController = require("../controllers/report-media.controller");
 
 
 const auth =
@@ -80,6 +81,28 @@ router.post(
     auth.authenticate,
     auth.authorizeRoles("admin", "scout", "inter_farm_supervisor", "head_of_department"),
     reportController.importExcel
+);
+
+router.get(
+    "/:id/media",
+    auth.authenticate,
+    auth.authorizeRoles("admin", "scout", "inter_farm_supervisor", "head_of_department"),
+    reportMediaController.list
+);
+
+router.get(
+    "/:id/media/:mediaId/content",
+    auth.authenticate,
+    auth.authorizeRoles("admin", "scout", "inter_farm_supervisor", "head_of_department"),
+    reportMediaController.content
+);
+
+router.post(
+    "/:id/media",
+    auth.authenticate,
+    auth.authorizeRoles("admin", "scout", "inter_farm_supervisor", "head_of_department"),
+    express.raw({ type: () => true, limit: "10mb" }),
+    reportMediaController.upload
 );
 
 router.get(

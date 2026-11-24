@@ -2,7 +2,7 @@
 
 **Release:** 2.3.1  
 **Repository:** `fishapo/Scout-Report`  
-**Verified revision:** `f28f5bf`  
+**Verified revision:** `5c62d95`  
 **Documentation date:** 24 November 2026  
 **Status:** Authoritative operational and technical reference
 
@@ -23,6 +23,95 @@ The production workflow is:
 
 The application preserves scout ownership. A supervisor can edit a report only when assigned to it and explicitly allowed by the scout. HOD review is read-only. Workflow state and agricultural severity are stored separately.
 
+### 1.1 Management brief
+
+Scout Report replaces disconnected field forms and spreadsheet hand-offs with one controlled reporting chain. Management receives traceable evidence of who created, reviewed, returned, approved, and released every report. It also preserves the value of the existing Excel workbook by importing its structure and reference data into a governed web workflow.
+
+| Management objective | System response | Management value |
+|---|---|---|
+| Timely field visibility | Online and offline capture with queued synchronization | Work continues during network interruption and becomes visible after reconnection |
+| Clear accountability | Role inboxes, checklists, comments, and immutable workflow events | Every hand-off has an owner, status, and audit trail |
+| Data quality | Workbook-aligned form, reference data, validation, and staged import | Reduces re-entry and inconsistent classifications |
+| Controlled publication | Supervisor, HOD, and Admin verification before analytics | Unapproved reports cannot enter management analytics |
+| Ownership protection | Scout-controlled supervisor editing and read-only HOD review | Original field accountability is retained |
+| Operational resilience | PostgreSQL, migrations, automated tests, health checks, and backup requirements | Supports repeatable releases and recovery |
+
+**Current position.** Release 2.3.1 is a tested operational baseline. Workflow, offline queueing, workbook import, security controls, and administrator analytics are implemented. Production operation still requires approved hosting, TLS, managed secrets, monitoring, encrypted backups, and a named service owner.
+
+**Accountability.** Management owns verification policy and service targets. Department managers maintain reviewer assignments. The administrator controls users, reference data, final release, and analytics. IT owns hosting, backups, monitoring, patching, and incident response. Users remain accountable for the accuracy and timeliness of their actions.
+
+### 1.2 Management controls and performance indicators
+
+| Indicator | Recommended measure | Evidence source |
+|---|---|---|
+| Submission timeliness | Visits submitted within the agreed reporting window | Report and visit timestamps |
+| Review turnaround | Median and overdue time at Supervisor, HOD, and Admin stages | Workflow event timestamps |
+| First-pass approval | Percentage approved without rejection at each stage | Approval and rejection events |
+| Correction load | Returns, repeat returns, and dominant reasons | Workflow comments and event history |
+| Offline synchronization | Successful queued submissions and unresolved failures | Offline queue and API results |
+| Analytics readiness | Approved reports released by farm, period, crop, and department | Administrator analytics dataset |
+| Platform reliability | Availability, failed requests, restore tests, and security events | Health, metrics, logs, and backups |
+
+Targets should be set by operations after a baseline period and reviewed weekly or monthly; the software should not invent business targets.
+
+### 1.3 Approval workflow
+
+```text
+Scout: /scout-form
+  Draft or offline queue
+          |
+          | submit and share
+          v
+Supervisor: /inter-farm-supervisor-dashboard
+  Verify or reject; share approved report
+          |
+          v
+HOD: /head-of-department-dashboard
+  Read-only verify or reject; share approved report
+          |
+          v
+Administrator: /admin-verification-dashboard
+  Final verify or return
+          |
+          v
+Management analytics: /admin-dashboard.html
+
+Reject -> return to the accountable prior stage -> correct -> resubmit
+```
+
+The administrator is the release authority. Supervisor and HOD approval do not publish a report to global analytics. Rejection returns work to the accountable earlier stage while preserving the audit history.
+
+### 1.4 Page and navigation workflow
+
+All authenticated users enter through `/dashboard`. The server reads the authenticated role and redirects to the protected dashboard for that role.
+
+| Page | Route | Role | Purpose and next action |
+|---|---|---|---|
+| Sign in / registration | `/login` | All users | Authenticate, then continue to the role router |
+| Role router | `/dashboard` | Authenticated users | Redirect to the dashboard assigned to the account |
+| Scout dashboard | `/scout-dashboard` | Scout | View owned reports, create or open a report, share, and correct returns |
+| Report form | `/scout-form` | Workflow roles, subject to policy | Create or inspect workbook-aligned data and return to the appropriate dashboard |
+| Supervisor dashboard | `/inter-farm-supervisor-dashboard` | Supervisor | Review, checklist, reject or approve, then share approved work with HOD |
+| HOD dashboard | `/head-of-department-dashboard` | HOD | Read-only review, reject or approve, then share accepted work with Admin |
+| Admin verification | `/admin-verification-dashboard` | Admin | Final-review, return, or approve for analytics |
+| Admin analytics | `/admin-dashboard.html` | Admin | View global approved-report analytics |
+| User administration | `/admin-users` | Admin | Manage accounts and access |
+| Reference administration | Admin controls | Admin | Maintain farms, crops, scouts, pests, diseases, and mappings |
+
+Shared form access does not mean shared editing authority. Server policy determines whether a user may create, edit, or only view a selected report. Reversible form/dashboard navigation does not weaken authorization.
+
+### 1.5 Management decision matrix
+
+| Decision or control | Accountable owner | Required evidence |
+|---|---|---|
+| Reporting and verification policy | Management / process owner | Approved workflow, roles, and service targets |
+| Farm, scout, and reviewer assignments | Department management | Current assignments and access review |
+| Release a report to analytics | Administrator | Completed verification chain and final approval |
+| Reference data or workbook mapping change | Admin with business approval | Change record, preview, validation, and rollback plan |
+| Release or migration deployment | IT / system owner | Passing CI, backup, migration record, smoke test, revision |
+| Service or data restoration | IT / system owner | Incident record, approved restore point, validation |
+| Residual production risk acceptance | Management | Documented exception, owner, mitigation, and review date |
+
 ## 2. Current release baseline
 
 | Item | Current baseline |
@@ -34,7 +123,7 @@ The application preserves scout ownership. A supervisor can edit a report only w
 | Package manager | npm 10 |
 | Browser authentication | HttpOnly cookie session |
 | Roles | Scout, Inter-Farm Supervisor, Head of Department, Admin |
-| Offline cache | Service worker cache `scout-report-offline-v3` |
+| Offline cache | Service worker cache `scout-report-offline-v4` |
 | Offline queue | IndexedDB, scoped to the authenticated user |
 | Database upgrade set | `init.sql` plus migrations 002 through 011 |
 | CI gate | Audit, migrations, serial unit/contract/integration tests |
@@ -52,6 +141,7 @@ The application preserves scout ownership. A supervisor can edit a report only w
 - Capture pest, disease, crop, weather, soil, irrigation, GPS, notes, and visit timing data.
 - Save a report offline after the user has signed in online at least once.
 - Automatically synchronize queued reports and canonical extensions when connectivity returns.
+- Capture private JPEG, PNG, WebP, MP4, or WebM evidence with previews, captions, capture location, checksums, and a 10 MB per-file limit.
 - Print or export reports for operational use.
 
 ### 3.2 Verification and governance
@@ -120,9 +210,13 @@ Rejection returns the report to the immediately previous operational stage. The 
 |---|---|---|
 | `/login` | Sign in and registration | Public |
 | `/dashboard` | Role-aware dashboard routing | Authenticated |
-| `/scout-form` | Field report capture and editing | Authorized report users |
-| `/workflow` | Assigned review inbox and report workflow | Workflow roles |
-| `/dashboard.html` | Global analytics and administration | Admin only |
+| `/scout-dashboard` | Owned and returned report work | Scout only |
+| `/scout-form` | Field report capture or authorized inspection | Workflow roles, subject to report policy |
+| `/inter-farm-supervisor-dashboard` | Assigned supervisor review inbox | Supervisor only |
+| `/head-of-department-dashboard` | Assigned departmental review inbox | HOD only |
+| `/admin-verification-dashboard` | Final verification inbox | Admin only |
+| `/admin-dashboard.html` | Global analytics and administration | Admin only |
+| `/admin-users` | User and access administration | Admin only |
 | `/health` | Application health response | Public operational probe |
 
 The browser does not store bearer tokens in local or session storage. Login establishes an HttpOnly cookie, logout clears it, and legacy browser tokens are removed when the authentication client loads.
@@ -191,17 +285,18 @@ Excel and structured exports are intended for operational exchange and backup. E
 
 ### 9.1 Capture
 
-After one successful online sign-in, a scout can open the cached form, enter a report, and submit while disconnected. The application stores the report and its canonical extensions in IndexedDB with:
+After one successful online sign-in, a scout can open the cached form, enter a report, select evidence, and submit while disconnected. The application stores the report, its canonical extensions, and selected media blobs in IndexedDB with:
 
 - an offline identifier;
 - the owner user ID;
 - a client submission ID;
-- the main report payload; and
-- canonical extension payloads.
+- the main report payload;
+- canonical extension payloads; and
+- stable media IDs and private evidence blobs for replay-safe upload.
 
 ### 9.2 Synchronization
 
-When the browser returns online, queued records for the current user are synchronized automatically. The main report is created first, then canonical extensions are written. The queue item is removed only after the full operation succeeds.
+When the browser returns online, queued records for the current user are synchronized automatically. The main report is created first, canonical extensions are written second, and evidence files are uploaded last. The queue item is removed only after the full operation succeeds.
 
 ### 9.3 Safety boundaries
 
@@ -259,6 +354,7 @@ The migration runner loads environment configuration, applies the base schema sa
 - Content Security Policy, frame protection, content-type protection, and Permissions Policy headers are applied.
 - PostgreSQL Docker exposure is restricted to `127.0.0.1:5433` for local operation.
 - Workbook parsing is bounded to reduce decompression and memory-exhaustion risk.
+- Media content is signature-validated, size-limited, stored outside the public web root, and served only after report authorization.
 - Audit events preserve workflow accountability.
 
 ### 11.2 Production requirements
@@ -280,6 +376,7 @@ The migration runner loads environment configuration, applies the base schema sa
 | `JWT_SECRET` | Session signing secret | Secret, at least 32 characters |
 | `JWT_TTL_SECONDS` | Session duration | `28800` |
 | `TRUST_PROXY_HOPS` | Exact trusted reverse-proxy hops | `0` locally |
+| `MEDIA_STORAGE_DIR` | Private report-evidence storage directory | `var/report-media` |
 | `DB_HOST` | PostgreSQL host | `127.0.0.1` |
 | `DB_PORT` | PostgreSQL port | `5433` locally with Docker |
 | `DB_NAME` | Database name | `scout_report` |
@@ -335,6 +432,7 @@ The CI workflow runs PostgreSQL 16 as a service, installs from the lockfile, aud
 - workflow transitions, rejection paths, checklists, and audit events;
 - workbook mapping, staging, prefill, canonical provenance, and bounded parsing;
 - offline caching, user-scoped queues, idempotent report creation, and replay-safe extensions;
+- media signature validation, private storage, authorized retrieval, and offline replay protection;
 - database migrations, persistence, reference data, and analytics queries.
 
 ## 15. Deployment and operations
@@ -415,7 +513,7 @@ Prefer rolling back the application to the previous known-good revision while pr
 ### 17.2 Product development
 
 - Expand the visible form UI to cover every canonical domain with the same depth as the database model.
-- Add governed media attachment capture, secure object storage, malware scanning, and offline upload retry.
+- Move private local media storage to governed object storage for multi-instance hosting, with malware scanning, quotas, retention, and lifecycle deletion.
 - Provide an offline queue management screen with retry details and safe discard controls.
 - Add analytics drill-down by farm, crop, pest, disease, time period, and workflow turnaround.
 - Add configurable workbook mapping profiles with preview and change approval.
@@ -430,7 +528,7 @@ Prefer rolling back the application to the previous known-good revision while pr
 
 ## 18. Documentation governance
 
-This file is the editable master source. `docs/Scout-Report-Master-Documentation.docx` is the compiled distribution copy. Update both in the same change by running:
+This file is the editable master source. `docs/Scout-Report-Management-Master-Documentation.docx` is the compiled management distribution copy. Update both in the same change by running:
 
 ```text
 uv run --with python-docx python scripts/build_project_documentation.py
@@ -455,6 +553,7 @@ When behavior changes:
 | Canonical observations | `server/routes/canonical-observations.routes.js` |
 | Workbook import | `server/routes/master-import.routes.js`, `server/master-import.store.js` |
 | Offline client | `previews/offline.js`, `previews/offline-extensions.js`, `previews/service-worker.js` |
+| Media upload and private storage | `server/report-media.js`, `server/controllers/report-media.controller.js` |
 | Database schema | `server/migrations/` |
 | CI release gate | `.github/workflows/ci.yml` |
 | Local PostgreSQL | `docker-compose.yml` |
@@ -462,4 +561,4 @@ When behavior changes:
 
 ## 20. Release statement
 
-Release 2.3.1 is a verified workflow, workbook, analytics, security, and offline-capable baseline. The repository passes the live PostgreSQL test suite and dependency audit at revision `f28f5bf`. Production readiness still depends on the target operator supplying secure hosting, TLS, secrets, monitoring, backups, and access governance described in this master document.
+Release 2.3.1 is a verified workflow, workbook, analytics, security, and offline-capable baseline. The repository passes the live PostgreSQL test suite and dependency audit at revision `5c62d95`. Production readiness still depends on the target operator supplying secure hosting, TLS, secrets, monitoring, backups, and access governance described in this master document.

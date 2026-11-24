@@ -13,7 +13,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "PROJECT_DOCUMENTATION.md"
-OUTPUT = ROOT / "docs" / "Scout-Report-Master-Documentation.docx"
+OUTPUT = ROOT / "docs" / "Scout-Report-Management-Master-Documentation.docx"
 
 BLUE = "2E74B5"
 DARK_BLUE = "1F4D78"
@@ -197,7 +197,7 @@ def add_cover(doc):
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after = Pt(30)
-    run = p.add_run("System handbook, operating guide, and technical reference")
+    run = p.add_run("Management handbook, operating guide, and technical reference")
     set_font(run, size=15, color=DARK_BLUE)
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -207,7 +207,7 @@ def add_cover(doc):
         doc.add_paragraph()
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = p.add_run("Release 2.3.1 | Verified revision f28f5bf | 24 November 2026")
+    run = p.add_run("Release 2.3.1 | Verified revision 5c62d95 | 24 November 2026")
     set_font(run, size=10, color=MUTED)
     doc.add_page_break()
 
@@ -377,7 +377,7 @@ def main():
     add_markdown_body(doc, SOURCE.read_text(encoding="utf-8"))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.core_properties.title = "Scout Report Master Documentation"
-    doc.core_properties.subject = "System handbook, operating guide, and technical reference"
+    doc.core_properties.subject = "Management handbook, operating guide, and technical reference"
     doc.core_properties.author = "Scout Report Project"
     doc.core_properties.comments = "Generated from the authoritative code-verified master documentation."
     doc.save(OUTPUT)

@@ -1,5 +1,5 @@
 "use strict";
-const CACHE = "scout-report-offline-v3";
+const CACHE = "scout-report-offline-v4";
 const STATIC_ASSETS = ["/assets/auth.js", "/assets/offline-extensions.js", "/assets/offline.js", "/js/reference-mapping.js"];
 
 self.addEventListener("install", event => {
